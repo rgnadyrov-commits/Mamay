@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MAMAY — торговый терминал: крипта, акции США и MOEX в одном окне</title>
+<meta name="description" content="MAMAY — профессиональный торговый терминал: арбитраж между биржами, скринеры акций США и MOEX, волновой анализ одной кнопкой, автоторговля, графики и глубокий стакан. Режимы DEMO и REAL.">
+<meta name="theme-color" content="#05070b">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MAMAY — Орда данных. Один полководец.">
+<meta property="og:description" content="Терминал для трейдера: арбитраж, скринеры, волновой анализ, алготрейдинг, графики и стакан. Крипта, акции США и MOEX.">
+<meta property="og:image" content="assets/og.jpg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/fx.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-arb" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 17h28M30 10l7 7-7 7"/><path d="M40 31H12M18 24l-7 7 7 7"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="21" cy="21" r="12"/><path d="M30 30l11 11"/><path d="M16 26v-4M21 26v-9M26 26v-6"/></symbol>
+    <symbol id="i-wave" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 34l9-14 7 9 9-19 6 12 7-6"/><circle cx="14" cy="20" r="1.8"/><circle cx="30" cy="10" r="1.8"/></symbol>
+    <symbol id="i-bot" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="16" width="30" height="22" rx="5"/><path d="M24 16V9"/><circle cx="24" cy="7" r="2"/><circle cx="18" cy="27" r="2.6"/><circle cx="30" cy="27" r="2.6"/><path d="M19 33h10M4 26v6M44 26v6"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 8v32M10 14v14M20 12v24M20 18v10M30 6v30M30 12v14M40 14v26M40 20v12"/><rect x="7.5" y="16" width="5" height="9" rx="1"/><rect x="17.5" y="20" width="5" height="10" rx="1"/><rect x="27.5" y="12" width="5" height="14" rx="1"/><rect x="37.5" y="22" width="5" height="8" rx="1"/></symbol>
+    <symbol id="i-dom" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10h20M6 17h30M6 24h14"/><path d="M42 31H22M42 38H12M42 45H30" transform="translate(0 -5)"/></symbol>
+    <symbol id="i-opt" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 36c8 0 10-24 18-24s10 24 18 24"/><path d="M6 40h36M24 8v32" stroke-dasharray="2 3"/></symbol>
+    <symbol id="i-book" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6h18l8 8v28H12z"/><path d="M30 6v8h8M18 22h14M18 29h14M18 36h8"/></symbol>
+    <symbol id="i-tg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M42 8L6 22l10 4 4 12 6-7 9 7z"/><path d="M16 26l17-11"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5l15 6v11c0 10-6 17-15 21C15 39 9 32 9 22V11z"/><path d="M17 24l5 5 9-10"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 42V6"/><path d="M10 8h24l-5 8 5 8H10"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M27 4L10 27h13l-3 17 18-24H25z"/></symbol>
+    <symbol id="i-target" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="17"/><circle cx="24" cy="24" r="10"/><circle cx="24" cy="24" r="3"/><path d="M24 3v8M24 37v8M3 24h8M37 24h8"/></symbol>
+    <symbol id="i-money" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="12" width="38" height="24" rx="4"/><circle cx="24" cy="24" r="6"/><path d="M11 18v0M37 30v0"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+    <symbol id="i-half" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 12h12"/></symbol>
+    <symbol id="i-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  
+    <symbol id="i-layout" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="8" width="20" height="18" rx="3"/><rect x="30" y="8" width="12" height="10" rx="3"/><rect x="30" y="22" width="12" height="18" rx="3"/><rect x="6" y="30" width="20" height="10" rx="3"/><path d="M23 37l3-3M20 37l6-6" stroke-width="1.2"/></symbol>
+    <symbol id="i-news" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="9" width="34" height="30" rx="4"/><path d="M14 17h12M14 24h20M14 31h20"/><rect x="30" y="14" width="6" height="6" rx="1.5"/></symbol>
+    <symbol id="i-mode" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="15" width="38" height="18" rx="9"/><circle cx="16" cy="24" r="5"/><path d="M28 24h8" stroke-dasharray="1 4"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="24" r="6"/><circle cx="37" cy="24" r="6"/><path d="M19 20h10M25 16l4 4-4 4M29 28H19M23 24l-4 4 4 4"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="brand" aria-label="MAMAY — на главную">
+      <img src="assets/logo.png" alt="" width="34" height="36">
+      <span class="brand-t"><b>MAMAY</b><i>trading terminal</i></span>
+    </a>
+    <nav class="menu" id="menu" aria-label="Основное меню">
+      <a href="#inside">Возможности</a>
+      <a href="#screens">Экраны</a>
+      <a href="#arbitrage">Арбитраж</a>
+      <a href="#compare">Отличия</a>
+      <a href="#safety">Безопасность</a>
+      <a href="#investors">Инвесторам</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#contact" class="btn btn-sm btn-gold nav-cta">Запросить демо</a>
+    <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="aurora"></div>
+    <div class="grid"></div>
+    <svg class="trend" viewBox="0 0 1600 500" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="tg" x1="0" x2="1"><stop offset="0" stop-color="#e8c26a" stop-opacity="0"/><stop offset=".35" stop-color="#e8c26a" stop-opacity=".55"/><stop offset="1" stop-color="#22d3c5" stop-opacity=".85"/></linearGradient>
+        <linearGradient id="tf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22d3c5" stop-opacity=".16"/><stop offset="1" stop-color="#22d3c5" stop-opacity="0"/></linearGradient>
+      </defs>
+      <path class="trend-fill" d="M0 430 L120 410 L210 425 L330 360 L420 380 L540 300 L640 330 L760 250 L860 275 L980 190 L1080 215 L1200 130 L1300 150 L1430 70 L1600 40 L1600 500 L0 500Z" fill="url(#tf)"/>
+      <path class="trend-line" d="M0 430 L120 410 L210 425 L330 360 L420 380 L540 300 L640 330 L760 250 L860 275 L980 190 L1080 215 L1200 130 L1300 150 L1430 70 L1600 40" fill="none" stroke="url(#tg)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="wrap hero-in">
+    <div class="chip reveal"><span class="dot"></span> Крипта · Акции США · MOEX · DEMO и REAL</div>
+    <h1 class="reveal d1">Орда данных.<br><span class="gold-t">Один полководец.</span></h1>
+    <p class="lead reveal d2">MAMAY — профессиональный терминал для трейдера. Арбитраж между биржами, скринеры акций США и MOEX, волновой анализ одной кнопкой, графики с глубоким стаканом и автоматическая торговля. В одном окне и на ваших данных.</p>
+    <div class="hero-cta reveal d3">
+      <a href="#contact" class="btn btn-gold btn-lg">Запросить демо <svg class="ic"><use href="#i-arrow"/></svg></a>
+      <a href="#inside" class="btn btn-ghost btn-lg">Что внутри</a>
+    </div>
+    <ul class="hero-stats reveal d4">
+      <li><b data-count="3">3</b><span>рынка в одном окне</span></li>
+      <li><b data-count="6">6</b><span>криптобирж</span></li>
+      <li><b data-count="25" data-plus="1">25+</b><span>экранов и скринеров</span></li>
+      <li><b>DEMO · REAL</b><span>два режима работы</span></li>
+    </ul>
+  </div>
+
+  <div class="wrap hero-shot">
+    <figure class="frame tilt reveal">
+      <div class="frame-bar">
+        <div class="lights"><i></i><i></i><i></i></div>
+        <div class="frame-title">MAMAY · Терминал</div>
+        <div class="live"><span class="dot"></span> запись с живого терминала</div>
+      </div>
+      <video class="frame-media" autoplay muted loop playsinline preload="auto" poster="assets/shots/terminal-live-poster.webp" aria-label="Живая запись терминала MAMAY: график, кластеры, лента сделок и стакан">
+        <source src="assets/shots/terminal-live.webm" type="video/webm">
+      </video>
+    </figure>
+    <p class="note center">Запись экрана настоящего терминала MAMAY в демо-режиме (бумажный счёт, рыночные данные реальные).</p>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>BINANCE</span><i>◆</i><span>BYBIT</span><i>◆</i><span>OKX</span><i>◆</i><span>GATE</span><i>◆</i><span>BITGET</span><i>◆</i><span>MEXC</span><i>◆</i><span>NASDAQ · NYSE</span><i>◆</i><span>MOEX</span><i>◆</i><span>АЛОР</span><i>◆</i><span>X · YAHOO · FINVIZ</span><i>◆</i><span>TELEGRAM</span><i>◆</i>
+    <span>BINANCE</span><i>◆</i><span>BYBIT</span><i>◆</i><span>OKX</span><i>◆</i><span>GATE</span><i>◆</i><span>BITGET</span><i>◆</i><span>MEXC</span><i>◆</i><span>NASDAQ · NYSE</span><i>◆</i><span>MOEX</span><i>◆</i><span>АЛОР</span><i>◆</i><span>X · YAHOO · FINVIZ</span><i>◆</i><span>TELEGRAM</span><i>◆</i>
+  </div>
+</div>
+
+<!-- ============ PROBLEM → SOLUTION ============ -->
+<section class="sec" id="why">
+  <div class="wrap">
+    <div class="tag">(ПОЧЕМУ MAMAY)</div>
+    <div class="split">
+      <div class="glass g-purple reveal">
+        <h2 class="card-h">Проблема</h2>
+        <p>Трейдер сегодня живёт в семи окнах: графики в одном месте, стаканы на биржах, акции США в одном сервисе, российский рынок в другом, скринеры в третьем, новости в четвёртом, расчёты в Excel, сигналы в Telegram. Пока он переключается между ними, возможность уже закрылась.</p>
+      </div>
+      <div class="glass g-gold reveal d1">
+        <h2 class="card-h">Решение</h2>
+        <p>MAMAY — единый терминал, где всё работает на одних данных: сканеры находят идею, новости и волновой анализ её подтверждают, калькулятор считает чистую прибыль по реальному стакану, терминал сам открывает и закрывает сделки, а журнал объясняет результат.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INSIDE: ALL CAPABILITIES ============ -->
+<section class="sec sec-glow" id="inside">
+  <div class="wrap">
+    <div class="sec-h center reveal">
+      <div class="tag">(ВОЗМОЖНОСТИ)</div>
+      <h2>Всё, что нужно трейдеру, <span class="gold-t">в одном терминале</span></h2>
+      <p class="sub">Не набор разрозненных вкладок, а единая система: каждый модуль использует данные остальных.</p>
+    </div>
+
+    <div class="bento">
+      <article class="bt bt-lg reveal">
+        <svg class="fi"><use href="#i-mode"/></svg>
+        <h3>Два режима: DEMO и REAL</h3>
+        <p>Переключатель всегда под рукой. В <b>DEMO</b> терминал торгует на бумажном счёте по живому стакану: можно проверять идеи и стратегии без риска. В <b>REAL</b> сделки идут на ваши биржевые счета с лимитами, потолком номинала и защитами.</p>
+        <div class="mode-sw" aria-hidden="true"><span class="on">DEMO</span><span>REAL</span></div>
+      </article>
+
+      <article class="bt bt-lg reveal">
+        <svg class="fi"><use href="#i-arb"/></svg>
+        <h3>Криптоарбитраж, который торгует сам</h3>
+        <p>Три режима: между биржами (спот → перевод → продажа), фьючерс↔фьючерс и фьючерс↔спот. Включите автоматический режим, и терминал сам найдёт связку, откроет и закроет сделку.</p>
+        <ul class="chips"><li>биржа ↔ биржа</li><li>фьючерс ↔ фьючерс</li><li>фьючерс ↔ спот</li><li>авто-режим</li></ul>
+      </article>
+
+      <article class="bt bt-xl reveal">
+        <svg class="fi"><use href="#i-swap"/></svg>
+        <h3>Перегон средств между биржами в один клик</h3>
+        <p>Подключите API-ключи бирж, и MAMAY переведёт монеты и USDT/USDC с биржи на биржу по нажатию одной кнопки. Терминал сам выбирает самые выгодные и быстрые сети, а активы между биржами перераспределяются автоматически. Именно это позволяет арбитражу работать на автомате: купить на одной бирже, перегнать, продать дороже на другой.</p>
+      </article>
+
+      <article class="bt reveal d1">
+        <svg class="fi"><use href="#i-chart"/></svg>
+        <h3>График и глубокий стакан</h3>
+        <p>Для криптовалют и акций Мосбиржи: свечи, профиль объёма, кластеры, лента сделок «пузырями», стакан до 200–500 уровней. Всё на единой шкале цен.</p>
+      </article>
+
+      <article class="bt reveal d2">
+        <svg class="fi"><use href="#i-wave"/></svg>
+        <h3>Волны одной кнопкой</h3>
+        <p>Автоматическая волновая разметка любого графика на любом таймфрейме. Один клик — и терминал расчерчивает волны, уровни и цели.</p>
+      </article>
+
+      <article class="bt reveal d2">
+        <svg class="fi"><use href="#i-layout"/></svg>
+        <h3>Блоки, которые подстраиваются под вас</h3>
+        <p>Каждая панель терминала — отдельный блок: тяните, меняйте размер, стыкуйте как вам удобно и сохраняйте свои раскладки. У каждого трейдера свой рабочий стол.</p>
+        <ul class="chips"><li>ресайз по углам</li><li>перетаскивание</li><li>профили раскладок</li></ul>
+      </article>
+
+      <article class="bt reveal">
+        <svg class="fi"><use href="#i-scan"/></svg>
+        <h3>Скринеры акций США</h3>
+        <p>Premarket, Диапазоны, Флаги, Импульсы. Находят бумаги до открытия сессии и оценивают каждую по набору факторов.</p>
+      </article>
+
+      <article class="bt reveal d1">
+        <svg class="fi"><use href="#i-news"/></svg>
+        <h3>Новости в прогнозе</h3>
+        <p>Отдельный блок новостей из X (Twitter), Yahoo Finance и Finviz. Каждый скринер учитывает катализаторы, когда оценивает, куда пойдёт цена.</p>
+      </article>
+
+      <article class="bt reveal d2">
+        <svg class="fi"><use href="#i-bolt"/></svg>
+        <h3>MOEX без задержек</h3>
+        <p>Глубокие данные Московской биржи в реальном времени: премаркет, диапазоны, флаги и волновой анализ, график с лентой и стаканом.</p>
+      </article>
+
+      <article class="bt reveal d1">
+        <svg class="fi"><use href="#i-tg"/></svg>
+        <h3>Telegram по каждому скринеру</h3>
+        <p>Лёгкая настройка уведомлений: получайте сигналы в Telegram и следите за рынком, не сидя у компьютера.</p>
+      </article>
+
+      <article class="bt reveal d2">
+        <svg class="fi"><use href="#i-book"/></svg>
+        <h3>Журнал, история и бэктест</h3>
+        <p>Каждая сделка хранится с прогнозом на входе и фактом на выходе. Бэктест на накопленной истории, конструктор стратегий, выгрузка в Excel.</p>
+      </article>
+
+      <article class="bt reveal">
+        <svg class="fi"><use href="#i-opt"/></svg>
+        <h3>Опционы и GEX</h3>
+        <p>Гамма-экспозиция дилеров, колл- и пут-стены, max pain, ожидаемый ход по IV и сканер опционного арбитража.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCREENS ============ -->
+<section class="sec" id="screens">
+  <div class="wrap">
+    <div class="sec-h center reveal">
+      <div class="tag">(ВНУТРИ ТЕРМИНАЛА)</div>
+      <h2>Так выглядит <span class="gold-t">MAMAY изнутри</span></h2>
+      <p class="sub">Это не макеты. Каждый экран ниже — снимок настоящего терминала с живыми рыночными данными.</p>
+    </div>
+    <div class="shots reveal">
+      <div class="shot-tabs" role="tablist" aria-label="Экраны терминала">
+        <button class="stab on" role="tab" data-s="0">Терминал</button>
+        <button class="stab" role="tab" data-s="1">Волны</button>
+        <button class="stab" role="tab" data-s="2">MOEX · Флаги</button>
+        <button class="stab" role="tab" data-s="3">Та самая монета</button>
+        <button class="stab" role="tab" data-s="4">Акции США</button>
+        <button class="stab" role="tab" data-s="5">Крипто-скринер</button>
+        <button class="stab" role="tab" data-s="6">Переводы</button>
+      </div>
+      <div class="shot-main">
+        <figure class="frame">
+          <div class="frame-bar"><div class="lights"><i></i><i></i><i></i></div><div class="frame-title" id="shot-title">MAMAY · Терминал</div></div>
+          <button class="shot-zoom" id="shot-zoom" aria-label="Открыть снимок на весь экран"><img id="shot-img" src="assets/shots/terminal.webp" alt="" width="1920" height="1080"></button>
+          <video id="shot-vid" class="frame-media" hidden autoplay muted loop playsinline preload="metadata"></video>
+        </figure>
+        <div class="shot-cap" id="shot-cap" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="lightbox" id="lightbox" hidden><button class="lb-x" aria-label="Закрыть">×</button><img alt=""></div>
+
+<!-- ============ MARKETS ============ -->
+<section class="sec" id="markets">
+  <div class="wrap">
+    <div class="sec-h center reveal">
+      <div class="tag">(РЫНКИ)</div>
+      <h2>Три рынка. <span class="gold-t">Один терминал.</span></h2>
+      <p class="sub">Не нужно три подписки и три интерфейса: у каждого рынка свои скринеры, а график, стакан, новости и журнал общие.</p>
+    </div>
+    <div class="mk-grid">
+      <article class="mk reveal">
+        <div class="mk-img" style="--img:url(../assets/shots/terminal.webp);--pos:12% 42%"></div>
+        <div class="mk-body">
+          <div class="mk-tag teal">КРИПТОВАЛЮТЫ</div>
+          <h3>Арбитраж, перегоны и автоторговля</h3>
+          <ul class="ticks">
+            <li>Binance, Bybit, OKX, Gate, Bitget, MEXC</li>
+            <li>Арбитраж между биржами, фьючерс↔фьючерс, фьючерс↔спот</li>
+            <li>Перегон монет и USDT/USDC в один клик, авто-выбор сети</li>
+            <li>«Та самая монета», опционы и GEX, Волны</li>
+            <li>Автоматический режим торговли</li>
+          </ul>
+        </div>
+      </article>
+      <article class="mk reveal d1">
+        <div class="mk-img" style="--img:url(../assets/shots/us-chart.webp);--pos:30% 50%"></div>
+        <div class="mk-body">
+          <div class="mk-tag gold">АКЦИИ США</div>
+          <h3>Скринеры, новости и волновой анализ</h3>
+          <ul class="ticks">
+            <li>Premarket, Диапазоны, Флаги, Импульсы</li>
+            <li>Новости из X (Twitter), Yahoo и Finviz в каждом прогнозе</li>
+            <li>Волны одной кнопкой на любом таймфрейме</li>
+            <li>US Стратегия: симуляция входа со стопом и тейком</li>
+            <li>Уведомления в Telegram по каждому скринеру</li>
+          </ul>
+        </div>
+      </article>
+      <article class="mk reveal d2">
+        <div class="mk-img" style="--img:url(../assets/shots/moex-flags.webp);--pos:50% 60%"></div>
+        <div class="mk-body">
+          <div class="mk-tag teal">МОСКОВСКАЯ БИРЖА</div>
+          <h3>Глубокие данные без задержек</h3>
+          <ul class="ticks">
+            <li>Премаркет, Диапазоны, Флаги и Волны</li>
+            <li>Данные в реальном времени через Алор: лента и глубокий стакан</li>
+            <li>Кластеры объёма и график, как у профессиональных терминалов</li>
+            <li>Режимы DEMO и REAL</li>
+            <li>Те же блоки и раскладки, что и для крипты</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARBITRAGE ============ -->
+<section class="sec sec-glow" id="arbitrage">
+  <div class="wrap">
+    <div class="sec-h center reveal">
+      <div class="tag">(ГЛАВНОЕ ОТЛИЧИЕ)</div>
+      <h2>Мы считаем не спред. <span class="gold-t">Мы считаем прибыль.</span></h2>
+      <p class="sub">Обычный сканер показывает разницу цен по лучшим котировкам. MAMAY прогоняет возможность через стакан, комиссии, funding, стоимость перевода и риск-движок, а потом сам проводит сделку.</p>
+    </div>
+
+    <div class="flow reveal" aria-label="Схема автоматического арбитража между биржами">
+      <div class="flow-step"><b>1</b><h4>Находит связку</h4><p>Сканер видит расхождение цены на двух биржах</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><b>2</b><h4>Покупает</h4><p>Берёт монету на бирже, где она дешевле</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step gold"><b>3</b><h4>Перегоняет</h4><p>Сам выбирает самую выгодную и быструю сеть</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><b>4</b><h4>Продаёт</h4><p>Реализует дороже на другой бирже</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><b>5</b><h4>Перераспределяет</h4><p>Возвращает активы туда, где они нужнее</p></div>
+    </div>
+
+    <div class="calc reveal">
+      <div class="calc-in">
+        <h3>Попробуйте сами <small>принцип расчёта</small></h3>
+        <label class="rng"><span>Капитал на сделку <b id="v-cap">$10 000</b></span><input type="range" id="r-cap" min="1000" max="100000" step="1000" value="10000"></label>
+        <label class="rng"><span>Видимый спред по лучшей цене <b id="v-spr">0.62%</b></span><input type="range" id="r-spr" min="0.10" max="1.50" step="0.01" value="0.62"></label>
+        <label class="rng"><span>Комиссии на вход и выход (4 ноги) <b id="v-fee">0.20%</b></span><input type="range" id="r-fee" min="0.04" max="0.40" step="0.01" value="0.20"></label>
+        <label class="rng"><span>Funding за период удержания <b id="v-fun">+0.03%</b></span><input type="range" id="r-fun" min="-0.10" max="0.15" step="0.01" value="0.03"></label>
+        <p class="note">Проскальзывание растёт вместе с размером сделки: чем больше капитал, тем глубже приходится заходить в стакан. Значения иллюстративны.</p>
+      </div>
+      <div class="calc-out">
+        <div class="cmp">
+          <div class="cmp-col naive">
+            <small>Обычный сканер</small>
+            <b id="o-naive" class="mono">+0.62%</b>
+            <span>по лучшей цене, без стакана</span>
+          </div>
+          <div class="cmp-vs">→</div>
+          <div class="cmp-col real">
+            <small>MAMAY · чистая прибыль</small>
+            <b id="o-net" class="mono">+0.00%</b>
+            <span id="o-usd" class="mono">$0</span>
+          </div>
+        </div>
+        <div class="wf" id="wf" aria-label="Каскад: спред, комиссии, проскальзывание, funding, итог"></div>
+        <div id="o-verdict" class="verdict"></div>
+      </div>
+    </div>
+
+    <div class="pipe reveal">
+      <div class="pipe-h">Путь каждой возможности внутри MAMAY</div>
+      <ol>
+        <li><b>Сканер</b><span>Тикеры, funding и стаканы со всех бирж через WebSocket с REST-страховкой</span></li>
+        <li><b>Калькулятор</b><span>VWAP по глубине, комиссии, funding, переводы, borrow</span></li>
+        <li><b>Риск-движок</b><span>Лимиты по бирже, символу и портфелю. Отказ всегда с причиной</span></li>
+        <li><b>Скоринг</b><span>Оценка прибыли, ликвидности и риска с объяснением факторов</span></li>
+        <li><b>Исполнение</b><span>Dry Run по живому стакану, откат второй ноги при нехватке ликвидности</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARE ============ -->
+<section class="sec" id="compare">
+  <div class="wrap">
+    <div class="sec-h center reveal">
+      <div class="tag">(ОТЛИЧИЯ ОТ РЫНКА)</div>
+      <h2>Чем MAMAY <span class="gold-t">не похож на остальных</span></h2>
+      <p class="sub">На рынке есть сильные продукты, но каждый закрывает одну задачу. MAMAY собирает их в один рабочий процесс.</p>
+    </div>
+    <div class="cmp-wrap reveal">
+      <table class="cmp-tbl">
+        <thead>
+          <tr><th></th><th class="us"><img src="assets/logo.png" alt="" width="22" height="23"> MAMAY</th><th>Графические платформы</th><th>Крипто-арб боты и сканеры</th><th>Брокерские терминалы РФ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Крипта, акции США и MOEX в одном окне</td><td class="us y"><svg><use href="#i-check"/></svg></td><td class="p"><svg><use href="#i-half"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td></tr>
+          <tr><td>Арбитраж между биржами, фьючерс↔фьючерс, фьючерс↔спот</td><td class="us y"><svg><use href="#i-check"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td><td class="y"><svg><use href="#i-check"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td></tr>
+          <tr><td>Перегон средств между биржами в один клик с авто-выбором сети</td><td class="us y"><svg><use href="#i-check"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td><td class="p"><svg><use href="#i-half"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td></tr>
+          <tr><td>Расчёт прибыли по стакану, комиссиям и funding</td><td class="us y"><svg><use href="#i-check"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td><td class="p"><svg><use href="#i-half"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td></tr>
+          <tr><td>Скринеры премаркета, диапазонов, флагов и импульсов</td><td class="us y"><svg><use href="#i-check"/></svg></td><td class="p"><svg><use href="#i-half"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td><td class="p"><svg><use href="#i-half"/></svg></td></tr>
+          <tr><td>Волновой анализ одной кнопкой на любом таймфрейме</td><td class="us y"><svg><use href="#i-check"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td></tr>
+          <tr><td>Новости X, Yahoo и Finviz учитываются в прогнозе скринеров</td><td class="us y"><svg><use href="#i-check"/></svg></td><td class="p"><svg><use href="#i-half"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td></tr>
+          <tr><td>Блочный интерфейс: ресайз, перетаскивание, свои раскладки</td><td class="us y"><svg><use href="#i-check"/></svg></td><td class="p"><svg><use href="#i-half"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td><td class="p"><svg><use href="#i-half"/></svg></td></tr>
+          <tr><td>Кластеры, лента-пузыри и глубокий стакан</td><td class="us y"><svg><use href="#i-check"/></svg></td><td class="p"><svg><use href="#i-half"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td><td class="y"><svg><use href="#i-check"/></svg></td></tr>
+          <tr><td>Режимы DEMO и REAL, алготрейдер с риск-движком</td><td class="us y"><svg><use href="#i-check"/></svg></td><td class="p"><svg><use href="#i-half"/></svg></td><td class="y"><svg><use href="#i-check"/></svg></td><td class="p"><svg><use href="#i-half"/></svg></td></tr>
+          <tr><td>Работает на вашем ПК, ключи не уходят в облако</td><td class="us y"><svg><use href="#i-check"/></svg></td><td class="n"><svg><use href="#i-no"/></svg></td><td class="p"><svg><use href="#i-half"/></svg></td><td class="y"><svg><use href="#i-check"/></svg></td></tr>
+        </tbody>
+      </table>
+      <div class="legend"><span><svg class="y"><use href="#i-check"/></svg> есть</span><span><svg class="p"><use href="#i-half"/></svg> частично / ограниченно</span><span><svg class="n"><use href="#i-no"/></svg> как правило, нет</span></div>
+      <p class="note">Сравнение обобщённое, по категориям продуктов. Возможности конкретных сервисов могут отличаться и меняются со временем.</p>
+    </div>
+
+    <div class="dif-grid">
+      <div class="dif reveal"><b>01</b><h3>Всё в одном окне</h3><p>Три рынка, скринеры, новости, графики, переводы и автоторговля: не нужно жонглировать пятью сервисами.</p></div>
+      <div class="dif reveal d1"><b>02</b><h3>Честные цифры</h3><p>Большинство «найденных» связок после комиссий и реального проскальзывания уходят в минус. MAMAY показывает именно это.</p></div>
+      <div class="dif reveal d2"><b>03</b><h3>Ваш рабочий стол</h3><p>Блочный интерфейс с ресайзом и сохранением раскладок: терминал подстраивается под трейдера, а не наоборот.</p></div>
+      <div class="dif reveal d3"><b>04</b><h3>Объяснимые решения</h3><p>Каждая оценка идёт с причинами, каждая отклонённая сделка — с основанием. Никаких «чёрных ящиков».</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SAFETY ============ -->
+<section class="sec sec-glow" id="safety">
+  <div class="wrap">
+    <div class="safety">
+      <div class="safety-l reveal">
+        <div class="tag">(БЕЗОПАСНОСТЬ ПО УМОЛЧАНИЮ)</div>
+        <h2>Сначала DEMO.<br><span class="gold-t">Потом — REAL.</span></h2>
+        <p class="sub">Автоторговля без страховки — это казино. Поэтому защита встроена в архитектуру, а не добавлена сверху.</p>
+        <a href="#contact" class="btn btn-ghost">Обсудить на демо <svg class="ic"><use href="#i-arrow"/></svg></a>
+      </div>
+      <ul class="safe-list reveal d1">
+        <li><svg class="fi sm"><use href="#i-shield"/></svg><div><h4>Реальные ордера выключены по умолчанию</h4><p>Рубильник включается явно. Размещаются только лимитные ордера, а номинал каждого ограничен потолком.</p></div></li>
+        <li><svg class="fi sm"><use href="#i-mode"/></svg><div><h4>DEMO на реальном стакане</h4><p>Демо-исполнение считается по живым данным: вы видите, как сделка отработала бы на самом деле, не рискуя капиталом.</p></div></li>
+        <li><svg class="fi sm"><use href="#i-target"/></svg><div><h4>Риск-движок и защита от каскадов</h4><p>Лимиты на сделку, биржу, символ и портфель, предохранитель при серии потерь, проверка готовности биржи перед работой.</p></div></li>
+        <li><svg class="fi sm"><use href="#i-money"/></svg><div><h4>Контроль выводов</h4><p>Белые списки адресов, диагностика сетей и проверка прав API-ключей до первого перевода.</p></div></li>
+        <li><svg class="fi sm"><use href="#i-flag"/></svg><div><h4>Ключи и данные — у вас</h4><p>Терминал работает локально на вашем компьютере. Установка без прав администратора, удаляется одним кликом.</p></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT STARTS ============ -->
+<section class="sec" id="start">
+  <div class="wrap">
+    <div class="sec-h center reveal">
+      <div class="tag">(СТАРТ)</div>
+      <h2>От установки до первого сигнала <span class="gold-t">за вечер</span></h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><b>1</b><h3>Установка двойным кликом</h3><p>Установщик сам загрузит Python и Node.js в папку программы и создаст ярлык. В систему ничего не ставится, права администратора не нужны.</p></div>
+      <div class="step reveal d1"><b>2</b><h3>Подключение источников</h3><p>Добавьте API-ключи бирж, токен Алор для MOEX и Telegram для уведомлений. Мастер настройки проведёт по шагам.</p></div>
+      <div class="step reveal d2"><b>3</b><h3>Сканируйте, проверяйте, торгуйте</h3><p>Скринеры находят идеи, DEMO их отрабатывает, и только потом вы решаете, переключаться ли в REAL.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INVESTORS ============ -->
+<section class="sec" id="investors">
+  <div class="wrap">
+    <div class="invest reveal">
+      <div class="invest-in">
+        <div class="tag">(ИНВЕСТОРАМ И ПАРТНЁРАМ)</div>
+        <h2>Продукт уже построен.<br><span class="gold-t">Теперь — масштаб.</span></h2>
+        <p class="sub">MAMAY — не презентация и не прототип: это работающий терминал, который развивается итерациями и покрыт тестами. Мы открыты к диалогу с инвесторами, стратегическими партнёрами и биржами.</p>
+        <div class="inv-stats">
+          <div><b data-count="100000" data-plus="1">100&nbsp;000+</b><span>строк кода в бэкенде и интерфейсе</span></div>
+          <div><b data-count="100" data-plus="1">100+</b><span>файлов автотестов</span></div>
+          <div><b data-count="3">3</b><span>рынка в одной архитектуре</span></div>
+          <div><b>v4.79</b><span>актуальная версия, регулярные релизы</span></div>
+        </div>
+        <div class="road">
+          <div class="road-h">Направления развития <small>планы, не обязательства</small></div>
+          <ul>
+            <li><b>Облачная версия</b><span>доступ из браузера без установки</span></li>
+            <li><b>Исполнение на брокерах</b><span>для акций США и MOEX</span></li>
+            <li><b>Мобильные оповещения</b><span>расширение каналов сигналов</span></li>
+            <li><b>Маркетплейс стратегий</b><span>обмен и проверка сетапов</span></li>
+            <li><b>Публичный API</b><span>интеграция с чужими системами</span></li>
+          </ul>
+        </div>
+        <a href="#contact" class="btn btn-gold btn-lg">Связаться с командой <svg class="ic"><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="invest-shot" aria-hidden="true"><img src="assets/shots/the-coin.webp" alt="" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec" id="faq">
+  <div class="wrap narrow">
+    <div class="sec-h center reveal">
+      <div class="tag">(ВОПРОСЫ)</div>
+      <h2>Частые <span class="gold-t">вопросы</span></h2>
+    </div>
+    <div class="faq reveal">
+      <details open><summary>MAMAY гарантирует доход?</summary><p>Нет. MAMAY — инструмент анализа и автоматизации, а не инвестиционная рекомендация и не гарантия прибыли. Торговля сопряжена с риском потери капитала. Именно поэтому терминал начинает в режиме DEMO и показывает прибыль после всех издержек.</p></details>
+      <details><summary>Чем отличаются режимы DEMO и REAL?</summary><p>В DEMO терминал торгует на бумажном счёте по реальному стакану и реальным ценам, ваши деньги не используются. В REAL сделки отправляются на ваши биржевые счета: реальные ордера включаются отдельным рубильником, с потолком номинала и проверкой готовности биржи.</p></details>
+      <details><summary>Какие рынки и биржи поддерживаются?</summary><p>Криптовалюты: Binance, Bybit, OKX, Gate, Bitget, MEXC. Акции США: скринеры и график, новости из X, Yahoo Finance и Finviz. Московская биржа: акции TQBR с данными Алор в реальном времени. Набор функций у рынков разный: например, арбитраж и перегоны между биржами — криптовалютный модуль.</p></details>
+      <details><summary>Как работает перегон средств между биржами?</summary><p>Вы подключаете API-ключи бирж, после чего перевод монет или USDT/USDC с биржи на биржу выполняется нажатием одной кнопки. Терминал подбирает самую выгодную и быструю сеть и может сам перераспределять активы между биржами. Выводы защищены белыми списками адресов и проверками прав ключей.</p></details>
+      <details><summary>Можно ли настроить интерфейс под себя?</summary><p>Да. Все панели терминала — независимые блоки: их можно двигать, менять размер, стыковать и сохранять раскладки.</p></details>
+      <details><summary>Где хранятся мои API-ключи?</summary><p>Терминал работает локально на вашем компьютере, в облако ключи не передаются. Для большинства функций достаточно ключей с правами только на чтение.</p></details>
+      <details><summary>На каких системах работает?</summary><p>Текущая версия рассчитана на Windows 10 и 11 и открывается в браузере или как отдельное окно приложения. Облачная версия и другие платформы — в планах.</p></details>
+      <details><summary>Сколько это стоит?</summary><p>Тарифы мы объявим на запуске. Оставьте заявку — участники раннего доступа получат условия первыми.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="sec cta-sec" id="contact">
+  <div class="cta-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="cta-card reveal">
+      <img class="wordmark" src="assets/wordmark.png" alt="MAMAY Trading Terminal" width="520" height="117" loading="lazy">
+      <h2>Возглавьте свою <span class="gold-t">орду сигналов</span></h2>
+      <p class="sub">Оставьте заявку на демонстрацию и ранний доступ. Покажем терминал на живых данных и ответим на вопросы по продукту и сотрудничеству.</p>
+      <form class="form" id="form" novalidate>
+        <div class="row">
+          <label>Имя<input name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться" required></label>
+          <label>Email или Telegram<input name="contact" type="text" autocomplete="email" placeholder="you@mail.com или @username" required></label>
+        </div>
+        <div class="row">
+          <label>Я<select name="role"><option>Трейдер</option><option>Инвестор</option><option>Партнёр / биржа</option><option>Другое</option></select></label>
+          <label>Что интересует<input name="msg" type="text" placeholder="Арбитраж, MOEX, алготрейдинг…"></label>
+        </div>
+        <button class="btn btn-gold btn-lg" type="submit">Запросить демо <svg class="ic"><use href="#i-arrow"/></svg></button>
+        <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div class="foot-brand">
+      <a href="#top" class="brand"><img src="assets/logo.png" alt="" width="30" height="31"><span class="brand-t"><b>MAMAY</b><i>trading terminal</i></span></a>
+      <p>Орда данных. Один полководец.</p>
+    </div>
+    <nav class="foot-nav" aria-label="Нижнее меню">
+      <a href="#inside">Возможности</a><a href="#screens">Экраны</a><a href="#arbitrage">Арбитраж</a><a href="#safety">Безопасность</a><a href="#investors">Инвесторам</a><a href="#faq">FAQ</a>
+    </nav>
+  </div>
+  <div class="wrap foot-risk">
+    <p>Информация на сайте носит ознакомительный характер и не является индивидуальной инвестиционной рекомендацией или офертой. Торговля финансовыми инструментами, включая криптовалюты, акции и производные, сопряжена с высоким риском потери капитала. Прошлые результаты не гарантируют будущих. MAMAY — программное обеспечение для анализа и автоматизации; решения о сделках вы принимаете самостоятельно. Показанные на сайте результаты демо-счёта не являются обещанием доходности. Названия бирж и сервисов принадлежат их владельцам и используются для описания совместимости.</p>
+    <p class="copy">© <span id="yr">2026</span> MAMAY Trading Terminal. Все права защищены.</p>
+  </div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
+<script src="js/fx.js"></script>
+</body>
+</html>

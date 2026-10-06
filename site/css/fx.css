@@ -1,0 +1,100 @@
+/* ==========================================================
+   Анимации: подсветка под курсором, рисование иконок, каскад, свечения
+   ========================================================== */
+
+/* прогресс прокрутки */
+.progress{position:fixed;left:0;top:0;height:3px;width:100%;z-index:70;transform:scaleX(0);transform-origin:0 50%;background:linear-gradient(90deg,var(--gold),#f6dc9a 50%,var(--teal));box-shadow:0 0 12px rgba(232,194,106,.7);pointer-events:none}
+
+/* свечение, идущее за курсором */
+.cursor-glow{position:fixed;left:0;top:0;width:640px;height:640px;z-index:1;pointer-events:none;border-radius:50%;opacity:0;transition:opacity .6s;background:radial-gradient(closest-side,rgba(232,194,106,.11),rgba(34,211,197,.045) 50%,transparent 72%);mix-blend-mode:screen;will-change:transform}
+.cursor-glow.on{opacity:1}
+main,footer{position:relative;z-index:2}
+.nav{z-index:60}
+
+/* подсветка внутри карточек */
+.spot{position:relative}
+.spot-glow,.spot-ring{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;z-index:1}
+.spot-glow{background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(232,194,106,.14),rgba(34,211,197,.05) 45%,transparent 70%)}
+.spot-ring{padding:1px;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(246,220,154,.95),rgba(232,194,106,.35) 50%,transparent 75%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.spot:hover>.spot-glow,.spot:hover>.spot-ring{opacity:1}
+.cmp-wrap>.spot-glow,.cmp-wrap>.spot-ring{position:absolute}
+
+/* более «живое» появление: масштаб + сдвиг */
+.reveal{transform:translateY(34px) scale(.975)}
+.reveal.in{transform:none}
+.stag{opacity:0;transform:translateX(-22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i,0) * .08s)}
+.stag.in{opacity:1;transform:none}
+.inv-stats>.stag,.legend .stag{transform:translateY(18px)}
+.inv-stats>.stag.in,.legend .stag.in{transform:none}
+
+/* иконки «рисуются» при появлении и оживают при наведении */
+.fi{stroke-dasharray:420;stroke-dashoffset:420}
+.reveal.in .fi,.in .fi,.fi.in,.stag.in .fi{animation:draw-ic 1.5s .25s cubic-bezier(.4,.1,.2,1) forwards}
+@keyframes draw-ic{to{stroke-dashoffset:0}}
+.bt .fi,.safe-list .fi{transition:transform .45s cubic-bezier(.3,1.5,.5,1),filter .4s}
+.bt:hover .fi,.safe-list li:hover .fi{transform:translateY(-4px) scale(1.12) rotate(-4deg)}
+
+/* золотой текст мерцает мягким сдвигом градиента */
+.gold-t{background-size:220% 100%;animation:shine 7s ease-in-out infinite alternate}
+@keyframes shine{from{background-position:0% 50%}to{background-position:100% 50%}}
+
+/* параллакс фона главного экрана за мышью */
+.aurora{translate:var(--px,0) var(--py,0);transition:translate .5s ease-out}
+.trend{translate:calc(var(--px,0px) * -.5) calc(var(--py,0px) * -.6);transition:translate .6s ease-out}
+
+/* наклон: быстрый отклик во время движения мыши */
+.mk.tilting{transition:transform .08s linear,border-color .4s,box-shadow .4s}
+.frame.tilt.live-tilt{transition:transform .12s linear,opacity .9s}
+
+/* вращающаяся градиентная граница у ключевых блоков */
+@property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+.cta-card,.bt-xl{border:1px solid transparent;background:linear-gradient(#090c12,#090c12) padding-box,conic-gradient(from var(--ang),rgba(232,194,106,.08) 0%,rgba(232,194,106,.9) 12%,rgba(34,211,197,.9) 24%,rgba(232,194,106,.08) 38%,rgba(232,194,106,.08) 100%) border-box;animation:spin-border 7s linear infinite}
+.bt-xl{background:linear-gradient(120deg,#0e1119,#0b1017 60%,#0a0e14) padding-box,conic-gradient(from var(--ang),rgba(232,194,106,.08) 0%,rgba(232,194,106,.9) 12%,rgba(34,211,197,.9) 24%,rgba(232,194,106,.08) 38%,rgba(232,194,106,.08) 100%) border-box}
+@keyframes spin-border{to{--ang:360deg}}
+
+/* схема арбитража: «энергия» бежит по шагам */
+.flow-step{animation:step-glow 7.5s ease-in-out infinite;animation-delay:calc(var(--i,0) * 1.5s)}
+.flow-step:nth-of-type(1){--i:0}.flow-step:nth-of-type(2){--i:1}.flow-step:nth-of-type(3){--i:2}.flow-step:nth-of-type(4){--i:3}.flow-step:nth-of-type(5){--i:4}
+@keyframes step-glow{0%,60%,100%{box-shadow:0 0 0 0 rgba(232,194,106,0);border-color:var(--line2)}10%,24%{box-shadow:0 0 28px -4px rgba(232,194,106,.45);border-color:rgba(232,194,106,.65)}}
+.flow-arrow{animation:arrow-run 1.8s ease-in-out infinite}
+@keyframes arrow-run{0%,100%{transform:translateX(-4px);opacity:.5}50%{transform:translateX(5px);opacity:1}}
+.flow-step.gold b{animation:badge-pulse 2.4s infinite}
+@keyframes badge-pulse{0%{box-shadow:0 0 0 0 rgba(232,194,106,.55)}70%,100%{box-shadow:0 0 0 12px rgba(232,194,106,0)}}
+
+/* переключатель DEMO/REAL «щёлкает» */
+.mode-sw .on{animation:mode-flash 3.6s ease-in-out infinite}
+@keyframes mode-flash{0%,100%{box-shadow:0 0 0 1px rgba(34,211,197,.4) inset}50%{box-shadow:0 0 0 1px rgba(34,211,197,.9) inset,0 0 18px rgba(34,211,197,.35)}}
+
+/* чипсы плавают */
+.chips li{animation:float-chip 4.5s ease-in-out infinite}
+.chips li:nth-child(2n){animation-delay:-1.2s}.chips li:nth-child(3n){animation-delay:-2.4s}
+@keyframes float-chip{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+/* кнопки: блик, пробегающий по золотой кнопке */
+.btn-gold{position:relative;overflow:hidden}
+.btn-gold::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:sweep 4.5s ease-in-out infinite}
+@keyframes sweep{0%,55%{left:-60%}100%{left:130%}}
+.btn{will-change:transform}
+
+/* строки таблицы подсвечиваются */
+.cmp-tbl tbody tr{transition:background .25s}
+.cmp-tbl tbody tr:hover{background:rgba(232,194,106,.05)}
+.cmp-tbl tbody tr:hover td:first-child{color:var(--text)}
+
+/* вкладки галереи и заголовки карточек */
+.stab{position:relative;overflow:hidden}
+.shot-main .frame{transition:box-shadow .5s}
+.shot-main .frame:hover{box-shadow:0 60px 140px -30px rgba(0,0,0,.9),0 0 90px -30px rgba(34,211,197,.35)}
+
+/* подчёркивание заголовков карточек при наведении */
+.bt h3,.mk h3,.dif h3{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .5s;padding-bottom:3px}
+.bt:hover h3,.mk:hover h3,.dif:hover h3{background-size:100% 1px}
+
+@media (hover:none),(pointer:coarse){
+  .cursor-glow,.spot-glow,.spot-ring{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .fi{stroke-dashoffset:0!important;animation:none!important}
+  .stag{opacity:1;transform:none}
+  .cta-card,.bt-xl,.flow-step,.flow-arrow,.chips li,.btn-gold::after,.gold-t{animation:none!important}
+}
