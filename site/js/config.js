@@ -7,5 +7,10 @@
 window.MAMAY_CONFIG = {
   formEndpoint: "",   // например: "https://formspree.io/f/xxxxxxx"
   contactEmail: "",   // например: "hello@вашдомен.com"
-  telegram: ""        // например: "https://t.me/mamay_terminal" (пока не используется на странице)
+  telegram: "",       // например: "https://t.me/mamay_terminal" — появится ссылкой «Канал в Telegram» в подвале
+
+  // Цены в блоке «Тарифы». Пустая строка — на странице останется «цена на запуске».
+  pricePro: "",       // например: "2 900 ₽"
+  priceProNote: "",   // например: "в месяц"
+  priceEarly: ""      // например: "1 900 ₽ в месяц" — ранняя цена для участников беты
 };

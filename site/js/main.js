@@ -119,11 +119,29 @@
         .then(function (res) { res.ok ? ok() : fail(); }).catch(fail);
     } else if (cfg.contactEmail) {
       var body = "Имя: " + data.name + "\nКонтакт: " + data.contact + "\nЯ: " + data.role + "\nИнтересует: " + data.msg;
-      location.href = "mailto:" + cfg.contactEmail + "?subject=" + encodeURIComponent("MAMAY: заявка на демо") + "&body=" + encodeURIComponent(body);
+      location.href = "mailto:" + cfg.contactEmail + "?subject=" + encodeURIComponent("MAMAY: заявка на ранний доступ") + "&body=" + encodeURIComponent(body);
       ok();
     } else {
       console.warn("MAMAY: форма не подключена — заполните formEndpoint или contactEmail в js/config.js");
       msg.className = "form-msg bad"; msg.textContent = "Форма пока не подключена к приёму заявок.";
     }
   });
+})();
+
+/* цены и канал из js/config.js */
+(function () {
+  var cfg = window.MAMAY_CONFIG || {};
+  var q = function (sel) { return document.querySelector(sel); };
+  if (cfg.pricePro) {
+    var b = q('[data-price="pro"]'), n = q('[data-price-note="pro"]');
+    if (b) b.textContent = cfg.pricePro;
+    if (n) n.textContent = cfg.priceProNote || "в месяц";
+    var f = q("[data-price-faq]");
+    if (f) f.textContent = "Pro стоит " + cfg.pricePro + " " + (cfg.priceProNote || "в месяц") + (cfg.priceEarly ? "; участникам раннего доступа — " + cfg.priceEarly + ", пока подписка не прерывается" : "") + ". Участники раннего доступа получают Pro на 14 дней бесплатно.";
+  }
+  if (cfg.priceEarly) { var e = q("[data-price-early]"); if (e) e.textContent = "Ранняя цена " + cfg.priceEarly + ", пока подписка не прерывается"; }
+  if (cfg.telegram) {
+    var nav = q(".foot-nav");
+    if (nav) { var a = document.createElement("a"); a.href = cfg.telegram; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Канал в Telegram"; nav.appendChild(a); }
+  }
 })();
