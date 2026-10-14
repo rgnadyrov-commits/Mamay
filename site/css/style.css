@@ -470,3 +470,5 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 .annual-soon{margin:30px auto 0;max-width:760px;text-align:center;padding:14px 22px;border-radius:999px;border:1px dashed rgba(232,194,106,.45);background:rgba(232,194,106,.05);font-size:15px;color:var(--text)}
 .annual-soon b{color:var(--gold)}
 @media (max-width:720px){.annual-soon{border-radius:18px}}
+.plan-year{font-size:13px;color:var(--muted);margin-top:-2px}
+.plan-year b{color:var(--text);font-weight:700}

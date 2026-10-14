@@ -137,7 +137,7 @@
     if (b) b.textContent = cfg.pricePro;
     if (n) n.textContent = cfg.priceProNote || "в месяц";
     var f = q("[data-price-faq]");
-    if (f) f.textContent = "Pro стоит " + cfg.pricePro + " " + (cfg.priceProNote || "в месяц") + (cfg.priceEarly ? "; участникам раннего доступа — " + cfg.priceEarly + ", пока подписка не прерывается" : "") + "." + (cfg.priceDev ? " Тариф «Разработчик» со своим ИИ-агентом — " + cfg.priceDev + " в месяц, откроется вместе с первой версией агента." : "") + " Участники раннего доступа получают Pro на 14 дней бесплатно. Цены на годовые подписки появятся в ближайшее время.";
+    if (f) f.textContent = "Pro стоит " + cfg.pricePro + " " + (cfg.priceProNote || "в месяц") + (cfg.priceEarly ? "; участникам раннего доступа — " + cfg.priceEarly + ", пока подписка не прерывается" : "") + "." + (cfg.priceDev ? " Тариф «Разработчик» со своим ИИ-агентом — " + cfg.priceDev + " в месяц, откроется вместе с первой версией агента." : "") + " Участники раннего доступа получают Pro на 14 дней бесплатно. Годовая подписка — два месяца в подарок: Pro $490, «Разработчик» $990 в год.";
     var d = q('[data-price="dev"]'); if (d && cfg.priceDev) d.textContent = cfg.priceDev;
   }
   if (cfg.priceEarly) { var e = q("[data-price-early]"); if (e) e.textContent = "Ранняя цена " + cfg.priceEarly + ", пока подписка не прерывается"; }
