@@ -108,7 +108,32 @@
     return p;
   }
 
-  var MAKERS = { galaxy: galaxy, logo: null, candles: candles, waves: waves, network: network };
+  function book(n) {
+    // стакан: заявки на покупку снизу (влево), на продажу сверху (вправо), крупные плотности у цены
+    var L = 34, lv = [];
+    for (var k = 0; k < L; k++) { var d = Math.abs(k - L / 2 + 0.5) / (L / 2); lv.push(0.25 + rnd() * 0.55 * (1 - d * 0.6) + (rnd() < 0.12 ? 0.45 : 0)); }
+    var p = new Float32Array(n * 3);
+    for (var i = 0; i < n; i++) {
+      var k2 = i % L, y = -1.15 + (k2 + 0.5) * (2.3 / L), ask = k2 >= L / 2, len = lv[k2] * 1.1;
+      p[i * 3] = (ask ? 1 : -1) * (0.04 + rnd() * len); p[i * 3 + 1] = y + (rnd() - 0.5) * 0.035; p[i * 3 + 2] = gauss() * 0.05;
+    }
+    return p;
+  }
+
+  function sphere(n) {
+    // глобус: параллели и меридианы — рынки по всему миру
+    var p = new Float32Array(n * 3), R = 1.05;
+    for (var i = 0; i < n; i++) {
+      var lat, lon;
+      if (i % 2) { lat = (Math.floor(rnd() * 9) - 4) * (Math.PI / 10); lon = rnd() * TAU; }
+      else { lon = Math.floor(rnd() * 12) * (TAU / 12); lat = (rnd() - 0.5) * Math.PI; }
+      var r = R + gauss() * 0.008;
+      p[i * 3] = r * Math.cos(lat) * Math.cos(lon); p[i * 3 + 1] = r * Math.sin(lat); p[i * 3 + 2] = r * Math.cos(lat) * Math.sin(lon);
+    }
+    return p;
+  }
+
+  var MAKERS = { galaxy: galaxy, logo: null, candles: candles, waves: waves, network: network, book: book, sphere: sphere };
 
   /* ---------- WebGL ---------- */
   var VS = [
@@ -140,13 +165,13 @@
     "  }",
     "}"].join("\n");
   var FS = [
-    "precision mediump float; varying float vc; varying float va; uniform float alpha;",
+    "precision mediump float; varying float vc; varying float va; uniform float alpha; uniform vec2 pal;",
     "void main(){",
     "  vec2 d = gl_PointCoord - 0.5; float l = dot(d, d);",
     "  if (l > 0.25) discard;",
     "  float g = exp(-l * 14.0);",
     "  vec3 gold = vec3(0.91, 0.76, 0.42), teal = vec3(0.13, 0.83, 0.77), white = vec3(1.0, 0.96, 0.86);",
-    "  vec3 c = vc < 0.62 ? gold : (vc < 0.93 ? teal : white);",
+    "  vec3 c = vc < pal.x ? gold : (vc < pal.y ? teal : white);",
     "  float k = g * va * alpha;",
     "  gl_FragColor = vec4(c * k, k);",
     "}"].join("\n");
@@ -171,7 +196,7 @@
     gl.attachShader(pr, compile(gl, gl.VERTEX_SHADER, VS));
     gl.attachShader(pr, compile(gl, gl.FRAGMENT_SHADER, FS));
     gl.linkProgram(pr); gl.useProgram(pr);
-    var U = {}; ["m", "tm", "yaw", "pitch", "aspect", "size", "zoom", "shift", "alpha", "field", "mouse"].forEach(function (k) { U[k] = gl.getUniformLocation(pr, k); });
+    var U = {}; ["m", "tm", "yaw", "pitch", "aspect", "size", "zoom", "shift", "alpha", "field", "mouse", "pal"].forEach(function (k) { U[k] = gl.getUniformLocation(pr, k); });
 
     var rr = new Float32Array(N * 2);
     for (var i = 0; i < N * 2; i++) rr[i] = rnd();
@@ -226,7 +251,8 @@
       var t = now / 1000;
       gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
       gl.uniform1f(U.m, m); gl.uniform1f(U.tm, t);
-      gl.uniform1f(U.yaw, (opt.spin === false ? 0 : Math.sin(t * 0.18) * 0.55) + mx * 0.6);
+      var sd = opt.spinDir || 1, sp = opt.spinSpeed || 0.18;
+      gl.uniform1f(U.yaw, (opt.spin === false ? 0 : sd * Math.sin(t * sp + (opt.phase || 0)) * 0.55) + mx * 0.6);
       gl.uniform1f(U.pitch, -0.12 + my * 0.35 + Math.sin(t * 0.13) * 0.06);
       gl.uniform1f(U.aspect, W / H);
       gl.uniform1f(U.size, (opt.size || 3.4) * dpr);
@@ -242,6 +268,7 @@
       gl.uniform2f(U.shift, fl || (wide ? 0.5 : (opt.shiftX || 0)), wide ? 0.04 : (opt.shiftY || 0));
       gl.uniform1f(U.field, opt.field == null ? 0.3 : opt.field);
       gl.uniform2f(U.mouse, mx, my);
+      gl.uniform2fv(U.pal, opt.palette || [0.62, 0.93]);
       gl.uniform1f(U.alpha, (opt.alpha || 0.85) * (opt.side && !wide ? 0.55 : 1));
       gl.drawArrays(gl.POINTS, 0, drawN);
     };
