@@ -436,3 +436,22 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 .hero h1{filter:drop-shadow(0 4px 22px rgba(0,0,0,.85))}
 .cta3d{position:absolute;inset:0;width:100%;height:100%;opacity:.9}
 @media (max-width:720px){.hero3d{height:80vh}}
+
+/* ---------- большие мониторы: шире колонка и крупнее шрифт, поля не пустуют ---------- */
+@media (min-width:1900px){
+  :root{--wrap:1480px}
+  body{font-size:17px}
+  .hero h1{font-size:96px}
+  .lead{font-size:20px;max-width:860px}
+  .sec-h{max-width:960px}
+  .sec-h h2,.safety h2,.invest h2,.cta-card h2{font-size:58px}
+}
+@media (min-width:2600px){
+  :root{--wrap:1760px}
+  body{font-size:18px}
+  .hero h1{font-size:112px}
+  .lead{font-size:22px;max-width:940px}
+  .sec-h{max-width:1080px}
+  .sec-h h2,.safety h2,.invest h2,.cta-card h2{font-size:66px}
+  .bt h3{font-size:21px}.bt p{font-size:16px}
+}

@@ -195,6 +195,7 @@
     gl.disable(gl.DEPTH_TEST); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
 
     var dpr = Math.min(window.devicePixelRatio || 1, small ? 1.25 : 1.6);
+    var area = canvas.getBoundingClientRect(); if (area.width * area.height > 2.2e6) dpr = Math.min(dpr, 1);
     var W = 0, H = 0;
     var resize = function () {
       var b = canvas.getBoundingClientRect();
@@ -230,19 +231,38 @@
       gl.uniform1f(U.aspect, W / H);
       gl.uniform1f(U.size, (opt.size || 3.4) * dpr);
       var wide = opt.side && W / dpr >= 1100;      // на широком экране фигура справа от текста
-      gl.uniform1f(U.zoom, opt.zoom || (wide ? 1.3 * W / H : W / H < 1 ? 2.1 : 2.45));      // фигура по высоте экрана, за текстом      // справа фигура занимает правую половину
-      gl.uniform2f(U.shift, wide ? 0.5 : (opt.shiftX || 0), wide ? 0.04 : (opt.shiftY || 0));
+      var fl = 0, fz = 0;
+      if (opt.flank) {                             // фигура в боковом поле: от края текста до края экрана, чуть заходит под текст
+        var th = Math.min(0.5, (opt.textHalf || 520) / (W / dpr / 2));
+        var side = 1 - th;
+        fl = opt.flank * (th + side * 0.5 - 0.05);
+        fz = Math.min(2.25, (side * 0.62) * 3.2 * (W / H) / 1.3);
+      }
+      gl.uniform1f(U.zoom, opt.zoom || fz || (wide ? 1.3 * W / H : W / H < 1 ? 2.1 : 2.45));      // фигура по высоте экрана, за текстом      // справа фигура занимает правую половину
+      gl.uniform2f(U.shift, fl || (wide ? 0.5 : (opt.shiftX || 0)), wide ? 0.04 : (opt.shiftY || 0));
       gl.uniform1f(U.field, opt.field == null ? 0.3 : opt.field);
       gl.uniform2f(U.mouse, mx, my);
       gl.uniform1f(U.alpha, (opt.alpha || 0.85) * (opt.side && !wide ? 0.55 : 1));
-      gl.drawArrays(gl.POINTS, 0, N);
+      gl.drawArrays(gl.POINTS, 0, drawN);
     };
+    var drawN = N, skip = 0, tick = 0, slow = 0, samples = 0, sum = 0, last = 0, frozen = false;
     var loop = function () {
-      if (running) return;
-      running = true;
+      if (running || frozen) return;
+      running = true; last = 0;
       (function f(now) {
         if (!visible || document.hidden || reduce) { running = false; return; }
-        draw(now);
+        if (last) { sum += now - last; samples++; }
+        last = now;
+        if (samples >= 40) {                     // каждые 40 кадров проверяем скорость
+          var avg = sum / samples; sum = 0; samples = 0;
+          if (avg > 45) {
+            slow++;
+            if (drawN > N * 0.35) drawN = Math.floor(drawN * 0.7);
+            else if (skip < 2) skip++;
+            else if (slow > 6) { frozen = true; running = false; return; }   // компьютер не тянет — оставляем неподвижную картинку
+          }
+        }
+        if (tick++ % (skip + 1) === 0) draw(now);
         requestAnimationFrame(f);
       })(performance.now());
     };
