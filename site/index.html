@@ -76,14 +76,7 @@
   <div class="hero-bg" aria-hidden="true">
     <div class="aurora"></div>
     <div class="grid"></div>
-    <svg class="trend" viewBox="0 0 1600 500" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="tg" x1="0" x2="1"><stop offset="0" stop-color="#e8c26a" stop-opacity="0"/><stop offset=".35" stop-color="#e8c26a" stop-opacity=".55"/><stop offset="1" stop-color="#22d3c5" stop-opacity=".85"/></linearGradient>
-        <linearGradient id="tf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22d3c5" stop-opacity=".16"/><stop offset="1" stop-color="#22d3c5" stop-opacity="0"/></linearGradient>
-      </defs>
-      <path class="trend-fill" d="M0 430 L120 410 L210 425 L330 360 L420 380 L540 300 L640 330 L760 250 L860 275 L980 190 L1080 215 L1200 130 L1300 150 L1430 70 L1600 40 L1600 500 L0 500Z" fill="url(#tf)"/>
-      <path class="trend-line" d="M0 430 L120 410 L210 425 L330 360 L420 380 L540 300 L640 330 L760 250 L860 275 L980 190 L1080 215 L1200 130 L1300 150 L1430 70 L1600 40" fill="none" stroke="url(#tg)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-    </svg>
+    <canvas class="hero3d" id="hero3d"></canvas>
   </div>
 
   <div class="wrap hero-in">
@@ -106,14 +99,14 @@
     <figure class="frame tilt reveal">
       <div class="frame-bar">
         <div class="lights"><i></i><i></i><i></i></div>
-        <div class="frame-title">MAMAY · Терминал</div>
-        <div class="live"><span class="dot"></span> запись с живого терминала</div>
+        <div class="frame-title">MAMAY · обзор за минуту</div>
+        <div class="live"><span class="dot"></span> DEMO · данные биржи настоящие</div>
       </div>
-      <video class="frame-media" autoplay muted loop playsinline preload="auto" poster="assets/shots/terminal-live-poster.webp" aria-label="Живая запись терминала MAMAY: график, кластеры, лента сделок и стакан">
-        <source src="assets/shots/terminal-live.webm" type="video/webm">
+      <video class="frame-media" autoplay muted loop playsinline preload="auto" poster="assets/shots/reel-poster.webp" aria-label="Обзор MAMAY: терминал на акциях Мосбиржи, три таймфрейма, теханализ и волны, скринеры, перевод между биржами">
+        <source src="assets/shots/reel.webm" type="video/webm">
       </video>
     </figure>
-    <p class="note center">Запись экрана настоящего терминала MAMAY в демо-режиме (бумажный счёт, рыночные данные реальные).</p>
+    <p class="note center">Запись экрана MAMAY в режиме DEMO: учебный счёт, рыночные данные настоящие. Паузы на загрузку данных вырезаны.</p>
   </div>
 </section>
 
@@ -578,7 +571,7 @@
 
 <!-- ============ CONTACT ============ -->
 <section class="sec cta-sec" id="contact">
-  <div class="cta-bg" aria-hidden="true"></div>
+  <div class="cta-bg" aria-hidden="true"><canvas class="cta3d" id="cta3d"></canvas></div>
   <div class="wrap">
     <div class="cta-card reveal">
       <img class="wordmark" src="assets/wordmark.png" alt="MAMAY Trading Terminal" width="520" height="117" loading="lazy">
@@ -621,5 +614,18 @@
 <script src="js/config.js"></script>
 <script src="js/main.js"></script>
 <script src="js/fx.js"></script>
+<script src="js/hero3d.js"></script>
+<script>
+  (function () {
+    if (!window.MamayParticles) return;
+    var img = new Image();
+    var start = function () {
+      var h = document.getElementById("hero3d"), c = document.getElementById("cta3d");
+      try { if (h) MamayParticles(h, { logoImg: img, side: true }); } catch (e) { h && h.remove(); }
+      try { if (c) MamayParticles(c, { shapes: ["network", "galaxy"], alpha: 0.4, count: 7000, mouse: false, hold: 6500 }); } catch (e) { c && c.remove(); }
+    };
+    img.onload = start; img.onerror = start; img.src = "assets/logo.png";
+  })();
+</script>
 </body>
 </html>
