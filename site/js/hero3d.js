@@ -113,7 +113,7 @@
   /* ---------- WebGL ---------- */
   var VS = [
     "attribute vec3 a; attribute vec3 b; attribute vec2 r;",
-    "uniform float m, tm, yaw, pitch, aspect, size, zoom; uniform vec2 shift;",
+    "uniform float m, tm, yaw, pitch, aspect, size, zoom, field; uniform vec2 shift, mouse;",
     "varying float vc; varying float va;",
     "void main(){",
     "  float k = clamp(m * 1.45 - r.x * 0.45, 0.0, 1.0); k = k * k * (3.0 - 2.0 * k);",
@@ -129,6 +129,15 @@
     "  float tw = 0.65 + 0.35 * sin(tm * 2.0 + r.y * 60.0);",
     "  gl_PointSize = size * tw * (3.2 / z) * (1.0 + burst * 0.6);",
     "  vc = r.y; va = (0.55 + 0.45 * tw) * clamp(1.6 - z * 0.25, 0.35, 1.0);",
+    // звёздное поле на всю ширину: медленно плывёт и в фигуры не собирается
+    "  if (r.x < field) {",
+    "    float d = fract(r.x * 53.0);",
+    "    float fx = fract(r.y * 1.7 + tm * 0.006 * (0.4 + d)) * 2.2 - 1.1;",
+    "    float fy = (fract(r.x * 37.0 + r.y * 3.0) * 2.0 - 1.0) * 1.05 + 0.02 * sin(tm * 0.4 + r.y * 20.0);",
+    "    gl_Position = vec4(fx + mouse.x * 0.02 * d, fy - mouse.y * 0.02 * d, 0.0, 1.0);",
+    "    gl_PointSize = size * (0.45 + d * 0.7) * tw;",
+    "    va = (0.25 + 0.45 * d) * tw;",
+    "  }",
     "}"].join("\n");
   var FS = [
     "precision mediump float; varying float vc; varying float va; uniform float alpha;",
@@ -153,7 +162,7 @@
     var gl = canvas.getContext("webgl", { alpha: true, antialias: false, premultipliedAlpha: true, powerPreference: "low-power" });
     if (!gl) return null;
     var small = Math.min(innerWidth, innerHeight) < 700 || (navigator.hardwareConcurrency || 4) <= 2;
-    var N = opt.count || (small ? 6000 : 16000);
+    var N = opt.count || (small ? 7000 : 20000);
     var shapes = opt.shapes || ["galaxy", "logo", "candles", "waves", "network"];
     var hold = opt.hold || 5200, morph = opt.morph || 2600;
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -162,7 +171,7 @@
     gl.attachShader(pr, compile(gl, gl.VERTEX_SHADER, VS));
     gl.attachShader(pr, compile(gl, gl.FRAGMENT_SHADER, FS));
     gl.linkProgram(pr); gl.useProgram(pr);
-    var U = {}; ["m", "tm", "yaw", "pitch", "aspect", "size", "zoom", "shift", "alpha"].forEach(function (k) { U[k] = gl.getUniformLocation(pr, k); });
+    var U = {}; ["m", "tm", "yaw", "pitch", "aspect", "size", "zoom", "shift", "alpha", "field", "mouse"].forEach(function (k) { U[k] = gl.getUniformLocation(pr, k); });
 
     var rr = new Float32Array(N * 2);
     for (var i = 0; i < N * 2; i++) rr[i] = rnd();
@@ -221,8 +230,10 @@
       gl.uniform1f(U.aspect, W / H);
       gl.uniform1f(U.size, (opt.size || 3.4) * dpr);
       var wide = opt.side && W / dpr >= 1100;      // на широком экране фигура справа от текста
-      gl.uniform1f(U.zoom, opt.zoom || (wide ? 1.3 * W / H : W / H < 1 ? 2.3 : 2.9));      // справа фигура занимает правую половину
+      gl.uniform1f(U.zoom, opt.zoom || (wide ? 1.3 * W / H : W / H < 1 ? 2.1 : 2.45));      // фигура по высоте экрана, за текстом      // справа фигура занимает правую половину
       gl.uniform2f(U.shift, wide ? 0.5 : (opt.shiftX || 0), wide ? 0.04 : (opt.shiftY || 0));
+      gl.uniform1f(U.field, opt.field == null ? 0.3 : opt.field);
+      gl.uniform2f(U.mouse, mx, my);
       gl.uniform1f(U.alpha, (opt.alpha || 0.85) * (opt.side && !wide ? 0.55 : 1));
       gl.drawArrays(gl.POINTS, 0, N);
     };

@@ -621,8 +621,8 @@
     var img = new Image();
     var start = function () {
       var h = document.getElementById("hero3d"), c = document.getElementById("cta3d");
-      try { if (h) MamayParticles(h, { logoImg: img, side: true }); } catch (e) { h && h.remove(); }
-      try { if (c) MamayParticles(c, { shapes: ["network", "galaxy"], alpha: 0.4, count: 7000, mouse: false, hold: 6500 }); } catch (e) { c && c.remove(); }
+      try { if (h) MamayParticles(h, { logoImg: img }); } catch (e) { h && h.remove(); }
+      try { if (c) MamayParticles(c, { shapes: ["network", "galaxy"], alpha: 0.4, count: 7000, mouse: false, hold: 6500, field: 0.2 }); } catch (e) { c && c.remove(); }
     };
     img.onload = start; img.onerror = start; img.src = "assets/logo.png";
   })();

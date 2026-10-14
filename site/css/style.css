@@ -429,16 +429,10 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 @media (max-width:1100px){.plans{grid-template-columns:1fr;max-width:640px;margin-inline:auto}}
 
 /* ---------- живой фон из частиц ---------- */
-.hero3d{position:absolute;left:0;top:0;width:100%;height:min(100vh,960px);opacity:0;animation:fadein 2.4s .3s forwards}
+.hero3d{position:absolute;left:0;top:0;width:100%;height:min(100vh,1000px);opacity:0;animation:fadein 2.4s .3s forwards}
+/* мягкое затемнение под текстом: частицы остаются фоном и не спорят с надписями */
+.hero-bg::after{content:"";position:absolute;left:0;right:0;top:0;height:min(100vh,1000px);background:radial-gradient(ellipse 42% 46% at 50% 46%,rgba(5,7,11,.62),rgba(5,7,11,.25) 60%,transparent 80%)}
 .hero .lead,.hero .chip{text-shadow:0 2px 22px rgba(0,0,0,.95),0 0 2px rgba(0,0,0,.7)}
 .hero h1{filter:drop-shadow(0 4px 22px rgba(0,0,0,.85))}
 .cta3d{position:absolute;inset:0;width:100%;height:100%;opacity:.9}
 @media (max-width:720px){.hero3d{height:80vh}}
-@media (min-width:1100px){
-  .hero-in{align-items:flex-start;text-align:left;padding-right:46%}
-  .hero h1{font-size:clamp(44px,4.6vw,70px)}
-  .hero-cta{justify-content:flex-start}
-  .hero-stats{gap:clamp(22px,3vw,48px)}
-  .hero-stats li{align-items:flex-start}
-  .hero3d{height:min(100vh,900px)}
-}
