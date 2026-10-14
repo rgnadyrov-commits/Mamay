@@ -410,7 +410,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 }
 
 /* ---------- тарифы ---------- */
-.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
+.plans{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;align-items:stretch}
 .plan{position:relative;display:flex;flex-direction:column;gap:22px;padding:34px 30px;border-radius:var(--r);border:1px solid var(--line2);background:linear-gradient(160deg,rgba(255,255,255,.04),rgba(255,255,255,.008))}
 .plan-pro{border-color:var(--gold);background:linear-gradient(160deg,rgba(232,194,106,.12),rgba(34,211,197,.04) 70%,rgba(255,255,255,.01));box-shadow:0 30px 90px -40px rgba(232,194,106,.55)}
 .plan-beta{border-color:rgba(34,211,197,.45)}
@@ -426,7 +426,11 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 .plan .btn{padding:13px 22px;font-size:14px;align-self:flex-start}
 .plan .note{margin-top:0}
 .lead b{color:var(--text)}
-@media (max-width:1100px){.plans{grid-template-columns:1fr;max-width:640px;margin-inline:auto}}
+@media (max-width:1400px){.plans{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:760px){.plans{grid-template-columns:1fr;max-width:640px;margin-inline:auto}}
+.plan-dev{border-color:rgba(34,211,197,.55);background:linear-gradient(160deg,rgba(34,211,197,.10),rgba(232,194,106,.03) 70%,rgba(255,255,255,.01))}
+.plan-dev .plan-h h3{color:var(--teal)}
+.plan-badge-teal{color:#03201d;background:linear-gradient(135deg,#7ff0e6,var(--teal) 50%,var(--teal2))}
 
 /* ---------- живой фон из частиц ---------- */
 .hero3d{position:absolute;left:0;top:0;width:100%;height:min(100vh,1000px);opacity:0;animation:fadein 2.4s .3s forwards}

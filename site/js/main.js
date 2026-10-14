@@ -137,7 +137,8 @@
     if (b) b.textContent = cfg.pricePro;
     if (n) n.textContent = cfg.priceProNote || "в месяц";
     var f = q("[data-price-faq]");
-    if (f) f.textContent = "Pro стоит " + cfg.pricePro + " " + (cfg.priceProNote || "в месяц") + (cfg.priceEarly ? "; участникам раннего доступа — " + cfg.priceEarly + ", пока подписка не прерывается" : "") + ". Участники раннего доступа получают Pro на 14 дней бесплатно.";
+    if (f) f.textContent = "Pro стоит " + cfg.pricePro + " " + (cfg.priceProNote || "в месяц") + (cfg.priceEarly ? "; участникам раннего доступа — " + cfg.priceEarly + ", пока подписка не прерывается" : "") + "." + (cfg.priceDev ? " Тариф «Разработчик» со своим ИИ-агентом — " + cfg.priceDev + " в месяц, откроется вместе с первой версией агента." : "") + " Участники раннего доступа получают Pro на 14 дней бесплатно.";
+    var d = q('[data-price="dev"]'); if (d && cfg.priceDev) d.textContent = cfg.priceDev;
   }
   if (cfg.priceEarly) { var e = q("[data-price-early]"); if (e) e.textContent = "Ранняя цена " + cfg.priceEarly + ", пока подписка не прерывается"; }
   if (cfg.telegram) {
