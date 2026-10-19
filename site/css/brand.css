@@ -1,0 +1,114 @@
+/* Ребрендинг 19.10.2026 (п. 7 «плана клоду»): образ из баннера MAMAY — полководец, закат над степью, золото логотипа.
+   Файл идёт ПОСЛЕ style.css и fx.css: меняет токены и шрифты, добавляет главный экран на баннере и новые блоки.
+   Громкий элемент один — оживлённый баннер; остальное спокойно. Голубой (кристалл в «M») — только то, что про ИИ. */
+:root{
+  --bg:#07090d; --bg2:#0d0f14; --panel:#11110f; --panel2:#17150f;
+  --gold:#e8c366; --gold2:#c99a3e; --gold3:#8a6420;
+  --ember:#ff9f43; --crystal:#6fd3ff;
+  --text:#efe6d2; --muted:#a39a88; --dim:#6d675b;
+  --line:rgba(232,195,102,.18); --line2:rgba(239,230,210,.08);
+  --serif:"Cormorant Garamond","Cormorant",Georgia,"Times New Roman",serif;
+  --sans:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+body{background:var(--bg);font-family:var(--sans)}
+
+/* Заголовки — «летопись»: контрастная антиква, без половинчатого золотого выделения и без подписей над каждым заголовком */
+.sec-h h2,.safety h2,.invest h2,.cta-card h2,.hero h1,.card-h,.plan-h h3{font-family:var(--serif);font-weight:600;letter-spacing:-.005em}
+.sec-h h2,.safety h2,.invest h2,.cta-card h2{line-height:1.04}
+.gold-t{background:none;-webkit-background-clip:initial;background-clip:initial;color:inherit}
+.tag{display:none}
+.sub{color:var(--muted)}
+
+/* ─────────── главный экран: баннер, оживлённый как заставка программы ─────────── */
+.hb{position:relative;isolation:isolate;overflow:hidden;min-height:100vh;background:#07090d}
+.hb-scene{position:absolute;z-index:-3;width:max(100%,177.6vh);height:max(100vh,56.3vw);max-height:none;
+  left:calc((100% - max(100%,177.6vh)) * .7);top:calc((100vh - max(100vh,56.3vw)) * .18);
+  transform-origin:73% 30%;animation:hbZoom 28s ease-in-out infinite alternate}
+.hb-scene>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;animation:hbFade 1.6s ease-out both}
+@keyframes hbZoom{from{transform:scale(1)}to{transform:scale(1.06) translate(-.5%,.3%)}}
+@keyframes hbFade{from{opacity:0;filter:brightness(.35)}to{opacity:1;filter:none}}
+.hb-fx{position:absolute;pointer-events:none;mix-blend-mode:screen}
+.hb-sun{left:98%;top:57%;width:46%;aspect-ratio:1;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,200,110,.5),rgba(255,150,60,.16) 35%,transparent 65%);animation:hbBreath 5s ease-in-out infinite}
+@keyframes hbBreath{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(.92)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}}
+.hb-gem{left:73.3%;top:22.6%;width:7%;aspect-ratio:1;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(130,225,255,.95),rgba(40,160,255,.35) 35%,transparent 70%);animation:hbGem 2.6s ease-in-out infinite}
+@keyframes hbGem{0%,100%{opacity:.3;transform:translate(-50%,-50%) scale(.8)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}}
+.hb-star{left:78%;top:11.5%;width:16%;aspect-ratio:1;transform:translate(-50%,-50%);animation:hbStar 3.4s ease-in-out infinite}
+.hb-star::before,.hb-star::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(255,238,195,1),rgba(255,200,120,.4) 45%,transparent)}
+.hb-star::before{width:100%;height:4%}.hb-star::after{width:4%;height:60%}
+@keyframes hbStar{0%,100%{opacity:.45;transform:translate(-50%,-50%) rotate(0) scale(.85)}50%{opacity:1;transform:translate(-50%,-50%) rotate(8deg) scale(1.1)}}
+.hb-shine{left:59%;top:8%;width:30%;height:34%;mix-blend-mode:color-dodge;background:linear-gradient(105deg,transparent 42%,rgba(255,240,200,.6) 50%,transparent 58%);background-size:300% 100%;
+  -webkit-mask:radial-gradient(ellipse at center,#000 55%,transparent 78%);mask:radial-gradient(ellipse at center,#000 55%,transparent 78%);animation:hbShine 4.2s ease-in-out 1.4s infinite}
+@keyframes hbShine{0%{background-position:100% 0}55%,100%{background-position:0 0}}
+.hb-vig{position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:linear-gradient(to top,#07090d 0,rgba(7,9,13,.86) 12%,rgba(7,9,13,.45) 32%,transparent 52%),radial-gradient(ellipse at 30% 50%,transparent 45%,rgba(0,0,0,.35))}
+@media (min-width:2400px) and (min-aspect-ratio:16/10) and (min-height:821px){
+  .hb-copy{width:min(860px,100%)}
+  .hb h1{font-size:96px}
+  .hb .lead{font-size:23px}
+  .hb-facts{font-size:17px}
+}
+.hb-embers{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.hb-em{position:absolute;bottom:-2%;border-radius:50%;background:#ffcf7a;box-shadow:0 0 6px 2px rgba(255,180,80,.7);opacity:0;animation:hbEm linear infinite}
+@keyframes hbEm{0%{opacity:0;transform:translate(0,0)}10%{opacity:.9}80%{opacity:.55}100%{opacity:0;transform:translate(var(--dx,0),-70vh)}}
+
+/* текст начинается строго под логотипом баннера: верх кадра + 43 % его высоты (логотип и надпись занимают верхние ~40 %) */
+.hb-in{min-height:100vh;display:flex;align-items:flex-start;justify-content:flex-end;
+  padding:calc((100vh - max(100vh,56.3vw)) * .18 + max(100vh,56.3vw) * .43) 0 6vh}
+.hb-copy{position:relative;width:min(640px,100%);margin-right:1%}
+/* мягкое затемнение под текстом: на средней ширине копия заходит на коня — текст должен читаться */
+.hb-copy::before{content:"";position:absolute;z-index:-1;inset:-14% -18% -12% -22%;pointer-events:none;
+  background:radial-gradient(ellipse at 55% 55%,rgba(7,9,13,.72) 0,rgba(7,9,13,.45) 45%,transparent 72%)}
+.menu a{white-space:nowrap}
+.hb h1{font-size:clamp(40px,3.5vw,72px);line-height:1;color:var(--text);margin:0 0 16px;text-shadow:0 4px 30px rgba(0,0,0,.85)}
+.hb h1 .l2{display:block;color:var(--gold)}
+.hb .lead{font-size:clamp(16px,1.25vw,19px);color:#e5dccb;max-width:52ch;text-shadow:0 2px 18px rgba(0,0,0,.95)}
+.hb .hero-cta{justify-content:flex-start;margin-top:26px}
+.hb-facts{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:26px;font-size:13.5px;color:#cfc5b2;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.hb-facts b{color:var(--gold);font-weight:700}
+.reel{padding-top:56px}
+
+/* Текст поверх баннера — только когда под логотипом есть место (широкий и высокий экран). Иначе баннер целиком сверху,
+   текст под ним: надпись MAMAY · TRADING TERMINAL на картинке не должна перекрываться. */
+@media (max-width:900px),(max-aspect-ratio:16/10),(max-height:820px){
+  .hb{min-height:0}
+  .hb-scene{position:relative;width:100%;height:auto;aspect-ratio:1920/1081;left:0;top:0;margin-top:62px}
+  .hb-in{min-height:0;padding:26px 0 40px;justify-content:flex-start}
+  .hb h1{font-size:clamp(40px,6vw,72px)}
+  .hb-copy{margin:0;width:min(760px,100%)}
+  .hb-copy::before{display:none}
+  .hb-vig{background:linear-gradient(to top,#07090d 0,rgba(7,9,13,.35) 30%,transparent 46%)}
+  .hb h1{text-shadow:none}
+}
+@media (max-width:900px){.hb-scene{animation:none}.hb .hero-cta .btn{width:100%}}
+
+/* ─────────── новые блоки ─────────── */
+/* голубой — только ИИ */
+.ai-t{color:var(--crystal)}
+.ai-list{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
+.ai-list li{padding:6px 12px;border-radius:999px;border:1px solid rgba(111,211,255,.28);color:#cfefff;font-size:13px;background:rgba(111,211,255,.06)}
+.ai-two{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:stretch}
+.ai-card{padding:30px;border-radius:18px;border:1px solid var(--line2);background:linear-gradient(180deg,rgba(23,21,15,.9),rgba(13,15,20,.9))}
+.ai-card h3{font-family:var(--serif);font-size:32px;font-weight:600;line-height:1.05;margin-bottom:10px}
+.ai-card.now{border-color:rgba(111,211,255,.28)}
+.ai-card.soon{border-color:var(--line)}
+.ai-card ol{counter-reset:s;margin-top:16px;display:flex;flex-direction:column;gap:12px}
+.ai-card ol li{counter-increment:s;position:relative;padding-left:40px;color:#ddd3bf}
+.ai-card ol li::before{content:counter(s);position:absolute;left:0;top:-2px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;color:#07090d;background:var(--crystal)}
+.ai-card .note{margin-top:16px}
+.badge-now,.badge-soon{display:inline-block;font-size:12.5px;font-weight:700;padding:3px 10px;border-radius:6px;margin-bottom:12px}
+.badge-now{background:rgba(111,211,255,.14);color:var(--crystal)}
+.badge-soon{background:rgba(232,195,102,.12);color:var(--gold)}
+
+/* вход на пробой: схема сделки (это настоящая последовательность — шаги пронумерованы) */
+.bo{display:grid;grid-template-columns:1.25fr .75fr;gap:34px;align-items:center}
+.bo-chart{border-radius:18px;border:1px solid var(--line2);background:#0b0d11;padding:18px}
+.bo-chart svg{width:100%;height:auto;display:block}
+.bo-steps{display:flex;flex-direction:column;gap:18px}
+.bo-steps li{display:grid;grid-template-columns:34px 1fr;gap:14px}
+.bo-steps b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--gold);color:var(--gold);font-weight:700}
+.bo-steps h4{font-family:var(--serif);font-size:23px;font-weight:600;line-height:1.1;margin-bottom:4px}
+.bo-steps p{color:var(--muted);font-size:15px}
+.bo .note{margin-top:14px}
+
+@media (max-width:900px){.ai-two,.bo{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.hb *,.hb *::before,.hb *::after{animation:none!important}.hb-em{display:none}}
