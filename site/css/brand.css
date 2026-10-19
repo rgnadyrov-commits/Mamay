@@ -99,16 +99,5 @@ body{background:var(--bg);font-family:var(--sans)}
 .badge-now{background:rgba(111,211,255,.14);color:var(--crystal)}
 .badge-soon{background:rgba(232,195,102,.12);color:var(--gold)}
 
-/* вход на пробой: схема сделки (это настоящая последовательность — шаги пронумерованы) */
-.bo{display:grid;grid-template-columns:1.25fr .75fr;gap:34px;align-items:center}
-.bo-chart{border-radius:18px;border:1px solid var(--line2);background:#0b0d11;padding:18px}
-.bo-chart svg{width:100%;height:auto;display:block}
-.bo-steps{display:flex;flex-direction:column;gap:18px}
-.bo-steps li{display:grid;grid-template-columns:34px 1fr;gap:14px}
-.bo-steps b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--gold);color:var(--gold);font-weight:700}
-.bo-steps h4{font-family:var(--serif);font-size:23px;font-weight:600;line-height:1.1;margin-bottom:4px}
-.bo-steps p{color:var(--muted);font-size:15px}
-.bo .note{margin-top:14px}
-
-@media (max-width:900px){.ai-two,.bo{grid-template-columns:1fr}}
+@media (max-width:900px){.ai-two{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.hb *,.hb *::before,.hb *::after{animation:none!important}.hb-em{display:none}}
