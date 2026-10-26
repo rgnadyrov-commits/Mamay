@@ -8,7 +8,10 @@ const usd = (v) => (Math.abs(v) >= 1e6 ? `$${mln(v)} млн` : `$${fmt(v)}`);
 // ── живые кадры: снимки сменяют друг друга; нажатие — во весь экран ──
 $$(".shot").forEach((f) => {
   const imgs = $$("img", f);
-  if (imgs.length > 1) { let k = 0; setInterval(() => { imgs[k].classList.remove("on"); k = (k + 1) % imgs.length; imgs[k].classList.add("on"); }, 6000); }
+  // кадры идут по порядку; при открытии вкладки — снова с первого
+  const show = (i) => { imgs.forEach((im, j) => im.classList.toggle("on", j === i)); f.dataset.k = i; };
+  f.restart = () => { clearInterval(f.tm); show(0); if (imgs.length > 1) f.tm = setInterval(() => show((+f.dataset.k + 1) % imgs.length), 6000); };
+  f.restart();
   f.addEventListener("click", () => { const on = $("img.on", f) || imgs[0]; const lb = $("#lb"); $("img", lb).src = on.src; $("img", lb).alt = on.alt; lb.hidden = false; });
 });
 $("#lb").addEventListener("click", (e) => { if (e.target.tagName !== "IMG") $("#lb").hidden = true; });
@@ -22,6 +25,7 @@ $$("#ptabs button").forEach((b) => b.addEventListener("click", () => {
   $$("#ppanes .pane").forEach((p, i) => {
     const on = i === +b.dataset.t;
     p.classList.toggle("on", on);
+    const sh = $(".shot", p); if (on && sh && sh.restart) sh.restart();
     const v = $("video", p);
     if (v) { if (on) v.play().catch(() => {}); else v.pause(); }
   });
