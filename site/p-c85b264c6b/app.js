@@ -5,7 +5,18 @@ const fmt = (v, d = 0) => Math.round(v).toLocaleString("ru-RU", { maximumFractio
 const mln = (v) => (v / 1e6).toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const usd = (v) => (Math.abs(v) >= 1e6 ? `$${mln(v)} млн` : `$${fmt(v)}`);
 
-// ── вкладки продукта: видео играет только на открытой вкладке ──
+// ── живые кадры: снимки сменяют друг друга; нажатие — во весь экран ──
+$$(".shot").forEach((f) => {
+  const imgs = $$("img", f);
+  if (imgs.length > 1) { let k = 0; setInterval(() => { imgs[k].classList.remove("on"); k = (k + 1) % imgs.length; imgs[k].classList.add("on"); }, 6000); }
+  f.addEventListener("click", () => { const on = $("img.on", f) || imgs[0]; const lb = $("#lb"); $("img", lb).src = on.src; $("img", lb).alt = on.alt; lb.hidden = false; });
+});
+$("#lb").addEventListener("click", (e) => { if (e.target.tagName !== "IMG") $("#lb").hidden = true; });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") $("#lb").hidden = true; });
+// ── калькулятор: ползунки — по кнопке, чтобы на телефоне палец не сбивал их при прокрутке ──
+$("#manual").addEventListener("click", () => { const c = $("#ctrls"); c.hidden = !c.hidden; $("#manual").setAttribute("aria-expanded", String(!c.hidden)); $("#manual").textContent = c.hidden ? "Настроить вручную" : "Скрыть ползунки"; });
+
+// ── вкладки продукта ──
 $$("#ptabs button").forEach((b) => b.addEventListener("click", () => {
   $$("#ptabs button").forEach((x) => x.classList.toggle("on", x === b));
   $$("#ppanes .pane").forEach((p, i) => {

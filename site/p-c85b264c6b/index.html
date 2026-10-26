@@ -9,20 +9,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=7">
+<link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 
 <header class="nav" id="nav">
   <a class="nav-brand" href="#top"><img src="../assets/logo.png" alt=""><span>MAMAY</span></a>
   <nav class="nav-links">
-    <a href="#problem">Зачем</a><a href="#product">Продукт</a><a href="#compare">Сравнение</a><a href="#community">Сообщество</a>
-    <a href="#pult">Пульт</a><a href="#market">Рынок</a><a href="#model">Экономика</a><a href="#budget">Бюджет</a><a href="#plan">План</a><a href="#offer" class="nav-cta">Предложение</a>
+    <a href="#what">Что это</a><a href="#product">Продукт</a><a href="#compare">Отличия</a><a href="#who">Кто платит</a>
+    <a href="#market">Рынок</a><a href="#model">Экономика</a><a href="#community">Сообщество</a><a href="#pult">Пульт</a><a href="#budget">Бюджет</a><a href="#plan">План</a><a href="#offer" class="nav-cta">Предложение</a>
   </nav>
   <button class="nav-burger" aria-label="Меню" onclick="document.body.classList.toggle('menu-open')">☰</button>
 </header>
-
-<!-- 1. Обложка -->
 <section class="hero" id="top">
   <div class="hero-bg" style="background-image:url(../assets/brand/banner.jpg)"></div>
   <div class="hero-shade"></div>
@@ -45,88 +43,47 @@
     <div><b>54</b><span>выпуска программы, версия 5.8.5</span></div>
   </div>
 </section>
-
-<!-- 2. Проблема -->
-<section class="sec" id="problem">
-  <div class="wrap two">
-    <div>
-      <p class="kicker">Зачем это рынку</p>
-      <h2>Трейдер сегодня живёт в семи программах</h2>
-      <p>Графики — в одной, стакан — в другой, скринеры — в третьей, общение — в Telegram и Discord, сделки по проп-счетам — в таблицах, обучение — на курсах, свои идеи — в заметках. За каждую — отдельная подписка, между ними — ручное копирование и потерянное время.</p>
-      <p>MAMAY собирает это в одно окно и связывает: сигнал скринера открывает график, сценарий переносится в торговую панель, сделка попадает в журнал и в разбор наставника, а обсудить её можно тут же — с сообществом.</p>
-      <p class="note">Отдельная возможность: Discord в России заблокирован с 8 октября 2024 года, сообщества трейдеров живут в Telegram-чатах без голоса и общего экрана. Им нужен новый дом.<sup><a href="#src-discord">[1]</a></sup></p>
-    </div>
-    <div class="scatter" aria-hidden="true">
-      <div class="chip c1">Графики</div><div class="chip c2">Стакан и лента</div><div class="chip c3">Скринеры</div>
-      <div class="chip c4">Telegram / Discord</div><div class="chip c5">Таблица проп-счёта</div><div class="chip c6">Курсы</div><div class="chip c7">Журнал сделок</div>
-      <div class="core"><img src="../assets/logo.png" alt=""><span>одно окно</span></div>
+<section class="sec" id="what">
+  <div class="wrap">
+    <p class="kicker">Что такое MAMAY</p>
+    <h2>Семь программ трейдера — в одном окне</h2>
+    <p class="sub">Сегодня активный трейдер держит открытыми несколько программ и платит за каждую. MAMAY заменяет этот набор одной программой, где всё связано между собой.</p>
+    <div class="ba">
+      <div class="ba-col was">
+        <div class="ba-h">Сейчас</div>
+        <div class="ba-row"><b>Графики и анализ</b><span>отдельный сервис графиков</span></div>
+        <div class="ba-row"><b>Стакан и кластеры</b><span>отдельный скальперский терминал</span></div>
+        <div class="ba-row"><b>Поиск монет и акций</b><span>платные скринеры и чаты сигналов</span></div>
+        <div class="ba-row"><b>Проп-счёт</b><span>таблицы и кабинет фирмы, всё вручную</span></div>
+        <div class="ba-row"><b>Обучение</b><span>курсы отдельно от практики</span></div>
+        <div class="ba-row"><b>Общение</b><span>Telegram-чаты; Discord в России заблокирован<sup><a href="#src-discord">[1]</a></sup></span></div>
+        <div class="ba-row"><b>Журнал сделок</b><span>заметки и Excel</span></div>
+      </div>
+      <div class="ba-arrow" aria-hidden="true"><span>→</span></div>
+      <div class="ba-col now">
+        <div class="ba-h"><img src="../assets/logo.png" alt=""> MAMAY</div>
+        <div class="ba-row"><b>Терминал</b><span>графики, стакан, кластеры, лента — три рынка, шесть бирж</span></div>
+        <div class="ba-row"><b>Скринеры</b><span>сигнал сразу открывает график и сценарий сделки</span></div>
+        <div class="ba-row"><b>Проп-кабинет</b><span>правила фирмы, лимиты, сверка с отчётом фирмы — сами</span></div>
+        <div class="ba-row"><b>Обучение и ИИ-наставник</b><span>65 уроков, разбор своих сделок</span></div>
+        <div class="ba-row"><b>Сообщество</b><span>чат, голос, экран и общий график — внутри терминала</span></div>
+        <div class="ba-row"><b>Журнал и проверка</b><span>каждая сделка и сигнал с результатом</span></div>
+        <div class="ba-row gold"><b>Одна подписка</b><span>от $0 до $99 в месяц</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- 3. Продукт -->
 <section class="sec dark" id="product">
   <div class="wrap">
     <p class="kicker">Продукт — уже работает</p>
-    <h2>Что внутри MAMAY</h2>
-    <p class="sub">Это не макет: всё ниже — снимки и записи экрана настоящей программы (учебный режим DEMO).</p>
-    <div class="tabs" role="tablist" id="ptabs">
-      <button class="on" data-t="0">Обзор</button><button data-t="1">Терминал и стакан</button><button data-t="2">Скринеры</button>
-      <button data-t="3">Волны</button><button data-t="4">Акции США и РФ</button><button data-t="5">Арбитраж</button>
-      <button data-t="6">Проп-кабинет</button><button data-t="7">Обучение и ИИ</button>
-    </div>
-    <div class="panes" id="ppanes">
-      <div class="pane on">
-        <div class="media"><video src="../assets/shots/reel.webm" poster="../assets/shots/reel-poster.webp" autoplay muted loop playsinline></video></div>
-        <ul class="pts"><li><b>Три рынка в одном окне.</b> Крипта на шести биржах, акции США, акции РФ через брокера.</li><li><b>Рабочий стол из блоков</b> — как удобно трейдеру, на любом числе мониторов.</li><li><b>Бесплатный вход</b> — графики, стакан, ручная торговля, обучение. За скорость и глубину — подписка Pro.</li></ul>
-      </div>
-      <div class="pane">
-        <div class="media"><video src="../assets/shots/terminal-live.webm" poster="../assets/shots/terminal-live-poster.webp" muted loop playsinline></video></div>
-        <ul class="pts"><li><b>График, кластеры, стакан и лента</b> с агрегацией по биржам.</li><li><b>Торговля из стакана</b>: клик — заявка, стоп и тейк сразу при входе, перенос в безубыток с учётом комиссий, горячие клавиши.</li><li><b>Защиты</b>: подтверждение объёма, ликвидация против стопа, режим DEMO / REAL одним переключателем.</li></ul>
-      </div>
-      <div class="pane">
-        <div class="media"><img src="../assets/shots/the-coin.webp" alt="Скринер «Та самая монета»" loading="lazy"></div>
-        <ul class="pts"><li><b>Скринеры с проверкой на истории.</b> Каждый сигнал пишется в «Результативность сигналов» — видно, что работает.</li><li><b>Сценарии на графике</b>: вход, стоп, цель и что делать «если…». Сценарий со стопом дальше 10 % MAMAY вообще не предлагает.</li><li><b>Конструктор сканеров</b> — свои условия без программирования.</li></ul>
-      </div>
-      <div class="pane">
-        <div class="media"><video src="../assets/shots/waves-live.webm" poster="../assets/shots/waves-live-poster.webp" muted loop playsinline></video></div>
-        <ul class="pts"><li><b>Волновая разметка</b> по классической методике: развилка вариантов, уровни подтверждения и отмены.</li><li><b>Аллигатор, гармонические фигуры</b> и сверка альтов с биткоином.</li><li><b>Свои варианты</b>: трейдер размечает сам — MAMAY проверяет правила.</li></ul>
-      </div>
-      <div class="pane">
-        <div class="media"><img src="media/us-ranges.jpg" alt="Акции США: коридор после роста, три таймфрейма" loading="lazy"></div>
-        <ul class="pts"><li><b>Скринеры акций США</b>: премаркет, план на открытие, отчёты, диапазоны, флаги, импульсы, сводка.</li><li><b>Мосбиржа</b>: премаркет, диапазоны, флаги, волны; стакан и лента через брокера.</li><li><b>Три графика тикера</b> на разных таймфреймах и «поводырь» рынка (SPY, BTC, IMOEX).</li></ul>
-      </div>
-      <div class="pane">
-        <div class="media"><img src="../assets/shots/scanner.webp" alt="Арбитраж: связки между биржами" loading="lazy"></div>
-        <ul class="pts"><li><b>Межбиржевой арбитраж</b>: funding, спот-перп, перп-перп — с чистой прибылью после всех комиссий.</li><li><b>Перегоны монет</b> между биржами с проверкой каждого шага; выводы — только на свои адреса.</li><li><b>Спред — ещё не прибыль</b>: MAMAY считает, сколько останется.</li></ul>
-      </div>
-      <div class="pane">
-        <div class="media proto">
-          <div class="pc-card">
-            <div class="pc-h"><b>Hash Hedge · 1K WSCT</b><span class="tag">своя программа</span><span class="muted">Челлендж · Стадия 1</span></div>
-            <div class="pc-scale"><i class="r" style="width:38%"></i><i class="g" style="left:52%;width:9%"></i>
-              <em style="left:38%">дневной стоп<br>950 $</em><em style="left:52%" class="up">старт<br>1 000 $</em><em style="left:56.5%" class="now">сейчас<br>1 019 $</em><em style="left:61%">цель<br>1 050 $</em></div>
-            <ul><li>Сделки, позиции и баланс приходят из терминала фирмы сами — расширение браузера только читает страницу.</li><li>Дневная потеря считается по дню фирмы, комиссии — до цента, как в отчёте фирмы.</li><li>Акционные челленджи любого размера: свои этапы и лимиты.</li></ul>
-          </div>
-        </div>
-        <ul class="pts"><li><b>Проп-кабинет</b>: справочник 9 проп-фирм для России и СНГ, правила в долларах, сравнение, история условий.</li><li><b>Защита от нарушения правил</b>: запас до дневного лимита и калькулятор объёма.</li><li><b>Скринеры по инструментам челленджа</b>: MAMAY показывает только то, чем можно торговать на этом счёте.</li></ul>
-      </div>
-      <div class="pane">
-        <div class="media proto">
-          <div class="ai-card">
-            <div class="ai-h">Наставник · урок «Вход на пробой»</div>
-            <div class="ai-msg me">Почему мой стоп выбивает третий раз подряд?</div>
-            <div class="ai-msg bot">Посмотрел ваши 3 сделки по ENA: стоп стоял внутри обычного шума свечи (0,4 % при среднем ходе 0,9 %). Откройте урок «Где ставить стоп» — и попробуйте «Принять сценарий»: стоп встанет под свечу пробоя сам.</div>
-            <div class="ai-foot">Работает с ИИ трейдера: Claude, ChatGPT, Gemini или модель на своём компьютере</div>
-          </div>
-        </div>
-        <ul class="pts"><li><b>«Вселенная обучения»</b>: 65 уроков, 11 направлений, учебные счета.</li><li><b>Наставник</b> видит экран, на котором трейдер, и разбирает его сделки.</li><li><b>Свой ИИ-агент</b> (тариф «Разработчик»): агент настраивает скринеры под стратегию, MAMAY проверяет на истории, трейдер решает.</li></ul>
-      </div>
-    </div>
+    <h2>Как выглядит MAMAY</h2>
+    <p class="sub">Снимки настоящей программы (учебный режим DEMO), 26 октября 2026. Нажмите на снимок — откроется во весь экран.</p>
+    <div class="tabs" role="tablist" id="ptabs"><button class=on data-t="0">Волны и сценарии</button><button data-t="1">Стакан и кластеры</button><button data-t="2">Скринеры</button><button data-t="3">Акции США</button><button data-t="4">Проп-кабинет</button><button data-t="5">Обучение и ИИ</button><button data-t="6">Арбитраж</button></div>
+    <div class="panes" id="ppanes"><div class="pane on"><figure class="shot" data-n="2"><img src="media/s-waves.png" alt="Разметка волн на графике BTC и карточка сценариев" loading="lazy" class=on><img src="media/s-scenarios.png" alt="Разметка волн на графике BTC и карточка сценариев" loading="lazy"><figcaption>BTC · 4ч: разметка волн, варианты и уровень отмены; карточка «Сценарии» — план словами</figcaption><button class="zoom" aria-label="Во весь экран">⤢</button></figure><ul class="pts"><li><b>Разметка волн</b> — сама, по всей истории: варианты, цели, уровень, где сценарий отменяется.</li><li><b>Карточка «Сценарии»</b>: что происходит, где вход, стоп и цель, что делать «если…».</li><li><b>«Принять сценарий»</b> — план сам переносится в торговую панель.</li></ul></div><div class="pane"><figure class="shot" data-n="1"><img src="media/s-dom.png" alt="Кластеры, лента и стакан BTC" loading="lazy" class=on><figcaption>BTC: кластеры по минутам, крупные сделки ленты и стакан с объёмами в долларах</figcaption><button class="zoom" aria-label="Во весь экран">⤢</button></figure><ul class="pts"><li><b>Кластеры, лента, стакан</b> — с объединением по биржам.</li><li><b>Торговля из стакана</b>: заявка кликом, стоп и цель сразу, безубыток с учётом комиссий, горячие клавиши.</li><li><b>Защиты</b>: проверка объёма, ликвидация против стопа, режим DEMO одним переключателем.</li></ul></div><div class="pane"><figure class="shot" data-n="1"><img src="media/s-scanner.png" alt="Таблица крипто-скринера" loading="lazy" class=on><figcaption>Крипто-скринер: монеты, которые прошли отбор, с оценкой и метриками</figcaption><button class="zoom" aria-label="Во весь экран">⤢</button></figure><ul class="pts"><li><b>Скринеры крипты, акций США и РФ</b> — каждый сигнал проверяется на истории.</li><li><b>Сценарий со стопом дальше 10 %</b> MAMAY вообще не предлагает — только разумный риск.</li><li><b>Только инструменты проп-счёта</b> — один переключатель.</li></ul></div><div class="pane"><figure class="shot" data-n="1"><img src="media/s-us.png" alt="SPY: коридор и сценарии" loading="lazy" class=on><figcaption>SPY: найденный коридор и два сценария — от нижней и от верхней границы</figcaption><button class="zoom" aria-label="Во весь экран">⤢</button></figure><ul class="pts"><li><b>Премаркет, план на открытие, отчёты, коридоры, флаги, импульсы, сводка</b>.</li><li><b>Мосбиржа</b>: премаркет, коридоры, флаги, волны; стакан и лента через брокера.</li><li><b>«Поводырь» рынка</b> (SPY, BTC, IMOEX) поверх графика.</li></ul></div><div class="pane"><figure class="shot" data-n="2"><img src="media/s-prop-firms.png" alt="Справочник проп-фирм и кривая капитала счёта" loading="lazy" class=on><img src="media/s-prop.png" alt="Справочник проп-фирм и кривая капитала счёта" loading="lazy"><figcaption>Справочник проп-фирм: правила в долларах и схема лимитов; счёт: баланс, прибыль, комиссии, кривая</figcaption><button class="zoom" aria-label="Во весь экран">⤢</button></figure><ul class="pts"><li><b>9 проп-фирм для России и СНГ</b>: кто принимает из вашей страны, правила словами и в долларах.</li><li><b>Сделки, позиции и баланс</b> приходят из терминала фирмы сами — расширение браузера только читает страницу.</li><li><b>Комиссии до цента</b>, как в отчёте фирмы; дневной лимит — по дню фирмы.</li></ul></div><div class="pane"><figure class="shot" data-n="1"><img src="media/s-academy.png" alt="Вселенная обучения и наставник" loading="lazy" class=on><figcaption>«Вселенная обучения»: уроки по уровням, словарь урока и ИИ-наставник справа</figcaption><button class="zoom" aria-label="Во весь экран">⤢</button></figure><ul class="pts"><li><b>65 уроков</b> в 11 направлениях — от нуля до алготрейдинга.</li><li><b>Наставник</b> работает с ИИ трейдера (Claude, ChatGPT, Gemini и др.) и разбирает его сделки.</li><li><b>Свой ИИ-агент</b> (тариф «Разработчик») настраивает скринеры под стратегию — MAMAY проверяет.</li></ul></div><div class="pane"><figure class="shot" data-n="2"><img src="../assets/shots/scanner.webp" alt="Арбитраж между биржами" loading="lazy" class=on><img src="../assets/shots/transfers.webp" alt="Арбитраж между биржами" loading="lazy"><figcaption>Связки между биржами с чистой прибылью и перегоны монет</figcaption><button class="zoom" aria-label="Во весь экран">⤢</button></figure><ul class="pts"><li><b>Межбиржевой арбитраж</b>: funding, спот-перп, перп-перп — прибыль после всех комиссий.</li><li><b>Перегоны монет</b> между биржами с проверкой каждого шага.</li><li><b>Спред — ещё не прибыль</b>: MAMAY считает, сколько останется.</li></ul></div></div>
   </div>
 </section>
 
-<!-- 4. Сравнение -->
 <section class="sec" id="compare">
   <div class="wrap">
     <p class="kicker">Конкуренты</p>
@@ -153,9 +110,72 @@
     <p class="note">Вывод: у сильных конкурентов есть отдельные части. Целого — торговля, анализ, проп, обучение, ИИ и сообщество в одном окне — нет ни у кого. Это и есть защита MAMAY: повторить целое долго и дорого.</p>
   </div>
 </section>
+<section class="sec dark" id="who">
+  <div class="wrap">
+    <p class="kicker">Кто будет платить</p>
+    <h2>Пять групп постоянных клиентов</h2>
+    <p class="sub">Выручку приносят те, кто торгует каждый день и уже платит за несколько сервисов. Бесплатная версия приводит новичков — часть из них дорастает до подписки.</p>
+    <div class="who-grid">
+      <div class="who-c"><h3>Активный криптотрейдер</h3><p class="w-why">Скальпинг и интрадей на Bybit, Binance, OKX и др.</p><p>Платит за скорость: стакан и кластеры, скринеры без задержки, все таймфреймы, сценарии сделок.</p><p class="w-pay">Pro · $49 в месяц</p></div>
+      <div class="who-c"><h3>Проп-трейдер</h3><p class="w-why">Торгует на счёте фирмы, рискует потерять челлендж из-за правил.</p><p>Платит, чтобы не нарушить лимиты: правила фирмы в долларах, запас до дневного лимита, сверка с отчётом фирмы.</p><p class="w-pay">Pro · $49 в месяц</p></div>
+      <div class="who-c"><h3>Арбитражник</h3><p class="w-why">Ищет разницу цен между биржами.</p><p>Платит за связки в реальном времени с чистой прибылью после всех комиссий и за перегоны монет.</p><p class="w-pay">Pro · $49 в месяц</p></div>
+      <div class="who-c"><h3>Трейдер акций США и РФ</h3><p class="w-why">Торгует гэпы, отчёты, коридоры.</p><p>Платит за премаркет, план на открытие, отчёты и скринеры акций в одном окне с крипто.</p><p class="w-pay">Pro · $49 в месяц</p></div>
+      <div class="who-c gold"><h3>Лидер сообщества</h3><p class="w-why">Ведёт канал или клуб трейдеров на сотни и тысячи человек.</p><p>Переводит своё сообщество в MAMAY: платные комнаты, общий график, эфиры. Каждый участник — подписчик MAMAY.</p><p class="w-pay">«Разработчик» $99 + % с комнат</p></div>
+    </div>
+  </div>
+</section>
 
-<!-- 5. Сообщество -->
-<section class="sec dark" id="community">
+<section class="sec" id="market">
+  <div class="wrap">
+    <p class="kicker">Рынок</p>
+    <h2>Аудитория уже есть — ей не хватает одного окна</h2>
+    <div class="grid4 nums">
+      <div><b>40,4 млн</b><p>частных инвесторов с брокерскими счетами на Мосбирже (январь 2026)<sup><a href="#src-moex">[2]</a></sup></p></div>
+      <div><b>≈ 3 млн</b><p>из них торгуют сами, не только держат<sup><a href="#src-moex">[2]</a></sup></p></div>
+      <div><b>7–10 млн</b><p>пользователей криптовалют в России — оценка ЦБ (2025); другие оценки — до 15–17 млн<sup><a href="#src-crypto">[3]</a></sup></p></div>
+      <div><b>1,8–2,1 млн</b><p>активных трейдеров проп-фирм в мире; выручка отрасли — от $0,85 до $4,5 млрд в год по разным оценкам<sup><a href="#src-prop">[8]</a></sup></p></div>
+    </div>
+    <div class="funnel">
+      <div class="fl" style="--w:100%"><b>≈ 3 млн</b> торгующих на Мосбирже + миллионы криптотрейдеров в России</div>
+      <div class="fl" style="--w:72%"><b>300 тыс.</b> активных — пользуются терминалами и скринерами (≈ 10 %, наша оценка)</div>
+      <div class="fl" style="--w:46%"><b>30 тыс.</b> — пользователи MAMAY с бесплатным тарифом за 3 года (цель)</div>
+      <div class="fl gold" style="--w:26%"><b>3 000</b> платящих — 1 из 1 000 торгующих (базовый сценарий)</div>
+    </div>
+    <p class="note">Для сравнения: у ATAS — более 360 тысяч трейдеров, у TigerTrade — около 10 тысяч. Базовый сценарий MAMAY — три тысячи платящих за три года — это доля процента рынка, а СНГ и англоязычная версия его расширяют.</p>
+  </div>
+</section>
+<section class="sec dark" id="revenue">
+  <div class="wrap">
+    <p class="kicker">Бизнес-модель</p>
+    <h2>Пять источников дохода</h2>
+    <div class="grid5">
+      <div class="rv"><h3>Подписка</h3><p class="price">0 · $49 · $99</p><p>Бесплатно — вход и привычка. Pro — весь анализ без задержек. «Разработчик» — свой ИИ-агент. Год — со скидкой 2 месяца. Первым покупателям — $29.</p></div>
+      <div class="rv"><h3>Лидеры сообществ</h3><p class="price">% с комнат</p><p>Новый тариф: лидер продаёт доступ в закрытые комнаты, MAMAY берёт процент, а каждый участник — подписчик MAMAY.</p></div>
+      <div class="rv"><h3>Партнёрство с биржами</h3><p class="price">до 30–50 %</p><p>Биржи делятся частью комиссий привлечённых трейдеров — по данным обзоров партнёрских программ.<sup><a href="#src-bybit">[9]</a></sup></p></div>
+      <div class="rv"><h3>Проп-фирмы</h3><p class="price">10–15 %</p><p>Процент со стоимости челленджа, купленного через Проп-кабинет.<sup><a href="#src-propaff">[10]</a></sup></p></div>
+      <div class="rv"><h3>Обучение</h3><p class="price">курсы лидеров</p><p>Лидеры продают курсы внутри «Вселенной обучения», MAMAY — площадка и процент.</p></div>
+    </div>
+  </div>
+</section>
+<section class="sec" id="model">
+  <div class="wrap">
+    <p class="kicker">Экономика · калькулятор</p>
+    <h2>Посчитайте сами</h2>
+    <p class="sub">Выберите сценарий — цифры пересчитаются. Свои допущения — кнопка «Настроить вручную». Это модель для разговора, а не обещание дохода.</p>
+    <div class="scen" id="scen"><button data-s="careful">Осторожно</button><button data-s="base" class="on">Базовый</button><button data-s="bold">Смело</button></div>
+    <div class="calc">
+      <div class="ctrls-wrap"><button class="btn sm" id="manual" aria-expanded="false">Настроить вручную</button><div class="ctrls" id="ctrls" hidden></div></div>
+      <div class="out">
+        <div class="kpis" id="kpis"></div>
+        <div class="chart"><svg id="chart" viewBox="0 0 760 320" aria-label="Выручка, расходы и деньги нарастающим итогом"></svg>
+          <div class="legend"><span class="l rev">выручка в месяц</span><span class="l cost">расходы в месяц</span></div></div>
+        <div class="tbl-wrap"><table class="yrs" id="yrs"></table></div>
+      </div>
+    </div>
+    <p class="note">Сумма предложения — бюджет года целиком: она покрывает и осторожный сценарий, где выход в плюс наступает позже. Налоги и зарплата основателя в модель не включены. Курс — в разделе «Бюджет». Расходы первого года берутся из бюджета ниже; дальше растут вместе с числом пользователей (серверы, поддержка, платёжные комиссии).</p>
+  </div>
+</section>
+<section class="sec" id="community">
   <div class="wrap">
     <p class="kicker">Новый блок · реализуем обязательно</p>
     <h2>Сообщество MAMAY: Discord, встроенный в терминал</h2>
@@ -213,9 +233,7 @@
     </div>
   </div>
 </section>
-
-<!-- 6. Пульт -->
-<section class="sec" id="pult">
+<section class="sec dark" id="pult">
   <div class="wrap two pult">
     <div>
       <p class="kicker">Управление проектом</p>
@@ -228,9 +246,7 @@
     <div class="phone"><iframe src="pult/index.html" title="Макет Пульта MAMAY" loading="lazy"></iframe></div>
   </div>
 </section>
-
-<!-- 7. Данные и закон -->
-<section class="sec dark" id="trust">
+<section class="sec" id="trust">
   <div class="wrap">
     <p class="kicker">Безопасность и закон</p>
     <h2>Мы — окно на биржу, а не хранилище чужих данных</h2>
@@ -242,64 +258,6 @@
     </div>
   </div>
 </section>
-
-<!-- 8. Рынок -->
-<section class="sec" id="market">
-  <div class="wrap">
-    <p class="kicker">Рынок</p>
-    <h2>Аудитория уже есть — ей не хватает одного окна</h2>
-    <div class="grid4 nums">
-      <div><b>40,4 млн</b><p>частных инвесторов с брокерскими счетами на Мосбирже (январь 2026)<sup><a href="#src-moex">[2]</a></sup></p></div>
-      <div><b>≈ 3 млн</b><p>из них торгуют сами, не только держат<sup><a href="#src-moex">[2]</a></sup></p></div>
-      <div><b>7–10 млн</b><p>пользователей криптовалют в России — оценка ЦБ (2025); другие оценки — до 15–17 млн<sup><a href="#src-crypto">[3]</a></sup></p></div>
-      <div><b>1,8–2,1 млн</b><p>активных трейдеров проп-фирм в мире; выручка отрасли — от $0,85 до $4,5 млрд в год по разным оценкам<sup><a href="#src-prop">[8]</a></sup></p></div>
-    </div>
-    <div class="funnel">
-      <div class="fl" style="--w:100%"><b>≈ 3 млн</b> торгующих на Мосбирже + миллионы криптотрейдеров в России</div>
-      <div class="fl" style="--w:72%"><b>300 тыс.</b> активных — пользуются терминалами и скринерами (≈ 10 %, наша оценка)</div>
-      <div class="fl" style="--w:46%"><b>30 тыс.</b> — пользователи MAMAY с бесплатным тарифом за 3 года (цель)</div>
-      <div class="fl gold" style="--w:26%"><b>3 000</b> платящих — 1 из 1 000 торгующих (базовый сценарий)</div>
-    </div>
-    <p class="note">Для сравнения: у ATAS — более 360 тысяч трейдеров, у TigerTrade — около 10 тысяч. Базовый сценарий MAMAY — три тысячи платящих за три года — это доля процента рынка, а СНГ и англоязычная версия его расширяют.</p>
-  </div>
-</section>
-
-<!-- 9. Как зарабатываем -->
-<section class="sec dark" id="revenue">
-  <div class="wrap">
-    <p class="kicker">Бизнес-модель</p>
-    <h2>Пять источников дохода</h2>
-    <div class="grid5">
-      <div class="rv"><h3>Подписка</h3><p class="price">0 · $49 · $99</p><p>Бесплатно — вход и привычка. Pro — весь анализ без задержек. «Разработчик» — свой ИИ-агент. Год — со скидкой 2 месяца. Первым покупателям — $29.</p></div>
-      <div class="rv"><h3>Лидеры сообществ</h3><p class="price">% с комнат</p><p>Новый тариф: лидер продаёт доступ в закрытые комнаты, MAMAY берёт процент, а каждый участник — подписчик MAMAY.</p></div>
-      <div class="rv"><h3>Партнёрство с биржами</h3><p class="price">до 30–50 %</p><p>Биржи делятся частью комиссий привлечённых трейдеров — по данным обзоров партнёрских программ.<sup><a href="#src-bybit">[9]</a></sup></p></div>
-      <div class="rv"><h3>Проп-фирмы</h3><p class="price">10–15 %</p><p>Процент со стоимости челленджа, купленного через Проп-кабинет.<sup><a href="#src-propaff">[10]</a></sup></p></div>
-      <div class="rv"><h3>Обучение</h3><p class="price">курсы лидеров</p><p>Лидеры продают курсы внутри «Вселенной обучения», MAMAY — площадка и процент.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- 10. Экономика -->
-<section class="sec" id="model">
-  <div class="wrap">
-    <p class="kicker">Экономика · калькулятор</p>
-    <h2>Посчитайте сами</h2>
-    <p class="sub">Двигайте ползунки — всё пересчитывается. Это модель для разговора, а не обещание дохода.</p>
-    <div class="scen" id="scen"><button data-s="careful">Осторожно</button><button data-s="base" class="on">Базовый</button><button data-s="bold">Смело</button></div>
-    <div class="calc">
-      <div class="ctrls" id="ctrls"></div>
-      <div class="out">
-        <div class="kpis" id="kpis"></div>
-        <div class="chart"><svg id="chart" viewBox="0 0 760 320" aria-label="Выручка, расходы и деньги нарастающим итогом"></svg>
-          <div class="legend"><span class="l rev">выручка в месяц</span><span class="l cost">расходы в месяц</span></div></div>
-        <div class="tbl-wrap"><table class="yrs" id="yrs"></table></div>
-      </div>
-    </div>
-    <p class="note">Сумма предложения — бюджет года целиком: она покрывает и осторожный сценарий, где выход в плюс наступает позже. Налоги и зарплата основателя в модель не включены. Курс — в разделе «Бюджет». Расходы первого года берутся из бюджета ниже; дальше растут вместе с числом пользователей (серверы, поддержка, платёжные комиссии).</p>
-  </div>
-</section>
-
-<!-- 11. Бюджет -->
 <section class="sec dark" id="budget">
   <div class="wrap">
     <p class="kicker">Бюджет первого года</p>
@@ -311,24 +269,21 @@
     </div>
   </div>
 </section>
-
-<!-- 12. План -->
 <section class="sec" id="plan">
   <div class="wrap">
     <p class="kicker">План</p>
-    <h2>Что делаем с деньгами и когда</h2>
+    <h2>Весь продукт — на рынке за полгода</h2>
+    <p class="sub">Основное уже написано и работает. Деньги ускоряют выход: продвижение, серверы, данные и сообщество идут параллельно, а не по очереди.</p>
     <div class="road">
-      <div><span>Ноябрь 2026</span><h3>Старт продаж</h3><p>Ранняя цена для беты, Telegram-канал и YouTube, сервер Пульта и приём оплаты.</p></div>
-      <div><span>Декабрь</span><h3>Сервер и учётные записи</h3><p>Платные расчёты — на сервере, оплата выдаёт ключ сама, первые партнёрства с биржами и проп-фирмами.</p></div>
-      <div><span>Январь — март 2027</span><h3>Сообщество, этапы 1–2</h3><p>Комнаты и карточки, затем голос и показ экрана. Первые лидеры сообществ.</p></div>
-      <div><span>Весна 2027</span><h3>Свой ИИ-агент и общий график</h3><p>Тариф «Разработчик», общий график, платные комнаты лидеров.</p></div>
-      <div><span>Лето 2027</span><h3>Данные и новые рынки</h3><p>Лицензии на данные акций, второй брокер, английская версия, СНГ.</p></div>
-      <div><span>2028</span><h3>Масштаб</h3><p>Веб и macOS, мобильное приложение, экосистема MAMAY: работа, учёба, общение, агент.</p></div>
+      <div><span>Ноябрь 2026</span><h3>Старт продаж</h3><p>Весь терминал, скринеры, проп-кабинет, обучение и наставник. Приём оплаты, сервер, канал в Telegram и YouTube.</p></div>
+      <div><span>Декабрь 2026</span><h3>Сообщество и ИИ-агент</h3><p>Чат, голос и показ экрана внутри MAMAY; тариф «Разработчик» со своим ИИ-агентом. Партнёрства с биржами и проп-фирмами.</p></div>
+      <div><span>Январь 2027</span><h3>Общий график и лидеры</h3><p>Разметка ведущего у всех участников, пространства лидеров с платными комнатами. Первые сообщества переезжают.</p></div>
+      <div><span>Февраль — март 2027</span><h3>Новые рынки</h3><p>Английская версия, СНГ, лицензии на данные акций, второй брокер.</p></div>
+      <div><span>Апрель 2027</span><h3>Веб и телефон</h3><p>MAMAY в браузере и мобильное приложение для сообщества и сигналов.</p></div>
     </div>
   </div>
 </section>
 
-<!-- 13. Риски -->
 <section class="sec dark" id="risks">
   <div class="wrap">
     <p class="kicker">Честно о рисках</p>
@@ -343,8 +298,6 @@
     </table></div>
   </div>
 </section>
-
-<!-- 14. Предложение -->
 <section class="sec offer" id="offer">
   <div class="wrap">
     <p class="kicker">Предложение</p>
@@ -363,6 +316,7 @@
     </div>
   </div>
 </section>
+<div class="lb" id="lb" hidden><img alt=""><button aria-label="Закрыть">✕</button></div>
 
 <footer class="foot">
   <div class="wrap">
@@ -384,6 +338,6 @@
   </div>
 </footer>
 
-<script src="app.js?v=6"></script>
+<script src="app.js?v=10"></script>
 </body>
 </html>
