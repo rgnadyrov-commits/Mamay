@@ -222,3 +222,20 @@ function calc() {
     + (be ? `<circle cx="${X(be.m)}" cy="${Yv(be.rev)}" r="5" fill="#e8c366"/><text x="${X(be.m) + 8}" y="${Yv(be.rev) - 8}" fill="#e8c366">в плюс</text>` : "");
 }
 renderBudget(); renderCtrls(); calc();
+
+// ── широкие таблицы на телефоне: подсказка «листайте вправо» и затухание у правого края, пока не долистали ──
+$$(".tbl-wrap").forEach((w) => {
+  const hint = document.createElement("p");
+  hint.className = "scroll-hint";
+  hint.innerHTML = "Листайте таблицу вправо <span>→</span>";
+  w.parentNode.insertBefore(hint, w);
+  const upd = () => {
+    const more = w.scrollWidth - w.clientWidth > 4, end = w.scrollLeft + w.clientWidth >= w.scrollWidth - 4;
+    hint.hidden = !more;
+    hint.classList.toggle("done", end);
+    w.classList.toggle("more", more && !end);
+  };
+  w.addEventListener("scroll", upd, { passive: true });
+  addEventListener("resize", upd);
+  upd();
+});

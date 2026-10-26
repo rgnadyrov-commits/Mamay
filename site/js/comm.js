@@ -129,3 +129,23 @@
   if ("IntersectionObserver" in window) new IntersectionObserver(function (es, ob) { if (es[0].isIntersecting) { ob.disconnect(); start(); } }, { threshold: 0.3 }).observe(comm);
   else start();
 })();
+
+/* широкая таблица сравнения на телефоне: подсказка «листайте вправо» и затухание у края, пока не долистали */
+(function () {
+  "use strict";
+  Array.prototype.forEach.call(document.querySelectorAll(".cmp-wrap"), function (w) {
+    var hint = document.createElement("p");
+    hint.className = "scroll-hint";
+    hint.innerHTML = "Листайте таблицу вправо <span>→</span>";
+    w.parentNode.insertBefore(hint, w);
+    var upd = function () {
+      var more = w.scrollWidth - w.clientWidth > 4, end = w.scrollLeft + w.clientWidth >= w.scrollWidth - 4;
+      hint.hidden = !more;
+      hint.classList.toggle("done", end);
+      w.classList.toggle("more", more && !end);
+    };
+    w.addEventListener("scroll", upd, { passive: true });
+    window.addEventListener("resize", upd);
+    upd();
+  });
+})();

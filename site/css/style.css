@@ -583,3 +583,11 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 .arb-ai-grid{margin-top:34px;margin-bottom:60px}
 @media (max-width:1100px){.arb-ai-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:720px){.arb-ai-grid{grid-template-columns:1fr}}
+/* широкая таблица на телефоне: подсказка и затухание справа, пока есть что листать */
+.scroll-hint{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin:0 0 10px;font-size:13px;font-weight:600;color:var(--gold);transition:opacity .3s}
+.scroll-hint[hidden]{display:none}.scroll-hint.done{opacity:.35}
+.scroll-hint span{display:inline-block;animation:nudge 1.4s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:none}50%{transform:translateX(6px)}}
+.cmp-wrap.more{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent)}
+@media (prefers-reduced-motion:reduce){.scroll-hint span{animation:none}}
+@media (max-width:720px){.cmp-tbl th:first-child,.cmp-tbl td:first-child{width:150px;min-width:150px}.cmp-tbl{min-width:620px}}
