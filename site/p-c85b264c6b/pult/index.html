@@ -1,0 +1,1207 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Пульт MAMAY</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Макет мобильного приложения владельца: шапка с проектом, экран, нижняя панель разделов. Тёмная основа MAMAY, золото — цвет проекта. */
+:root {
+  --bg: #f4f2ed; --panel: #ffffff; --panel2: #ece8df; --line: #ddd6c7;
+  --fg: #1a1814; --muted: #6d665a; --dim: #9a9282;
+  --gold: #a87a1e; --gold-soft: rgba(168,122,30,.12);
+  --ok: #1e7a4c; --ok-soft: rgba(30,122,76,.12);
+  --warn: #a8641a; --warn-soft: rgba(168,100,26,.13);
+  --bad: #b23a2e; --bad-soft: rgba(178,58,46,.11);
+  --info: #2f6c9c; --info-soft: rgba(47,108,156,.12);
+  --rose: #b0476b; --rose-soft: rgba(176,71,107,.12); --vk: #3f6fa8;
+  --shadow: 0 1px 2px rgba(40,30,10,.06);
+  --sans: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --acc: var(--gold); --acc-soft: var(--gold-soft);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #07090d; --panel: #10131a; --panel2: #171b24; --line: #252a35;
+  --fg: #efe6d2; --muted: #a39a88; --dim: #6d675b;
+  --gold: #e8c366; --gold-soft: rgba(232,195,102,.12);
+  --ok: #55c98d; --ok-soft: rgba(85,201,141,.13);
+  --warn: #f0a24a; --warn-soft: rgba(240,162,74,.13);
+  --bad: #ef6b5e; --bad-soft: rgba(239,107,94,.13);
+  --info: #6fb3e8; --info-soft: rgba(111,179,232,.13);
+  --rose: #ec8fae; --rose-soft: rgba(236,143,174,.13); --vk: #84aee0;
+  --shadow: none; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #07090d; --panel: #10131a; --panel2: #171b24; --line: #252a35;
+  --fg: #efe6d2; --muted: #a39a88; --dim: #6d675b;
+  --gold: #e8c366; --gold-soft: rgba(232,195,102,.12);
+  --ok: #55c98d; --ok-soft: rgba(85,201,141,.13);
+  --warn: #f0a24a; --warn-soft: rgba(240,162,74,.13);
+  --bad: #ef6b5e; --bad-soft: rgba(239,107,94,.13);
+  --info: #6fb3e8; --info-soft: rgba(111,179,232,.13);
+  --rose: #ec8fae; --rose-soft: rgba(236,143,174,.13); --vk: #84aee0;
+  --shadow: none; color-scheme: dark }
+
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 15px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+button:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; border-radius: 8px; }
+.app { max-width: 460px; margin: 0 auto; min-height: 100%; display: flex; flex-direction: column; position: relative; }
+
+/* шапка */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg);
+  padding-block: 10px 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); }
+.proj { display: flex; align-items: center; gap: 9px; min-width: 0; padding: 4px 8px 4px 4px; }
+.i-sun { display: none; }
+:root[data-theme="dark"] .i-moon { display: none; } :root[data-theme="dark"] .i-sun { display: block; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .i-moon { display: none; } :root:not([data-theme="light"]) .i-sun { display: block; } }
+.mark { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--acc-soft); color: var(--acc);
+  font-family: var(--serif); font-weight: 700; font-size: 22px; }
+.proj b { font-family: var(--serif); font-size: 21px; font-weight: 700; letter-spacing: .01em; }
+.proj small { display: block; color: var(--muted); font-size: 12px; margin-top: -3px; }
+.top .sp { flex: 1; }
+.iconbtn { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; position: relative; }
+.iconbtn:hover { background: var(--panel2); }
+.iconbtn svg { width: 21px; height: 21px; }
+.dot { position: absolute; top: 6px; right: 6px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--bad); color: #fff;
+  font-size: 10px; font-weight: 700; display: grid; place-items: center; }
+.demo { margin: 8px max(16px, env(safe-area-inset-left, 0px)) 0; font-size: 12px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+.demo i { font-style: normal; padding: 1px 7px; border-radius: 6px; background: var(--warn-soft); color: var(--warn); font-weight: 700; }
+
+/* экран */
+main { flex: 1; padding-block: 12px calc(84px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.screen { display: flex; flex-direction: column; gap: 12px; }
+h1 { font-family: var(--serif); font-weight: 700; font-size: 28px; line-height: 1.05; margin: 2px 0 0; text-wrap: balance; }
+h2 { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 8px 0 0; font-weight: 700; }
+.sub { color: var(--muted); font-size: 13px; margin: -6px 0 0; }
+
+.chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; margin-inline: -2px; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; padding: 6px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); font-size: 13px; font-weight: 600; color: var(--muted); }
+.chip[aria-pressed="true"] { background: var(--acc-soft); border-color: transparent; color: var(--acc); }
+.chip .n { font-family: var(--mono); font-size: 11px; margin-left: 4px; opacity: .8; }
+
+/* список сообщений */
+.list { display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+.row { display: grid; grid-template-columns: 34px minmax(0,1fr) auto; gap: 10px; padding: 12px; text-align: left; border-top: 1px solid var(--line); align-items: start; }
+.row:first-child { border-top: 0; }
+.row:hover { background: var(--panel2); }
+.row.unread .who b::after { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--acc); margin-left: 6px; vertical-align: 2px; }
+.ch { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; font-weight: 800; font-size: 12px; }
+.ch svg { width: 18px; height: 18px; }
+.c-mamay { background: var(--gold-soft); color: var(--gold); } .c-beta { background: var(--warn-soft); color: var(--warn); }
+.c-mail { background: var(--info-soft); color: var(--info); } .c-tg { background: var(--info-soft); color: var(--info); }
+.c-yt { background: var(--bad-soft); color: var(--bad); } .c-tt { background: var(--rose-soft); color: var(--rose); } .c-site { background: var(--ok-soft); color: var(--ok); } .c-vk { background: var(--info-soft); color: var(--vk); }
+.head { display: flex; gap: 10px; align-items: center; min-width: 0; }
+.who { display: flex; gap: 6px; align-items: baseline; min-width: 0; }
+.who b { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 0 1 auto; max-width: 70%; }
+.who span { color: var(--dim); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1 1 0; }
+.txt { font-size: 14px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 1px; }
+.meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.time { color: var(--dim); font-size: 12px; font-family: var(--mono); white-space: nowrap; }
+.tag { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: var(--panel2); color: var(--muted); }
+.t-bug { background: var(--bad-soft); color: var(--bad); } .t-idea { background: var(--ok-soft); color: var(--ok); }
+.t-q { background: var(--info-soft); color: var(--info); } .t-new { background: var(--acc-soft); color: var(--acc); }
+.t-beta { background: var(--warn-soft); color: var(--warn); } .t-neg { background: var(--bad-soft); color: var(--bad); }
+.t-pos { background: var(--ok-soft); color: var(--ok); }
+.t-react { background: var(--panel2); color: var(--muted); }
+.fstep.wide { grid-template-columns: 150px minmax(0,1fr) 62px; }
+.mrow { display: grid; grid-template-columns: minmax(0,1fr) 40px 62px; gap: 8px; align-items: center; padding: 6px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.mrow small { display: block; color: var(--muted); font-size: 12px; } .mrow b { text-align: right; font-variant-numeric: tabular-nums; }
+.mrow4 { display: flex; flex-direction: column; gap: 4px; text-align: left; padding: 8px 0; border-top: 1px solid var(--line); width: 100%; }
+.mrow4 .head { gap: 8px; } .mrow4 .ch { width: 26px; height: 26px; border-radius: 8px; flex: none; } .mrow4 .ch svg { width: 14px; height: 14px; }
+.mrow4 .ctitle { font-size: 13.5px; flex: 1; min-width: 0; } .mtot { font-size: 14px; font-variant-numeric: tabular-nums; }
+.mnums { display: flex; flex-wrap: wrap; gap: 2px 12px; font-size: 11.5px; color: var(--muted); padding-left: 34px; } .mnums b { color: var(--fg); font-variant-numeric: tabular-nums; }
+.deal { display: flex; flex-direction: column; gap: 6px; text-align: left; padding: 8px 0; border-top: 1px solid var(--line); width: 100%; }
+.dsteps { display: flex; flex-wrap: wrap; gap: 4px; } .dsteps span { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: var(--panel2); color: var(--dim); }
+.dsteps span.done { background: var(--ok-soft); color: var(--ok); }
+.prog { height: 6px; border-radius: 3px; background: var(--panel2); overflow: hidden; } .prog i { display: block; height: 100%; background: var(--acc); }
+.rxrow { display: flex; flex-wrap: wrap; gap: 6px; }
+.rxc { padding: 4px 9px; border-radius: 10px; background: var(--panel2); font-size: 14px; }
+.rxc b { font-size: 12.5px; font-variant-numeric: tabular-nums; } .rxc.neg { background: var(--bad-soft); }
+.chain { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: 2px; text-align: center; background: var(--panel2); border-radius: 10px; padding: 7px 2px; }
+.chain div { position: relative; } .chain div + div::before { content: "›"; position: absolute; left: -4px; top: 1px; color: var(--dim); }
+.chain b { display: block; font-size: 14px; font-variant-numeric: tabular-nums; } .chain span { font-size: 9.5px; color: var(--dim); line-height: 1.1; display: block; }
+.linkline { display: flex; gap: 8px; align-items: center; justify-content: space-between; background: var(--acc-soft); border-radius: 10px; padding: 6px 6px 6px 10px; }
+.linkline span { font-family: var(--mono); font-size: 12.5px; color: var(--acc); overflow-wrap: anywhere; } .linkline .btn { padding: 7px 10px; font-size: 12.5px; flex: none; }
+.lrow { display: flex; flex-direction: column; gap: 6px; padding-top: 8px; border-top: 1px solid var(--line); }
+.tpls button[aria-pressed="true"] { background: var(--acc-soft); color: var(--acc); }
+.hidden-note { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); }
+.hidden-note button { color: var(--acc); font-weight: 700; font-size: 12.5px; }
+
+/* карточка */
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 14px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 10px; }
+.back { display: inline-flex; align-items: center; gap: 4px; color: var(--muted); font-weight: 600; font-size: 14px; padding: 4px 0; align-self: flex-start; }
+.msg { font-size: 15.5px; line-height: 1.55; }
+.kv { display: grid; grid-template-columns: auto minmax(0,1fr); gap: 4px 12px; font-size: 13px; }
+.kv dt { color: var(--muted); } .kv dd { margin: 0; font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; }
+.voice { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 12px; background: var(--panel2); }
+.play { width: 36px; height: 36px; border-radius: 50%; background: var(--acc); color: var(--bg); display: grid; place-items: center; flex: none; }
+.wave { flex: 1; height: 28px; display: flex; align-items: center; gap: 2px; min-width: 0; }
+.wave i { flex: 1; background: var(--acc); opacity: .55; border-radius: 2px; }
+.voice .time { color: var(--muted); }
+.shot { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: var(--panel2); }
+.shot svg { display: block; width: 100%; height: auto; }
+.shot figcaption { font-size: 12px; color: var(--muted); padding: 8px 10px; }
+.ai { border-left: 0; background: var(--acc-soft); border-radius: 12px; padding: 10px 12px; font-size: 13.5px; }
+.ai b { color: var(--acc); }
+.labels { display: flex; flex-wrap: wrap; gap: 6px; }
+.labels button { font-size: 12px; font-weight: 700; padding: 4px 9px; border-radius: 8px; border: 1px dashed var(--line); color: var(--muted); }
+.labels button.on { border-style: solid; border-color: transparent; background: var(--acc-soft); color: var(--acc); }
+details { font-size: 13px; } summary { cursor: pointer; color: var(--muted); font-weight: 600; }
+details pre { font-family: var(--mono); font-size: 11.5px; background: var(--panel2); padding: 10px; border-radius: 10px; overflow-x: auto; white-space: pre; margin: 8px 0 0; }
+.tpls { display: flex; gap: 6px; flex-wrap: wrap; }
+.tpls button { font-size: 12.5px; padding: 6px 10px; border-radius: 9px; background: var(--panel2); font-weight: 600; }
+input[type="email"] { width: 100%; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--fg); padding: 10px 12px; font: inherit; font-size: 14px; }
+.chips.sub { margin-top: -4px; }
+.chrow.boxrow { grid-template-columns: 34px minmax(0,1fr); } .boxrow .addr { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .boxrow .pill { display: inline-block; margin-top: 4px; } .chips.sub .chip { font-size: 12px; padding: 5px 10px; }
+textarea { width: 100%; min-height: 92px; resize: vertical; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--fg); padding: 10px 12px; font: inherit; font-size: 14px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 11px 16px; border-radius: 12px; font-weight: 700; font-size: 14.5px; }
+.btn.pri { background: var(--acc); color: var(--bg); } .btn.sec { background: var(--panel2); }
+.btn.okb { background: var(--ok-soft); color: var(--ok); } .btn.badb { background: var(--bad-soft); color: var(--bad); }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; } .actions .btn { flex: 1 1 auto; }
+.note { font-size: 12.5px; color: var(--muted); }
+
+/* темы */
+.theme { display: grid; grid-template-columns: 52px minmax(0,1fr) auto; gap: 12px; padding: 12px; border-top: 1px solid var(--line); text-align: left; align-items: center; }
+.theme:first-child { border-top: 0; } .theme:hover { background: var(--panel2); }
+.votes { text-align: center; } .votes b { font-family: var(--sans); font-weight: 800; font-size: 26px; line-height: 1; display: block; color: var(--acc); font-variant-numeric: lining-nums tabular-nums; }
+.votes span { font-size: 11px; color: var(--dim); }
+.votes em { display: block; font-style: normal; font-size: 11px; font-weight: 800; margin-top: 3px; color: var(--ok); }
+.votes em.zero { color: var(--dim); font-weight: 600; }
+.t-hot { background: var(--warn-soft); color: var(--warn); } .t-cold { background: var(--panel2); color: var(--dim); }
+.theme .meta { margin-top: 5px; }
+.spark { display: flex; align-items: flex-end; gap: 2px; height: 18px; margin-top: 6px; }
+.spark i { flex: 1; background: var(--acc); border-radius: 2px 2px 0 0; min-height: 2px; opacity: .45; }
+.spark i.now { opacity: 1; }
+.spark i.hot { background: var(--warn); opacity: 1; }
+.sparkl { display: flex; justify-content: space-between; font-size: 10px; color: var(--dim); margin-top: 2px; font-variant-numeric: tabular-nums; }
+.chart svg .tap { cursor: pointer; }
+.dayinfo { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--line); padding-top: 10px; }
+.dayhead { display: flex; gap: 8px; align-items: center; }
+.when { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.when div { background: var(--panel2); border-radius: 10px; padding: 8px; }
+.when span { display: block; font-size: 11.5px; color: var(--muted); } .when b { font-size: 14px; font-variant-numeric: tabular-nums; }
+.adate { margin-left: auto; color: var(--dim); font-size: 12px; font-family: var(--mono); }
+.fresh-sep { font-size: 12px; font-weight: 700; color: var(--muted); margin-top: 4px; }
+.seg.two { grid-template-columns: repeat(3, 1fr); }
+/* каналы */
+.conn { width: 100%; text-align: left; }
+.conn:hover { background: var(--panel2); }
+.pill { font-size: 11.5px; font-weight: 800; padding: 3px 8px; border-radius: 7px; white-space: nowrap; font-family: var(--sans); }
+.p-on { background: var(--ok-soft); color: var(--ok); } .p-off { background: var(--panel2); color: var(--dim); }
+.p-man { background: var(--warn-soft); color: var(--warn); } .p-pause { background: var(--info-soft); color: var(--info); }
+.steps { margin: 0; padding-left: 20px; font-size: 14px; display: flex; flex-direction: column; gap: 6px; }
+.gives { display: flex; flex-wrap: wrap; gap: 6px; }
+.sheet h3 { margin: 0; font-size: 17px; }
+.sheet .head { margin-bottom: 4px; }
+.theme h3 { margin: 0; font-size: 14.5px; line-height: 1.3; }
+.bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; margin-top: 7px; background: var(--panel2); }
+.bar i { display: block; height: 100%; }
+.st { font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 7px; white-space: nowrap; }
+.s-new { background: var(--acc-soft); color: var(--acc); } .s-work { background: var(--info-soft); color: var(--info); }
+.s-done { background: var(--ok-soft); color: var(--ok); } .s-no { background: var(--panel2); color: var(--dim); }
+select { font: inherit; font-size: 13px; font-weight: 600; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); padding: 6px 10px; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 5px; background: var(--c); vertical-align: -1px; }
+.authors { display: flex; flex-direction: column; gap: 6px; }
+.author { display: flex; align-items: center; gap: 8px; font-size: 13px; } .author .ch { width: 26px; height: 26px; border-radius: 8px; font-size: 10px; }
+.author .ch svg { width: 14px; height: 14px; }
+.preview { background: var(--panel2); border-radius: 12px; padding: 12px; font-size: 14px; }
+
+/* статистика */
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border-radius: 12px; background: var(--panel2); }
+.seg.four { grid-template-columns: repeat(4, 1fr); }
+.seg.five { grid-template-columns: repeat(3, 1fr); }
+.sbar { display: flex; height: 22px; border-radius: 6px; overflow: hidden; } .sbar i { display: block; height: 100%; background: var(--acc); opacity: .85; } .sbar i.fem { background: var(--rose); }
+.fstep.num b small { display: block; font-size: 10.5px; color: var(--muted); font-weight: 600; line-height: 1.1; }
+.fstep.num { grid-template-columns: 112px minmax(0,1fr) 52px; }
+.agenum { display: flex; gap: 12px; font-size: 11.5px; color: var(--muted); padding-left: 120px; margin: -3px 0 3px; }
+.agenum .am::before, .agenum .af::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 2px; margin-right: 4px; background: var(--acc); }
+.agenum .af::before { background: var(--rose); }
+.hours { display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px; } .hours i { height: 26px; border-radius: 3px; background: var(--acc); }
+.hlab { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--dim); }
+.tips { margin: 0; padding-left: 18px; font-size: 13.5px; display: flex; flex-direction: column; gap: 4px; }
+b.up { color: var(--ok); } b.down { color: var(--bad); }
+.ctitle { display: block; font-size: 14px; line-height: 1.3; }
+.seg button { padding: 8px 4px; border-radius: 9px; font-weight: 700; font-size: 13px; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--panel); color: var(--fg); box-shadow: var(--shadow); }
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+.kpi span { font-size: 12px; color: var(--muted); display: block; }
+.kpi b { font-family: var(--mono); font-size: 22px; font-variant-numeric: tabular-nums; display: block; margin-top: 2px; }
+.kpi em { font-style: normal; font-size: 12px; font-weight: 700; }
+.up { color: var(--ok); } .down { color: var(--bad); }
+.chart svg { width: 100%; height: auto; display: block; }
+.chart text { fill: var(--muted); font-family: var(--sans); font-size: 10px; }
+.funnel { display: flex; flex-direction: column; gap: 7px; }
+.fstep { display: grid; grid-template-columns: 112px minmax(0,1fr) 46px; gap: 8px; align-items: center; font-size: 13px; }
+.fstep .fb { height: 22px; border-radius: 6px; background: var(--acc); opacity: .85; }
+.fstep b { font-family: var(--mono); font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; }
+.chrow { display: grid; grid-template-columns: 34px minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 10px 12px; border-top: 1px solid var(--line); }
+.chrow:first-child { border-top: 0; } .chrow small { color: var(--muted); display: block; font-size: 12px; }
+.chrow b { font-family: var(--mono); font-size: 14px; }
+.report p { margin: 0; font-size: 14px; } .report ul { margin: 0; padding-left: 18px; font-size: 14px; display: flex; flex-direction: column; gap: 4px; }
+
+/* нижняя панель */
+nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--panel); border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+nav.tabs .in { max-width: 460px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); }
+nav.tabs button { padding: 9px 2px 10px; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 700; color: var(--dim); position: relative; }
+nav.tabs button svg { width: 22px; height: 22px; }
+nav.tabs button[aria-current="page"] { color: var(--acc); }
+nav.tabs .badge { position: absolute; top: 5px; left: calc(50% + 6px); background: var(--acc); color: var(--bg); font-size: 10px; font-weight: 800; padding: 0 5px; border-radius: 8px; line-height: 16px; }
+
+/* листы и уведомление */
+.sheet-bg { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 9; display: flex; align-items: flex-end; justify-content: center; }
+.sheet { width: 100%; max-width: 460px; background: var(--panel); border-radius: 20px 20px 0 0; padding: 14px max(16px, env(safe-area-inset-right, 0px)) calc(18px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); display: flex; flex-direction: column; gap: 8px; max-height: 80vh; overflow-y: auto; }
+.grab { width: 40px; height: 4px; border-radius: 2px; background: var(--line); align-self: center; margin-bottom: 4px; }
+.prow { display: grid; grid-template-columns: 38px minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 10px; border-radius: 12px; text-align: left; }
+.prow:hover { background: var(--panel2); } .prow .mark { width: 38px; height: 38px; }
+.prow small { display: block; color: var(--muted); font-size: 12.5px; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(80px + env(safe-area-inset-bottom, 0px)); z-index: 10; background: var(--fg); color: var(--bg);
+  padding: 10px 14px; border-radius: 12px; font-size: 13.5px; font-weight: 600; max-width: calc(100% - 32px); text-align: center; }
+.empty { text-align: center; padding: 26px 16px; color: var(--muted); }
+.empty b { display: block; color: var(--fg); font-size: 16px; margin-bottom: 4px; }
+@media (prefers-reduced-motion: no-preference) { .screen { animation: in .18s ease-out; } @keyframes in { from { opacity: .4; transform: translateY(4px); } } }
+</style>
+
+<div class="app" id="app">
+  <header class="top">
+    <div class="proj">
+      <span class="mark">M</span>
+      <span><b>MAMAY</b><small>пульт владельца</small></span>
+    </div>
+    <span class="sp"></span>
+    <button class="iconbtn" id="themeBtn" aria-label="Светлая или тёмная тема">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/></svg>
+    </button>
+    <button class="iconbtn" id="bellBtn" aria-label="Уведомления">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+      <span class="dot">3</span>
+    </button>
+  </header>
+  <div class="demo"><i>Макет</i> все сообщения, имена и цифры — примеры</div>
+  <main id="main"></main>
+</div>
+
+<nav class="tabs" aria-label="Разделы">
+  <div class="in">
+    <button data-tab="inbox" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 13l2.5-7h11L20 13v5H4z"/><path d="M4 13h5l1 2h4l1-2h5"/></svg>Входящие<span class="badge" id="inboxBadge">5</span></button>
+    <button data-tab="themes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6h14M5 12h14M5 18h9"/></svg>Темы</button>
+    <button data-tab="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 19V11M12 19V5M19 19v-6"/></svg>Статистика</button>
+    <button data-tab="money"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M14.8 9.2c-.5-.9-1.6-1.4-2.8-1.4-1.6 0-2.8.8-2.8 2s1.2 1.7 2.8 2.1 2.8.9 2.8 2.1-1.2 2.1-2.8 2.1c-1.3 0-2.4-.5-2.9-1.5M12 6.3v1.5M12 16.7v1.5"/></svg>Доход</button>
+    <button data-tab="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="6" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="18" cy="12" r="1.3"/></svg>Ещё</button>
+  </div>
+</nav>
+
+<script>
+(function () {
+  "use strict";
+  var I = {
+    mamay: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 18V7l4 6 4-6 4 6 4-6v11"/></svg>',
+    beta: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/></svg>',
+    mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg>',
+    tg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M21 4L3 11l6 2 2 6 3-4 5 4z"/><path d="M9 13l9-7"/></svg>',
+    yt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M10.5 9.5v5l4-2.5z" fill="currentColor"/></svg>',
+    tt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 4v10.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 4c.5 2.5 2.3 4 5 4"/></svg>',
+    vk: '<svg viewBox="0 0 24 24"><text x="12" y="16.3" text-anchor="middle" font-size="10.5" font-weight="800" font-family="Manrope, sans-serif" fill="currentColor">VK</text></svg>',
+    site: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 3 2.5 14 0 17M12 3.5c-2.5 3-2.5 14 0 17"/></svg>'
+  };
+  var CH = { mamay: "MAMAY", beta: "Бета", mail: "Почта", tg: "Telegram", vk: "ВК", yt: "YouTube", tt: "TikTok", site: "Сайт" };
+  var KIND = { bug: ["ошибка", "t-bug"], idea: ["идея", "t-idea"], q: ["вопрос", "t-q"], ux: ["неудобство", "t-neg"], praise: ["похвала", "t-pos"], lead: ["заявка", "t-pos"], react: ["реакция", "t-react"] };
+
+  var MSGS = [
+    { id: 1, ch: "beta", who: "M-48213", sub: "бета-тестер", time: "10:42", unread: true, kind: "bug", tone: "негатив", area: "Терминал", theme: 2, uniq: false,
+      text: "При резком движении лента сделок в стакане замирает секунды на три, потом догоняет пачкой. Записал голосом и приложил снимок.",
+      voice: "0:42", shot: "mamay", tech: true },
+    { id: 2, ch: "mamay", who: "M-10577", sub: "пользователь", time: "09:58", unread: true, kind: "idea", tone: "нейтрально", area: "Терминал", theme: 1, uniq: false,
+      text: "Сделайте горячие клавиши на покупку и продажу прямо из стакана, как в другом терминале. Прикладываю снимок, как там.", shot: "other" },
+    { id: 3, ch: "yt", who: "Arb Trader", sub: "под роликом «Считаем чистую прибыль связки»", time: "09:31", unread: true, kind: "q", tone: "нейтрально", area: "Обучение", theme: 4, uniq: false,
+      text: "На 3:12 не понял, откуда взялись 0,25 % после всех комиссий. Можно подробнее про проскальзывание?" },
+    { id: 4, ch: "mail", box: "support", who: "a.petrov@example.com", sub: "support@mamaytrading.com", time: "08:15", unread: true, kind: "q", tone: "негатив", area: "Подписка", theme: 3, uniq: false,
+      text: "Вставил ключ Pro, пишет «ключ не для этого компьютера». Покупал вчера. Что делать?" },
+    { id: 5, ch: "tg", who: "@trader_kz", sub: "комментарий к посту «Связка дня»", time: "вчера", unread: true, kind: "q", tone: "нейтрально", area: "Арбитраж", theme: 4, uniq: false,
+      text: "А фандинг в этой связке учли? Он же завтра сменит знак." },
+    { id: 6, ch: "beta", who: "M-51009", sub: "бета-тестер", time: "вчера", kind: "idea", tone: "позитив", area: "Обучение", theme: null, uniq: true,
+      text: "Было бы круто, если бы наставник сам предлагал урок, когда видит, что я третий раз ошибаюсь со стопом." },
+    { id: 7, ch: "tt", who: "kripta.mama", sub: "из выгрузки комментариев", time: "вчера", kind: "q", tone: "нейтрально", area: "Подписка", theme: null, uniq: false,
+      text: "А сколько стоит и есть ли на мак?" },
+    { id: 8, ch: "site", who: "Заявка на бету", sub: "форма сайта", time: "вчера", kind: "lead", tone: "позитив", area: "Бета", theme: null, uniq: false,
+      text: "Трейдер: крипто-арбитраж. Биржи: Bybit, OKX, Gate. Хочу подключить своего ИИ-агента." },
+    { id: 9, ch: "mamay", who: "M-20761", sub: "пользователь", time: "18.10", kind: "praise", tone: "позитив", area: "Скринеры", theme: null, uniq: false,
+      text: "«Та самая монета» нашла ICNT за час до роста. Спасибо, наконец-то честный скринер." },
+    { id: 10, ch: "tg", who: "@scalp_ivan", sub: "комментарий к посту «Обновление 5.8»", time: "18.10", kind: "idea", tone: "нейтрально", area: "Терминал", theme: 1, uniq: false,
+      text: "Плюс за горячие клавиши. Ещё бы отмену всех заявок одной кнопкой." }
+  ];
+
+  /* Голоса темы хранятся по дням: d — {дата: голосов} за последние 30 дней (20.09–19.10), older — 4 недели до этого.
+     Из них считаются «сегодня / 3 / 7 / 30 дней», недели, всплески и затухание.
+     authors — [канал, автор, дата голоса]. EVENTS — наш контент и обновления: с ними ИИ сверяет всплески. */
+  function pad(n) { return ("0" + n).slice(-2); }
+  var DAYS = Array.from({ length: 30 }, function (_, i) { var d = new Date(2026, 8, 20 + i); return pad(d.getDate()) + "." + pad(d.getMonth() + 1); });
+  var TODAY = DAYS[29];
+  function dname(d) { return d === TODAY ? "сегодня" : d === DAYS[28] ? "вчера" : d; }
+  var WEEKS = ["23.08", "30.08", "06.09", "13.09", "22.09", "29.09", "06.10", "13.10"];
+  var EVENTS = [
+    { date: "01.10", ch: "yt", text: "ролик «Обзор терминала: первые 10 минут»", item: "yt3" },
+    { date: "08.10", ch: "yt", text: "Shorts «MAMAY за 60 секунд»", item: "yt2" },
+    { date: "12.10", ch: "tg", text: "пост «Как мы считаем чистую прибыль»", item: "tg3" },
+    { date: "14.10", ch: "yt", text: "ролик «Считаем чистую прибыль связки»", item: "yt1" },
+    { date: "16.10", ch: "tt", text: "ролик «Арбитраж за 15 секунд»", item: "tt1" },
+    { date: "17.10", ch: "tg", text: "пост «Обновление 5.8: что нового»", item: "tg2" },
+    { date: "18.10", ch: "mamay", text: "обновление MAMAY 5.8.1", item: null },
+    { date: "18.10", ch: "tg", text: "пост «Связка дня: ICNT Bybit → Gate»", item: "tg1" },
+    { date: "18.10", ch: "vk", text: "пост «Связка дня» в сообществе ВК", item: "vk1" },
+    { date: "09.10", ch: "vk", text: "клип «MAMAY за 60 секунд»", item: "vk2" }
+  ];
+  var THEMES = [
+    { id: 1, title: "Горячие клавиши и торговля из стакана", area: "Терминал", status: "work", split: { mamay: 7, tg: 6, yt: 3 }, first: "25.08",
+      older: [2, 1, 0, 1], d: { "25.09": 1, "03.10": 1, "05.10": 1, "08.10": 1, "10.10": 1, "15.10": 1, "17.10": 4, "18.10": 1, "19.10": 1 },
+      authors: [["mamay", "M-10577", "19.10"], ["tg", "@scalp_ivan", "18.10"], ["tg", "@dom_trader", "17.10"], ["tg", "@hot_keys", "17.10"], ["tg", "@fast_click", "17.10"], ["mamay", "M-40211", "17.10"],
+        ["yt", "Scalp Pro", "15.10"], ["mamay", "M-33410", "10.10"], ["yt", "Arb Kazan", "08.10"], ["mamay", "M-10012", "05.10"]] },
+    { id: 2, title: "Лента сделок замирает при резком движении", area: "Терминал", status: "new", split: { beta: 7, mamay: 2 }, first: "18.10",
+      older: [0, 0, 0, 0], d: { "18.10": 2, "19.10": 7 },
+      authors: [["beta", "M-48213", "19.10"], ["beta", "M-51009", "19.10"], ["beta", "M-50331", "19.10"], ["beta", "M-49870", "19.10"], ["beta", "M-52114", "19.10"], ["beta", "M-50002", "19.10"], ["beta", "M-51777", "19.10"], ["mamay", "M-22018", "18.10"], ["mamay", "M-30440", "18.10"]] },
+    { id: 4, title: "Объяснить, откуда берётся чистая прибыль связки", area: "Обучение", status: "new", split: { yt: 6, tg: 3, vk: 1 }, first: "08.09",
+      older: [0, 0, 1, 1], d: { "02.10": 1, "14.10": 3, "15.10": 1, "18.10": 1, "19.10": 2 },
+      authors: [["yt", "Arb Trader", "19.10"], ["vk", "Андрей К.", "19.10"], ["tg", "@trader_kz", "18.10"], ["yt", "Spread Hunter", "15.10"], ["yt", "Kirill R.", "14.10"], ["yt", "arb_ninja", "14.10"], ["tg", "@net_profit", "14.10"], ["yt", "Lena Crypto", "02.10"]] },
+    { id: 3, title: "Ключ Pro «не для этого компьютера»", area: "Подписка", status: "new", split: { mail: 3, mamay: 1 }, first: "04.10",
+      older: [0, 0, 0, 0], d: { "04.10": 1, "11.10": 1, "17.10": 1, "19.10": 1 },
+      authors: [["mail", "a.petrov@example.com", "19.10"], ["mail", "o.k@example.com", "17.10"], ["mamay", "M-38120", "11.10"], ["mail", "s.v@example.com", "04.10"]] },
+    { id: 5, title: "Версия для macOS", area: "Платформа", status: "no", split: { tt: 5, yt: 3, mail: 3 }, first: "24.08",
+      older: [4, 3, 2, 1], d: { "25.09": 1 },
+      authors: [["yt", "mac_user", "25.09"], ["tt", "kripta.mama", "15.09"], ["mail", "m.ivanova@example.com", "03.09"]] },
+    { id: 6, title: "Тёмная тема графика", area: "Терминал", status: "done", ver: "5.6.0", split: { mamay: 6 }, first: "24.08",
+      older: [3, 2, 1, 0], d: {},
+      authors: [["mamay", "M-10012", "10.09"], ["mamay", "M-29840", "02.09"]] }
+  ];
+  function sum(a) { return a.reduce(function (x, y) { return x + y; }, 0); }
+  THEMES.forEach(function (t) {
+    var v = DAYS.map(function (d) { return t.d[d] || 0; }); t.days = v;
+    t.weeks = [t.older[0], t.older[1], t.older[2], t.older[3] + v[0] + v[1], sum(v.slice(2, 9)), sum(v.slice(9, 16)), sum(v.slice(16, 23)), sum(v.slice(23, 30))];
+    t.votes = sum(t.older) + sum(v); t.d1 = v[29]; t.d3 = sum(v.slice(27)); t.d7 = sum(v.slice(23)); t.d30 = sum(v);
+    var li = -1; v.forEach(function (x, i) { if (x) li = i; }); t.last = li < 0 ? "до 20.09" : dname(DAYS[li]);
+    t.trend = t.d7 >= 3 && t.d7 / t.votes >= 0.35 ? "hot" : t.d30 <= 1 && t.votes >= 5 ? "cold" : "";
+  });
+  /* Всплеск дня: 3+ голоса, или 2+ при том, что в среднем голосов меньше одного в неделю. */
+  function isSpike(t, i) { var v = t.days[i]; return v >= 3 || (v >= 2 && t.votes / 8 < 1.5); }
+  function eventsNear(i) { return EVENTS.filter(function (e) { return e.date === DAYS[i] || e.date === DAYS[i - 1]; }); }
+  var CHC = { mamay: "var(--gold)", beta: "var(--warn)", mail: "var(--info)", tg: "#4fa3d9", vk: "var(--vk)", yt: "var(--bad)", tt: "var(--rose)", site: "var(--ok)" };
+  var ST = { new: ["новая", "s-new"], work: ["в работе", "s-work"], done: ["вышло", "s-done"], no: ["отклонена", "s-no"] };
+
+  var state = { tab: "inbox", filter: "all", sort: "votes", period: "all", stat: "inbox", audf: "all", per: "d7", grain: "day", cf: "all", cs: "date", chan: null, item: null };
+  var main = document.getElementById("main");
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function chIcon(ch) { return '<span class="ch c-' + ch + '" title="' + CH[ch] + '">' + I[ch] + "</span>"; }
+  function toast(t) {
+    var o = document.querySelector(".toast"); if (o) o.remove();
+    var d = document.createElement("div"); d.className = "toast"; d.setAttribute("role", "status"); d.textContent = t; document.body.appendChild(d);
+    setTimeout(function () { d.remove(); }, 2600);
+  }
+  function setTab(t) {
+    state.tab = t; if (t === "stats") state.chan = state.item = null;
+    document.querySelectorAll("nav.tabs button").forEach(function (b) { if (b.dataset.tab === t) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
+    render();
+  }
+
+  /* ───── Входящие ───── */
+  var FILTERS = [["all", "Все"], ["noreply", "Без ответа"], ["uniq", "Новое и уникальное"], ["react", "Короткие реакции"], ["beta", "Бета"], ["mamay", "MAMAY"], ["mail", "Почта"], ["tg", "Telegram"], ["vk", "ВК"], ["yt", "YouTube"], ["tt", "TikTok"], ["site", "Сайт"]];
+  function match(m, f) {
+    if (f === "react") return m.kind === "react";
+    if (f.indexOf("c:") === 0) return m.content === f.slice(2);
+    if (m.kind === "react") return false;
+    if (f === "all") return true; if (f === "noreply") return !!m.unread; if (f === "uniq") return m.uniq;
+    if (f.indexOf("mail:") === 0) return m.ch === "mail" && m.box === f.slice(5);
+    return m.ch === f;
+  }
+  function inbox() {
+    var items = MSGS.filter(function (m) { return match(m, state.filter); });
+    var byContent = state.filter.indexOf("c:") === 0 ? CONTENT.find(function (c) { return c.id === state.filter.slice(2); }) : null;
+    var chips = (byContent ? '<button class="chip" data-f="all" aria-pressed="true">' + (byContent.ch === "tg" ? "Пост" : "Ролик") + ": " + esc(byContent.title) + " ✕</button>" : "") + FILTERS.map(function (f) {
+      var n = MSGS.filter(function (m) { return match(m, f[0]); }).length;
+      return '<button class="chip" data-f="' + f[0] + '" aria-pressed="' + (state.filter === f[0] || (f[0] === "mail" && state.filter.indexOf("mail:") === 0)) + '">' + f[1] + '<span class="n">' + n + "</span></button>";
+    }).join("");
+    var rows = items.map(function (m) {
+      var k = KIND[m.kind];
+      return '<button class="row' + (m.unread ? " unread" : "") + '" data-msg="' + m.id + '">' + chIcon(m.ch) +
+        '<span style="min-width:0"><span class="who"><b>' + esc(m.who) + "</b><span>" + esc(m.sub) + '</span></span><span class="txt">' + esc(m.text) + '</span>' +
+        '<span class="meta"><span class="tag ' + k[1] + '">' + k[0] + "</span>" + (m.ch === "beta" ? '<span class="tag t-beta">бета</span>' : "") +
+        (m.voice ? '<span class="tag">голос ' + m.voice + "</span>" : "") + (m.shot ? '<span class="tag">снимок</span>' : "") +
+        (m.uniq ? '<span class="tag t-new">уникальное</span>' : "") + (m.pic ? '<span class="tag">ИИ: ' + esc(m.pic) + "</span>" : "") + "</span></span>" +
+        '<span class="time">' + m.time + "</span></button>";
+    }).join("");
+    main.innerHTML = '<section class="screen"><h1>Входящие</h1><p class="sub">Всё, что пишут о MAMAY: программа, почта, Telegram, ВК, YouTube, TikTok, сайт</p>' +
+      '<div class="chips" role="group" aria-label="Фильтр">' + chips + "</div>" +
+      (state.filter === "mail" || state.filter.indexOf("mail:") === 0 ? '<div class="chips sub" role="group" aria-label="Ящик">' + [["mail", "Все ящики"]].concat(BOXES.map(function (b) { return ["mail:" + b.box, b.box + "@"]; })).map(function (x) { var n = MSGS.filter(function (m) { return match(m, x[0]); }).length; return '<button class="chip" data-f="' + x[0] + '" aria-pressed="' + (state.filter === x[0]) + '">' + x[1] + '<span class="n">' + n + "</span></button>"; }).join("") + "</div>" : "") +
+      (state.filter !== "react" && state.filter.indexOf("c:") !== 0 ? '<div class="hidden-note"><span>Скрыто коротких реакций: ' + MSGS.filter(function (m) { return m.kind === "react"; }).length + " — смайлы, «+», картинки без текста</span><button data-f=\"react\">Показать</button></div>" : "") +
+      (items.length ? '<div class="list">' + rows + "</div>" : '<div class="card empty"><b>Здесь пусто</b>По этому фильтру сообщений нет.</div>') + "</section>";
+  }
+
+  function shotSvg(kind) {
+    if (kind === "other") {
+      return '<svg viewBox="0 0 320 150" role="img" aria-label="Снимок стакана другого терминала"><rect width="320" height="150" fill="#1b1f27"/>' +
+        '<rect x="10" y="10" width="140" height="130" rx="6" fill="#232834"/>' +
+        Array.from({ length: 8 }, function (_, i) { return '<rect x="18" y="' + (18 + i * 15) + '" width="' + (40 + (i * 23) % 70) + '" height="9" rx="2" fill="' + (i < 4 ? "#c4524a" : "#3d9b6d") + '" opacity=".75"/>'; }).join("") +
+        '<rect x="160" y="10" width="150" height="40" rx="6" fill="#2b3140"/><text x="172" y="35" fill="#e8c366" font-size="12" font-family="sans-serif">F1 купить · F2 продать</text>' +
+        '<rect x="160" y="58" width="72" height="26" rx="6" fill="#3d9b6d"/><rect x="238" y="58" width="72" height="26" rx="6" fill="#c4524a"/></svg>';
+    }
+    return '<svg viewBox="0 0 320 150" role="img" aria-label="Снимок экрана MAMAY: стакан и лента"><rect width="320" height="150" fill="#0d1016"/>' +
+      '<path d="M10 110 L40 96 L70 102 L100 70 L130 78 L160 40 L190 58 L220 52" fill="none" stroke="#e8c366" stroke-width="2"/>' +
+      '<rect x="235" y="10" width="75" height="130" rx="6" fill="#161b24"/>' +
+      Array.from({ length: 9 }, function (_, i) { return '<rect x="242" y="' + (16 + i * 13) + '" width="' + (20 + (i * 17) % 44) + '" height="8" rx="2" fill="' + (i % 3 === 0 ? "#ef6b5e" : "#55c98d") + '" opacity=".7"/>'; }).join("") +
+      '<rect x="230" y="62" width="85" height="26" fill="none" stroke="#f0a24a" stroke-width="2" stroke-dasharray="4 3"/>' +
+      '<rect x="12" y="12" width="70" height="18" rx="4" fill="#232a36"/><rect x="88" y="12" width="70" height="18" rx="4" fill="#232a36"/>' +
+      '<rect x="12" y="122" width="96" height="16" rx="4" fill="#232a36"/><rect x="14" y="124" width="92" height="12" rx="3" fill="#000" opacity=".85"/>' +
+      '<text x="20" y="133" fill="#a39a88" font-size="8" font-family="sans-serif">баланс закрашен</text></svg>';
+  }
+
+  function message(id) {
+    var m = MSGS.find(function (x) { return x.id === id; }); m.unread = false; badge();
+    var k = KIND[m.kind]; var th = THEMES.find(function (t) { return t.id === m.theme; });
+    var kinds = ["bug", "idea", "ux", "q", "praise"].map(function (key) { return '<button data-lab="' + key + '" class="' + (key === m.kind ? "on" : "") + '">' + KIND[key][0] + "</button>"; }).join("");
+    var wave = Array.from({ length: 38 }, function (_, i) { return '<i style="height:' + (20 + Math.abs(Math.sin(i * 1.7)) * 75).toFixed(0) + '%"></i>'; }).join("");
+    var tpl = m.ch === "mail" && m.box === "info" ? "Здравствуйте! Спасибо за интерес к MAMAY. Условия размещения рекламы пришлём в течение дня." : m.ch === "mail" ? "Здравствуйте! Ключ привязан к коду компьютера. Пришлите, пожалуйста, код из «Настройки → Подписка» — выпустим ключ заново."
+      : m.kind === "bug" ? "Спасибо, что сообщили! Передали разработчику, проверим и напишем, когда исправим."
+      : m.kind === "idea" ? "Спасибо за идею! Добавили её в общий список предложений — сообщим, когда примем решение."
+      : "Спасибо за вопрос! ";
+    main.innerHTML = '<section class="screen"><button class="back" data-back>‹ Входящие</button>' +
+      '<div class="card"><div class="head">' + chIcon(m.ch) + '<span style="min-width:0"><b style="display:block">' + esc(m.who) + '</b><span class="note">' + CH[m.ch] + " · " + esc(m.sub) + " · " + m.time + "</span></span></div>" +
+      '<div class="msg">' + esc(m.text) + "</div>" +
+      (m.content ? '<button class="btn sec" data-gotoitem="' + m.content + '">Статистика этого ' + (m.ch === "tg" ? "поста" : "ролика") + "</button>" : "") +
+      (m.voice ? '<div class="voice"><button class="play" aria-label="Прослушать запись" data-play>▶</button><div class="wave" aria-hidden="true">' + wave + '</div><span class="time">' + m.voice + "</span></div>" : "") +
+      (m.shot ? '<figure class="shot" style="margin:0">' + shotSvg(m.shot) + "<figcaption>" + (m.shot === "other" ? "Снимок другого терминала. ИИ: «окно с кнопками купить/продать и горячими клавишами F1/F2»" : "«Снимок MAMAY» одной кнопкой; пользователь закрасил баланс перед отправкой. ИИ: «стакан, лента, отмечено место задержки»") + "</figcaption></figure>" : "") +
+      (m.voice ? '<div class="note">Распознано из голоса — запись можно переслушать.</div>' : "") + "</div>" +
+      '<div class="card"><div class="ai"><b>ИИ разметил:</b> ' + k[0] + " · тон: " + m.tone + " · раздел: " + m.area + (th ? ' · тема «' + esc(th.title) + "»" : m.uniq ? " · <b>не похоже ни на одну тему</b>" : "") + '</div><div class="note">Нажмите, чтобы поправить вид:</div><div class="labels">' + kinds + "</div>" +
+      (th ? '<button class="btn sec" data-theme="' + th.id + '">Открыть тему · ' + th.votes + " голосов</button>" : '<button class="btn sec" data-newtheme>Создать тему из сообщения</button>') + "</div>" +
+      (m.tech ? '<div class="card"><details><summary>Техническая справка (пользователь согласился)</summary><pre>MAMAY 5.8.1 · Windows 11 · экран: Терминал → Стакан\n2026-10-19 10:41:57 [stream] bybit ws: lag 3120 ms\n2026-10-19 10:41:58 [stream] resync book ICNTUSDT\n2026-10-19 10:42:01 [ui] tape batch 214 rows</pre></details></div>' : "") +
+      '<div class="card"><b>Ответить в ' + (m.ch === "beta" ? "MAMAY" : CH[m.ch]) + "</b>" +
+      '<div class="tpls"><button data-tpl="1">Спасибо, передали</button><button data-tpl="2">Приняли в работу</button><button data-tpl="3">Уточните, пожалуйста</button></div>' +
+      '<textarea id="reply" aria-label="Текст ответа">' + esc(tpl) + "</textarea>" +
+      '<div class="tpls"><button data-voice>🎤 Наговорить</button><button data-polish>✨ Поправить ИИ</button></div>' +
+      '<div class="actions"><button class="btn pri" data-send>Отправить</button></div><div class="note">Уходит только по вашей кнопке. ' + (m.ch === "mamay" || m.ch === "beta" ? "Автор увидит ответ в MAMAY по номеру " + esc(m.who) + "." : fromWhom(m.ch, m)) + "</div></div></section>";
+    window.scrollTo(0, 0);
+  }
+
+  /* ───── Темы ───── */
+  function plural(n, a, b, c) { var m10 = n % 10, m100 = n % 100; return m10 === 1 && m100 !== 11 ? a : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? b : c; }
+  function lastDay(t) { for (var i = 29; i >= 0; i--) if (t.days[i]) return i; return -1 - lastIdx(t.older); }
+  function lastIdx(a) { for (var i = a.length - 1; i >= 0; i--) if (a[i]) return a.length - i; return 9; }
+  var TPER = [["d1", "Сегодня"], ["d3", "3 дня"], ["d7", "7 дней"], ["d30", "30 дней"], ["all", "Всё время"]];
+  function pv(t) { return state.period === "all" ? t.votes : t[state.period]; }
+  function trendTag(t) { return t.trend === "hot" ? '<span class="tag t-hot">всплеск</span>' : t.trend === "cold" ? '<span class="tag t-cold">давно не пишут</span>' : ""; }
+  /* Мини-график в списке: голоса по дням за последние 14 дней, красный столбик — всплеск. */
+  function spark(t) {
+    var s = t.days.slice(16), mx = Math.max.apply(null, s) || 1;
+    return '<span class="spark" aria-hidden="true">' + s.map(function (v, k) { var i = k + 16; return '<i class="' + (isSpike(t, i) ? "hot" : i === 29 ? "now" : "") + '" style="height:' + Math.max(8, v / mx * 100).toFixed(0) + "%" + (v ? "" : ";opacity:.15") + '"></i>'; }).join("") +
+      '</span><span class="sparkl"><span>' + DAYS[16] + "</span><span>сегодня</span></span>";
+  }
+  function themes() {
+    var order = ["new", "work", "done", "no"];
+    var list = THEMES.slice().sort(function (a, b) {
+      if (state.sort === "votes") return pv(b) - pv(a) || b.d7 - a.d7;
+      if (state.sort === "growth") return b.d7 / b.votes - a.d7 / a.votes || b.d7 - a.d7;
+      if (state.sort === "fresh") return lastDay(b) - lastDay(a) || b.d7 - a.d7;
+      if (state.sort === "status") return order.indexOf(a.status) - order.indexOf(b.status);
+      return a.area.localeCompare(b.area);
+    });
+    var rows = list.map(function (t) {
+      var bar = Object.keys(t.split).map(function (c) { return '<i style="width:' + (t.split[c] / t.votes * 100).toFixed(1) + "%;background:" + CHC[c] + '"></i>'; }).join("");
+      var n = pv(t);
+      return '<button class="theme" data-theme="' + t.id + '"><span class="votes"><b>' + n + "</b><span>" + plural(n, "голос", "голоса", "голосов") + "</span>" +
+        (state.period === "all" ? (t.d7 ? "<em>+" + t.d7 + " за 7 дн</em>" : '<em class="zero">0 за 7 дн</em>') : "") + "</span>" +
+        '<span style="min-width:0"><h3>' + esc(t.title) + '</h3><span class="note">' + t.area + " · последний голос: " + t.last + "</span>" + spark(t) + '<span class="bar">' + bar + "</span>" +
+        (t.trend ? '<span class="meta">' + trendTag(t) + "</span>" : "") + "</span>" +
+        '<span class="st ' + ST[t.status][1] + '">' + ST[t.status][0] + (t.ver ? " " + t.ver : "") + "</span></button>";
+    }).join("");
+    var legend = Object.keys(CH).map(function (c) { return '<span style="--c:' + CHC[c] + '">' + CH[c] + "</span>"; }).join("");
+    var per = TPER.map(function (p) { return '<button class="chip" data-period="' + p[0] + '" aria-pressed="' + (state.period === p[0]) + '">' + p[1] + "</button>"; }).join("");
+    main.innerHTML = '<section class="screen"><h1>Темы</h1><p class="sub">Похожие сообщения собраны вместе. Решение по теме — только ваше</p>' +
+      '<div class="note" style="margin-bottom:-6px">Считать голоса за:</div><div class="chips" role="group" aria-label="Считать голоса за период">' + per + "</div>" +
+      '<div style="display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap"><label class="note" for="sortSel">Сортировать</label><select id="sortSel"><option value="votes">по числу голосов</option><option value="growth">растущие сейчас</option><option value="fresh">по свежести</option><option value="status">по статусу</option><option value="area">по разделу MAMAY</option></select></div>' +
+      '<div class="list">' + rows + '</div><div class="note">Столбики — голоса по дням за последние 2 недели, красный — всплеск. Нажмите тему, чтобы увидеть каждый день и его причину. Полоска — из каких каналов голоса:</div><div class="legend">' + legend + "</div></section>";
+    document.getElementById("sortSel").value = state.sort;
+  }
+
+  /* График темы. По дням: 30 столбиков с датами, точки под осью — наш контент или обновление в этот день;
+     нажатие на день показывает, кто голосовал и с чем это связано. По неделям: 8 недель. */
+  function dayChart(t, sel) {
+    var mx = Math.max.apply(null, t.days) || 1, step = 304 / 30;
+    var out = '<svg viewBox="0 0 320 118" role="img" aria-label="Голоса по дням, нажмите на день"><line x1="8" y1="88" x2="312" y2="88" stroke="var(--line)"/>';
+    t.days.forEach(function (v, i) {
+      var x = 8 + i * step, h = v / mx * 66, bx = x + step / 2 - 3.5, sp = isSpike(t, i);
+      out += '<rect x="' + bx.toFixed(1) + '" y="' + (88 - Math.max(h, 1.5)).toFixed(1) + '" width="7" height="' + Math.max(h, 1.5).toFixed(1) + '" rx="2" fill="' + (sp ? "var(--warn)" : "var(--acc)") + '" opacity="' + (i === sel || sp ? 1 : v ? .55 : .2) + '"/>';
+      if (v) out += '<text x="' + (x + step / 2).toFixed(1) + '" y="' + (84 - h).toFixed(1) + '" text-anchor="middle">' + v + "</text>";
+      EVENTS.filter(function (e) { return e.date === DAYS[i]; }).forEach(function (e, k) { out += '<circle cx="' + (x + step / 2).toFixed(1) + '" cy="' + (95 + k * 6) + '" r="2.4" fill="' + CHC[e.ch] + '"/>'; });
+      if (i === sel) out += '<rect x="' + (x + 0.5).toFixed(1) + '" y="10" width="' + (step - 1).toFixed(1) + '" height="80" rx="3" fill="none" stroke="var(--fg)" stroke-opacity=".5"/>';
+      out += '<rect class="tap" data-day="' + i + '" x="' + x.toFixed(1) + '" y="0" width="' + step.toFixed(1) + '" height="104" fill="transparent"/>';
+    });
+    [0, 7, 14, 21].forEach(function (i) { out += '<text x="' + (8 + i * step + step / 2).toFixed(1) + '" y="114" text-anchor="middle">' + DAYS[i] + "</text>"; });
+    return out + '<text x="312" y="114" text-anchor="end">сегодня</text></svg>';
+  }
+  function weekChart(t) {
+    var mx = Math.max.apply(null, t.weeks) || 1;
+    return '<svg viewBox="0 0 320 112" role="img" aria-label="Голоса по неделям">' + t.weeks.map(function (v, i) { var h = v / mx * 76; return '<rect x="' + (14 + i * 38) + '" y="' + (92 - Math.max(h, 1.5)).toFixed(1) + '" width="26" height="' + Math.max(h, 1.5).toFixed(1) + '" rx="4" fill="var(--acc)" opacity="' + (i === 7 ? 1 : .5) + '"/>' + (v ? '<text x="' + (27 + i * 38) + '" y="' + (87 - h).toFixed(1) + '" text-anchor="middle">' + v + "</text>" : "") + '<text x="' + (27 + i * 38) + '" y="106" text-anchor="middle">' + WEEKS[i] + "</text>"; }).join("") + "</svg>" +
+      '<div class="note">Подпись — дата начала недели.</div>';
+  }
+  function dayInfo(t, i) {
+    if (i == null) return '<div class="note">За последние 30 дней голосов почти не было — тема затихла.</div>';
+    var v = t.days[i], date = DAYS[i], who = t.authors.filter(function (a) { return a[2] === date; });
+    var h = '<div class="dayhead"><b>' + dname(date) + (dname(date) !== date ? " (" + date + ")" : "") + " · " + v + " " + plural(v, "голос", "голоса", "голосов") + "</b>" + (isSpike(t, i) ? '<span class="tag t-hot">всплеск</span>' : "") + "</div>";
+    if (!v) return h + '<div class="note">В этот день голосов не было. Нажмите другой столбик.</div>';
+    if (who.length) h += '<div class="gives">' + who.map(function (a) { return '<span class="tag">' + CH[a[0]] + ": " + esc(a[1]) + "</span>"; }).join("") + (v > who.length ? '<span class="tag">и ещё ' + (v - who.length) + "</span>" : "") + "</div>";
+    var evs = eventsNear(i).map(function (e) {
+      var n = who.filter(function (a) { return e.ch === "mamay" ? a[0] === "mamay" || a[0] === "beta" : a[0] === e.ch; }).length;
+      return { e: e, n: n };
+    });
+    var hit = evs.filter(function (x) { return x.n > 0; });
+    if (hit.length) {
+      return h + hit.map(function (x) {
+        var e = x.e, when = e.date === date ? "В этот день" : "Накануне";
+        var src = e.ch === "mamay" ? x.n + " из " + v + " — от пользователей программы. Похоже, связано с обновлением: проверьте его."
+          : x.n + " из " + v + " — из комментариев к " + (e.ch === "tg" ? "нему" : "нему") + ".";
+        return '<div class="ai"><b>ИИ:</b> ' + when + " " + (e.ch === "mamay" ? "вышло " : "вышел ") + esc(e.text) + (e.ch === "mamay" ? "" : " (" + CH[e.ch] + ")") + ". Голосов: " + src + "</div>" +
+          (e.item ? '<button class="btn sec" data-gotoitem="' + e.item + '">Статистика: ' + esc(e.text) + "</button>" : "");
+      }).join("");
+    }
+    if (evs.length) return h + '<div class="ai"><b>ИИ:</b> Рядом выходил ' + esc(evs[0].e.text) + ", но голоса пришли не оттуда — связи не видно.</div>";
+    return h + (isSpike(t, i) ? '<div class="ai"><b>ИИ:</b> Нашего контента или обновления рядом не было. Возможна внешняя причина — новости рынка или новый терминал. Стоит проверить.</div>'
+      : '<div class="note">Обычный день: нашего контента или обновлений рядом не было.</div>');
+  }
+  function defaultDay(t) { var best = null; t.days.forEach(function (v, i) { if (v && (best == null || v >= t.days[best])) best = i; }); return best; }
+  function theme(id, sel) {
+    var t = THEMES.find(function (x) { return x.id === id; }); state.themeId = id;
+    if (sel === undefined) sel = defaultDay(t); state.dsel = sel;
+    var msgs = MSGS.filter(function (m) { return m.theme === id; });
+    var arow = function (a) { return '<div class="author">' + chIcon(a[0]) + "<span>" + esc(a[1]) + '</span><span class="adate">' + dname(a[2]) + "</span></div>"; };
+    var fresh = function (a) { return DAYS.indexOf(a[2]) >= 23; };
+    var nf = t.authors.filter(fresh), old = t.authors.filter(function (a) { return !fresh(a); });
+    var authors = (nf.length ? '<div class="fresh-sep">За последние 7 дней</div>' + nf.map(arow).join("") : "") +
+      (old.length ? '<div class="fresh-sep">Раньше</div>' + old.map(arow).join("") : "") +
+      (t.votes > t.authors.length ? '<div class="note">…и ещё ' + (t.votes - t.authors.length) + "</div>" : "");
+    var sample = msgs.slice(0, 3).map(function (m) { return '<button class="row" data-msg="' + m.id + '">' + chIcon(m.ch) + '<span style="min-width:0"><span class="who"><b>' + esc(m.who) + '</b></span><span class="txt">' + esc(m.text) + '</span></span><span class="time">' + m.time + "</span></button>"; }).join("");
+    var grain = '<div class="seg" style="grid-template-columns:1fr 1fr" role="group" aria-label="Шаг графика"><button data-grain="day" aria-pressed="' + (state.grain === "day") + '">По дням · 30 дней</button><button data-grain="week" aria-pressed="' + (state.grain === "week") + '">По неделям · 2 мес.</button></div>';
+    var evLegend = '<div class="legend"><span style="--c:var(--warn)">всплеск</span>' + ["yt", "tg", "vk", "tt", "mamay"].map(function (c) { return '<span style="--c:' + CHC[c] + '">' + (c === "mamay" ? "обновление MAMAY" : "наш " + CH[c]) + "</span>"; }).join("") + "</div>";
+    main.innerHTML = '<section class="screen"><button class="back" data-back-themes>‹ Темы</button>' +
+      '<div class="card"><span style="display:flex;gap:6px;align-items:center"><span class="st ' + ST[t.status][1] + '">' + ST[t.status][0] + (t.ver ? " " + t.ver : "") + "</span>" + trendTag(t) + '</span><h1 style="font-size:25px">' + esc(t.title) + '</h1><div class="note">' + t.votes + " " + plural(t.votes, "человек", "человека", "человек") + " · раздел " + t.area + "</div></div>" +
+      '<div class="card chart"><b>Когда голосовали</b><div class="when"><div><span>Первый голос</span><b>' + t.first + "</b></div><div><span>Последний</span><b>" + t.last + "</b></div><div><span>За 1 / 7 / 30 дн.</span><b>" + t.d1 + " / " + t.d7 + " / " + t.d30 + "</b></div></div>" + grain +
+      (state.grain === "day" ? dayChart(t, sel) + '<div class="note">Точки под осью — что мы выпускали в этот день. Нажмите на день:</div>' + evLegend + '<div class="dayinfo" id="dayinfo">' + dayInfo(t, sel) + "</div>" : weekChart(t)) + "</div>" +
+      '<div class="card"><b>Ваше решение</b><div class="actions"><button class="btn okb" data-decide="work">Принять в работу</button><button class="btn sec" data-decide="dup">Уже есть</button></div>' +
+      '<div class="actions"><button class="btn badb" data-decide="no">Отклонить</button><button class="btn sec" data-decide="done">Вышло в версии…</button></div><div id="decision"></div></div>' +
+      (sample ? '<h2>Сообщения в теме</h2><div class="list">' + sample + "</div>" : "") +
+      '<h2>Авторы</h2><div class="card authors">' + authors + "</div></section>";
+  }
+  function decide(id, how) {
+    var t = THEMES.find(function (x) { return x.id === id; }); var box = document.getElementById("decision");
+    if (how === "no" || how === "dup") {
+      t.status = "no"; box.innerHTML = '<div class="note">Тема ' + (how === "dup" ? "отмечена как уже сделанная" : "отклонена") + ". Авторам можно ответить по одному из их сообщений.</div>";
+      return;
+    }
+    var txt = how === "work" ? "Спасибо! Вашу идею приняли в работу — реализуем в ближайших версиях MAMAY и сообщим, когда выйдет."
+      : "Готово! То, о чём вы писали, вышло в MAMAY 5.8.2. Спасибо, что помогаете делать терминал лучше.";
+    var chans = {}; t.authors.forEach(function (a) { chans[a[0]] = (chans[a[0]] || 0) + 1; });
+    box.innerHTML = '<div class="preview">' + esc(txt) + '</div><div class="note">Уйдёт всем ' + t.votes + " авторам, каждому в его канал: " +
+      Object.keys(chans).map(function (c) { return CH[c]; }).join(", ") + '. Текст можно поправить.</div><div class="actions"><button class="btn pri" data-sendall="' + id + '">Отправить всем (' + t.votes + ')</button></div>';
+    t.status = how === "work" ? "work" : "done";
+  }
+
+  /* ───── Статистика ─────
+     Три уровня: канал целиком (подписчики, просмотры, источники) → список его контента → один ролик или пост
+     (удержание по моментам, охват по часам, комментарии во входящих). Вкладка «Контент» — весь контент всех каналов. */
+  var CONTENT = [
+    { id: "yt1", ch: "yt", type: "ролик", title: "Считаем чистую прибыль связки", date: "14.10", len: "4:40", views: 2310, likes: 118, comments: 23, avg: "2:05 · 45 %",
+      ret: [100, 92, 85, 80, 76, 74, 61, 58, 66, 63, 59, 55, 52, 49, 47, 44, 42, 40, 38, 33],
+      moments: [[6, "bad", "1:24 — уходят 13 %: долгое вступление"], [8, "ok", "1:52 — пересматривают: расчёт проскальзывания"]],
+      ai: "Сократить вступление до 20 секунд. Расчёт проскальзывания пересматривают — снять про него отдельный короткий ролик." },
+    { id: "yt2", ch: "yt", type: "Shorts", title: "MAMAY за 60 секунд", date: "08.10", len: "1:00", views: 3900, likes: 240, comments: 31, avg: "0:41 · 68 %",
+      ret: [100, 96, 92, 89, 87, 85, 83, 81, 79, 77, 75, 74, 72, 70, 69, 67, 65, 63, 61, 58],
+      moments: [[19, "ok", "0:57 — до конца досматривают 58 %: сильный результат"]],
+      ai: "Лучший досмотр на канале. Такой же короткий формат стоит повторить для арбитража и скринеров." },
+    { id: "yt3", ch: "yt", type: "ролик", title: "Обзор терминала: первые 10 минут", date: "01.10", len: "6:12", views: 620, likes: 41, comments: 9, avg: "1:50 · 30 %",
+      ret: [100, 80, 66, 58, 52, 48, 45, 42, 40, 38, 36, 34, 33, 31, 30, 28, 27, 26, 25, 22],
+      moments: [[1, "bad", "0:19 — уходят 20 %: в начале нет обещания, что покажем"]],
+      ai: "Первые 20 секунд теряют каждого пятого. Начинать с результата, а потом объяснять." },
+    { id: "tg1", ch: "tg", type: "пост", title: "Связка дня: ICNT Bybit → Gate", date: "18.10", views: 1140, likes: 64, comments: 12, forwards: 9,
+      hours: [0, 310, 520, 640, 730, 800, 860, 930, 990, 1040, 1100, 1140],
+      ai: "«Связки дня» пересылают чаще остальных постов — их ищут и делятся. Публиковать в 9–10 утра: половина охвата за первые 3 часа." },
+    { id: "tg2", ch: "tg", type: "пост", title: "Обновление 5.8: что нового", date: "17.10", views: 980, likes: 51, comments: 18, forwards: 4,
+      hours: [0, 250, 430, 560, 650, 720, 780, 830, 880, 920, 960, 980],
+      ai: "18 комментариев; 3 человека в них впервые проголосовали за тему «Горячие клавиши и торговля из стакана»." },
+    { id: "tg3", ch: "tg", type: "пост", title: "Как мы считаем чистую прибыль", date: "12.10", views: 760, likes: 38, comments: 5, forwards: 6,
+      hours: [0, 180, 300, 390, 460, 520, 570, 620, 670, 710, 740, 760],
+      ai: "Средний охват. Пост дублирует ролик — лучше дать ссылку на ролик и короткий вывод." },
+    { id: "vk1", ch: "vk", type: "пост", title: "Связка дня: ICNT Bybit → Gate", date: "18.10", views: 1620, likes: 113, comments: 9, forwards: 14,
+      hours: [0, 420, 700, 880, 1010, 1120, 1220, 1310, 1400, 1480, 1560, 1620],
+      ai: "Тот же пост во ВКонтакте набрал больше, чем в Telegram (1 620 против 1 140), и его чаще репостят — аудитория ВК живее откликается на «связки дня»." },
+    { id: "vk2", ch: "vk", type: "клип", title: "MAMAY за 60 секунд", date: "09.10", len: "1:00", views: 5300, likes: 334, comments: 14,
+      ai: "Клип во ВК собрал больше, чем Shorts на YouTube (5 300 против 3 900), и принёс $3,40 — клипы ВК стоит вести наравне с Shorts." },
+    { id: "tt1", ch: "tt", type: "ролик", title: "Арбитраж за 15 секунд", date: "16.10", len: "0:15", views: 12400, likes: 610, comments: 37, src: "из выгрузки 18.10",
+      ai: "Много просмотров, но заявок на бету из TikTok пока 2. Нужна ссылка на сайт в профиле и призыв в конце ролика." }
+  ];
+  /* Короткие реакции: смайлы, «+», картинки без текста. Во входящих по умолчанию скрыты, собираются в карточке контента. */
+  MSGS.push(
+    { id: 11, ch: "tg", who: "@crypto_lis", sub: "комментарий к посту «Связка дня»", time: "10:05", kind: "react", tone: "позитив", theme: null, uniq: false, text: "🔥🔥🔥", content: "tg1" },
+    { id: 12, ch: "yt", who: "Den4ik", sub: "под Shorts «MAMAY за 60 секунд»", time: "09:12", kind: "react", tone: "позитив", theme: null, uniq: false, text: "👍", content: "yt2" },
+    { id: 13, ch: "tg", who: "@memlord", sub: "комментарий к посту «Обновление 5.8»", time: "вчера", kind: "react", tone: "позитив", theme: null, uniq: false, text: "картинка без текста", pic: "мем: довольный кот за компьютером — тон позитивный", content: "tg2" },
+    { id: 14, ch: "yt", who: "skeptic_99", sub: "под роликом «Считаем чистую прибыль связки»", time: "вчера", kind: "react", tone: "негатив", theme: null, uniq: false, text: "🤡", content: "yt1" }
+  );
+  MSGS.splice(1, 0, { id: 15, ch: "vk", who: "Андрей К.", sub: "комментарий к посту «Связка дня» в сообществе", time: "10:20", unread: true, kind: "q", tone: "нейтрально", area: "Обучение", theme: 4, uniq: false,
+    text: "Почему у вас в связке 0,25 % прибыли, а у меня на бирже выходит меньше? Что я не учитываю?", content: "vk1" });
+  MSGS.splice(5, 0, { id: 16, ch: "vk", who: "Ольга Т.", sub: "сообщение сообществу", time: "09:40", unread: true, kind: "lead", tone: "позитив", area: "Бета", theme: null, uniq: false,
+    text: "Здравствуйте! Можно попасть в бету? Торгую на Bybit и на Мосбирже." });
+  MSGS.splice(7, 0, { id: 17, ch: "mail", box: "info", who: "partners@example.com", sub: "info@mamaytrading.com", time: "08:50", unread: true, kind: "lead", tone: "позитив", area: "Реклама", theme: null, uniq: false,
+    text: "Здравствуйте! Мы криптообменник «Пример». Хотим разместить рекламу в вашем Telegram-канале и во ВК. Пришлите, пожалуйста, условия." });
+  var MSGC = { 3: "yt1", 5: "tg1", 10: "tg2", 7: "tt1" };
+  MSGS.forEach(function (m) { if (MSGC[m.id]) m.content = MSGC[m.id]; });
+  /* rx — реакции-кнопки (Telegram отдаёт по каждому смайлу, YouTube — лайки и дизлайки владельцу, TikTok — из выгрузки);
+     short — комментарии из одних смайлов; pics — картинки без текста, их описывает ИИ. */
+  var RX = {
+    yt1: { rx: { "👍": 118, "👎": 6 }, short: { "🔥": 5, "👍": 3, "🤡": 1 }, pics: [1, "мем «считаю деньги»"] },
+    yt2: { rx: { "👍": 240, "👎": 4 }, short: { "🔥": 12, "👍": 6, "😂": 4 }, pics: [0] },
+    vk1: { rx: { "❤️": 71, "🔥": 22, "👍": 15, "😂": 3, "👎": 2 }, short: { "+": 3, "🔥": 2 }, pics: [0] },
+    vk2: { rx: { "❤️": 290, "🔥": 44 }, short: { "🔥": 6 }, pics: [1, "стикер «огонь»"] },
+    yt3: { rx: { "👍": 41, "👎": 3 }, short: { "👍": 2 }, pics: [0] },
+    tg1: { rx: { "🔥": 28, "👍": 19, "❤️": 11, "🤔": 4, "👎": 2 }, short: { "🔥": 3, "+": 2 }, pics: [1, "гифка «деньги летят»"] },
+    tg2: { rx: { "👍": 21, "🔥": 17, "❤️": 8, "🤔": 3, "👎": 2 }, short: { "👍": 2 }, pics: [1, "мем: довольный кот за компьютером"] },
+    tg3: { rx: { "👍": 20, "🔥": 9, "❤️": 5, "🤔": 4 }, short: {}, pics: [0] },
+    tt1: { rx: { "❤️": 610 }, short: { "🔥": 9, "😂": 6 }, pics: [0] }
+  };
+  var NEG = ["👎", "🤡", "💩"];
+  function rxTotal(id) { var r = RX[id]; return sum(Object.values(r.rx)) + sum(Object.values(r.short)) + r.pics[0]; }
+  function resp(c) { return Math.round(rxTotal(c.id) / c.views * 1000); }
+  function respAvg(ch) { var l = CONTENT.filter(function (c) { return c.ch === ch; }); return Math.round(sum(l.map(resp)) / l.length); }
+  function rxChips(o) { return Object.keys(o).sort(function (a, b) { return o[b] - o[a]; }).map(function (k) { return '<span class="rxc' + (NEG.indexOf(k) > -1 ? " neg" : "") + '">' + k + " <b>" + fmtN(o[k]) + "</b></span>"; }).join(""); }
+  function reactCard(c) {
+    var r = RX[c.id], all = sum(Object.values(r.rx)), neg = sum(Object.keys(r.rx).filter(function (k) { return NEG.indexOf(k) > -1; }).map(function (k) { return r.rx[k]; }));
+    var a = respAvg(c.ch), me = resp(c);
+    return '<div class="card"><b>Реакции</b><div class="note">' + (c.ch === "yt" ? "Кнопки «нравится / не нравится» — YouTube показывает их владельцу" : c.ch === "tt" ? "Из выгрузки TikTok — только сердечки" : c.ch === "vk" ? "Реакции ВК по смайлам — если ВК их отдаёт; иначе общее число" : "Реакции под постом по каждому смайлу") + "</div>" +
+      '<div class="rxrow">' + rxChips(r.rx) + "</div>" +
+      (Object.keys(r.short).length || r.pics[0] ? '<div class="note">Комментарии без слов — смайлы, «+», картинки (во входящих свёрнуты):</div><div class="rxrow">' + rxChips(r.short) + (r.pics[0] ? '<span class="rxc">🖼 <b>' + r.pics[0] + "</b></span>" : "") + "</div>" +
+        (r.pics[0] ? '<div class="note">ИИ посмотрел картинку: ' + esc(r.pics[1]) + ".</div>" : "") : "") +
+      '<div class="ai"><b>Отклик:</b> ' + me + " реакций на 1000 просмотров — " + (me > a * 1.15 ? "выше" : me < a * 0.85 ? "ниже" : "на уровне") + " среднего по " + CH[c.ch] + " (" + a + "). Негатив: " + Math.round(neg / all * 100) + " %.</div></div>";
+  }
+
+  /* Адресные ссылки: у каждого поста или ролика своя короткая ссылка через наш сервер (go.mamaytrading.com/…).
+     Клик считает сервер; на сайте — свой счётчик без персональных данных; заявка хранит метку; ключ выдаётся по заявке;
+     «пользуется» — пульс MAMAY по ключу; «платит» — ключ Pro. Кто скачал без заявки — «неизвестно». */
+  var LINKS = [
+    { code: "tg-1810", ch: "tg", item: "tg1", where: "пост «Связка дня: ICNT Bybit → Gate»", f: [86, 71, 6, 4, 3, 1] },
+    { code: "vk-1810", ch: "vk", item: "vk1", where: "пост «Связка дня» в сообществе ВК", f: [112, 96, 7, 5, 4, 1] },
+    { code: "tg-1710", ch: "tg", item: "tg2", where: "пост «Обновление 5.8: что нового»", f: [54, 47, 3, 2, 2, 0] },
+    { code: "yt-1410", ch: "yt", item: "yt1", where: "описание ролика «Считаем чистую прибыль связки»", f: [41, 38, 5, 4, 3, 1] },
+    { code: "yt-profile", ch: "yt", item: null, where: "профиль YouTube — для Shorts: в них ссылки не нажимаются", f: [23, 20, 2, 1, 1, 0] },
+    { code: "tt-profile", ch: "tt", item: null, where: "профиль TikTok — в роликах ссылок нет", f: [19, 15, 2, 1, 0, 0] }
+  ];
+  var NOTAG = [null, 64, 5, 2, 1, 1];
+  var FST = ["клики", "на сайте", "заявка", "ключ", "пользуется", "платит"];
+  function chain(f) { return '<div class="chain">' + f.map(function (v, i) { return "<div><b>" + (v == null ? "—" : v) + "</b><span>" + FST[i] + "</span></div>"; }).join("") + "</div>"; }
+  function linkCard(c) {
+    var l = LINKS.find(function (x) { return x.item === c.id; });
+    if (l) return '<div class="card"><b>Адресная ссылка</b><div class="linkline"><span>go.mamaytrading.com/' + l.code + '</span><button class="btn sec" data-copy="' + l.code + '">Скопировать</button></div>' + chain(l.f) +
+      '<div class="note">Путь людей, пришедших именно с этого ' + (c.ch === "tg" ? "поста" : "ролика") + ".</div></div>";
+    if (c.type === "Shorts" || c.type === "клип" || c.ch === "tt") return '<div class="card"><b>Адресная ссылка</b><div class="note">' + (c.ch === "tt" ? "В роликах TikTok ссылки не нажимаются" : c.type === "клип" ? "В клипах ВК ссылки, скорее всего, не нажимаются (проверим)" : "В Shorts ссылки не нажимаются") + " — переходы считаются по ссылке в профиле канала.</div></div>";
+    return '<div class="card"><b>Адресная ссылка</b><div class="note">У этого ' + (c.ch === "tg" ? "поста" : "ролика") + ' ещё нет своей ссылки — переходы с него не отличить от остальных.</div><button class="btn sec" data-mklinkfor="' + c.id + '">Сделать ссылку для него</button></div>';
+  }
+  function linksBlock() {
+    var by = {}; LINKS.forEach(function (l) { by[l.ch] = by[l.ch] || [0, 0, 0, 0, 0, 0]; l.f.forEach(function (v, i) { by[l.ch][i] += v; }); });
+    return '<div class="card"><b>Откуда приходят — по каналам</b><div class="note">Сумма по адресным ссылкам каждого канала</div>' +
+      Object.keys(by).map(function (k) { return '<div class="head" style="margin-top:4px">' + chIcon(k) + "<b>" + CH[k] + "</b></div>" + chain(by[k]); }).join("") +
+      '<div class="head" style="margin-top:4px"><span class="ch c-site">' + I.site + "</span><b>Без метки</b></div>" + chain(NOTAG) +
+      '<div class="note">«Без метки» — поиск, прямой заход, ссылку переслали без хвоста. Кто скачал без заявки, дальше не прослеживается.</div></div>' +
+      '<div class="card"><b>Адресные ссылки</b>' + LINKS.map(function (l) { return '<div class="lrow"><div class="head">' + chIcon(l.ch) + '<span style="min-width:0"><b class="ctitle">go.mamaytrading.com/' + l.code + '</b><span class="note">' + esc(l.where) + "</span></span></div>" + chain(l.f) + "</div>"; }).join("") +
+      '<button class="btn pri" data-mklink>+ Сделать ссылку</button><div class="note">Как считаем: клик — на нашем сервере; на сайте — свой счётчик без персональных данных; заявка хранит метку; ключ выдаётся по заявке; «пользуется» — пульс MAMAY по ключу; «платит» — ключ Pro.</div></div>';
+  }
+  function linkSheet(id) {
+    var c = id ? CONTENT.find(function (x) { return x.id === id; }) : null;
+    var code = c ? c.ch + "-" + c.date.replace(".", "") : "";
+    openSheet("<h3>Сделать адресную ссылку</h3>" +
+      '<label class="note" for="lkSel">Для какого поста или ролика</label><select id="lkSel"><option value="">— выберите —</option>' +
+      CONTENT.map(function (x) { return '<option value="' + x.id + '"' + (c && x.id === c.id ? " selected" : "") + ">" + CH[x.ch] + ": " + esc(x.title) + "</option>"; }).join("") + "</select>" +
+      (c ? (c.type === "Shorts" || c.type === "клип" || c.ch === "tt" ? '<div class="note">В ' + (c.ch === "tt" ? "роликах TikTok" : c.type === "клип" ? "клипах ВК" : "Shorts") + " ссылки не нажимаются — используйте ссылку профиля канала.</div>"
+        : '<div class="linkline"><span>go.mamaytrading.com/' + code + '</span><button class="btn sec" data-copy="' + code + '">Скопировать</button></div><div class="note">Вставьте её в ' + (c.ch === "tg" ? "пост" : "описание ролика") + ". Клики, заявки и оплаты с неё появятся в карточке контента и в «Воронке».</div>") : ""));
+  }
+  /* Ответ и комментарий от автора: «Наговорить» → текст из голоса → «Поправить ИИ» (по кнопке) → отправка только владельцем. */
+  var DICT = "ну смотрите значит ноль двадцать пять процента это уже после всех комиссий и проскальзывания вот подробно я разбираю на минуте один пятьдесят два";
+  var POLISH = "Спасибо за вопрос! 0,25 % — это чистая прибыль уже после всех комиссий и проскальзывания. Подробный расчёт — в ролике на 1:52.";
+  var DICT_A = "ну всем привет кто спрашивал про фандинг по этой связке он уже учтён в расчёте а следующая смена в восемь вечера по москве";
+  var POLISH_A = "Отвечаю всем, кто спрашивал про фандинг: он уже учтён в расчёте связки. Следующая смена — в 20:00 по Москве.";
+  function fromWhom(ch, m) {
+    return ch === "tg" ? "Появится от имени канала MAMAY — через вход вашим аккаунтом Telegram (бот отвечал бы от своего имени)."
+      : ch === "yt" ? "Появится от имени канала MAMAY с отметкой автора."
+      : ch === "mail" ? "Письмо уйдёт с ящика, на который пришло: " + ((m && m.box) || "support") + "@mamaytrading.com."
+      : ch === "vk" ? "Появится от имени сообщества MAMAY (ключ сообщества ВК)."
+      : ch === "tt" ? "В TikTok публикуете вручную — приложение скопирует текст и откроет ролик."
+      : ch === "site" ? "Ответ уйдёт письмом на почту из заявки." : "";
+  }
+  function authorCard(c) {
+    return '<div class="card"><b>Комментарий от автора</b><div class="note">Под ' + (c.ch === "tg" ? "этим постом" : "этим роликом") + ": уточнение, ссылка, ответ всем сразу. Можно наговорить голосом.</div>" +
+      '<textarea id="reply" aria-label="Комментарий от автора" placeholder="Например: «Многие спрашивают про фандинг — отвечаю…»"></textarea>' +
+      '<div class="tpls"><button data-voice>🎤 Наговорить</button><button data-polish>✨ Поправить ИИ</button>' + (c.ch !== "tt" ? '<button data-pin aria-pressed="false">📌 Закрепить</button>' : "") + "</div>" +
+      '<div class="actions"><button class="btn pri" data-publish>' + (c.ch === "tt" ? "Скопировать текст" : "Опубликовать") + '</button></div><div class="note">Уходит только по вашей кнопке. ' + fromWhom(c.ch) + "</div></div>";
+  }
+  /* Периоды: на старте важна детализация — от сегодняшнего дня до 90 дней. Сегодня — по часам, до 30 дней — по дням, 90 — по неделям. */
+  var PER = { d1: [1, "Сегодня", "за сегодня"], d3: [3, "3 дня", "за 3 дня"], d5: [5, "5 дней", "за 5 дней"], d7: [7, "7 дней", "за 7 дней"], d30: [30, "30 дней", "за 30 дней"], d90: [90, "90 дней", "за 90 дней"] };
+  function grainName() { return state.per === "d1" ? "часам" : state.per === "d90" ? "неделям" : "дням"; }
+  var CHSTAT = {
+    yt: { name: "YouTube", subs: 412, gain: 38, views: 6830, extra: [["Время просмотра", 212, " ч"], ["Комментарии", 74, ""]],
+      sources: [["Рекомендации", 41], ["Поиск YouTube", 34], ["Внешние ссылки", 15], ["Прочее", 10]] },
+    tg: { name: "Telegram", subs: 287, gain: 41, views: 2880, extra: [["Средний охват поста", 960, ""], ["Реакции", 153, ""]],
+      sources: [["Подписчики", 72], ["Пересылки", 18], ["Поиск и ссылки", 10]] },
+    vk: { name: "ВКонтакте", subs: 534, gain: 62, views: 4120, extra: [["Охват записей", 3350, ""], ["Комментарии", 48, ""]],
+      sources: [["Лента подписчиков", 48], ["Рекомендации", 31], ["Поиск ВК", 12], ["Прочее", 9]] },
+    tt: { name: "TikTok", subs: 156, gain: 49, views: 12400, extra: [["Лайки", 610, ""], ["Комментарии", 37, ""]], note: "Цифры из выгрузки 18.10 — TikTok не отдаёт статистику напрямую" },
+    site: { name: "Сайт", leads: true }
+  };
+  function fmtN(n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
+  function factor() { return { d1: 0.17, d3: 0.46, d5: 0.73, d7: 1, d30: 3.6, d90: 8.9 }[state.per]; }
+  function barsSvg(vals, labels, hi) {
+    var mx = Math.max.apply(null, vals) || 1, n = vals.length, w = 290 / n, bw = Math.min(26, w * 0.66);
+    return '<svg viewBox="0 0 320 130" role="img" aria-label="График по периодам"><line x1="20" y1="110" x2="310" y2="110" stroke="var(--line)"/>' +
+      vals.map(function (v, i) {
+        var h = v / mx * 88, x = 22 + i * w + (w - bw) / 2, cx = x + bw / 2;
+        return '<rect x="' + x.toFixed(1) + '" y="' + (110 - h).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="3" fill="var(--acc)" opacity="' + (i === n - 1 && hi ? 1 : .55) + '"/>' +
+          (n <= 8 ? '<text x="' + cx.toFixed(1) + '" y="' + (105 - h).toFixed(1) + '" text-anchor="middle">' + fmtN(v) + "</text>" : "") +
+          (labels[i] ? '<text x="' + cx.toFixed(1) + '" y="124" text-anchor="middle">' + labels[i] + "</text>" : "");
+      }).join("") + "</svg>";
+  }
+  function series(total, n, seed) { var a = [], s = 0; for (var i = 0; i < n; i++) { var v = 0.7 + 0.6 * Math.abs(Math.sin((i + 1) * seed)) + i / n * 0.4; a.push(v); s += v; } return a.map(function (v) { return v / s * total; }); }
+  function periodBars(total, seed) {
+    if (state.per === "d1") return barsSvg(series(total, 20, seed), ["0 ч", "", "", "", "", "5 ч", "", "", "", "", "10 ч", "", "", "", "", "15 ч", "", "", "", "сейчас"], true);
+    var n = PER[state.per][0];
+    if (n <= 30) return barsSvg(series(total, n, seed), DAYS.slice(30 - n).map(function (d, i) { return n <= 7 || i % 5 === 0 || i === n - 1 ? (i === n - 1 ? "сег." : n <= 7 ? d : d.slice(0, 5)) : ""; }), true);
+    return barsSvg(series(total, 13, seed), ["июль", "", "", "", "авг", "", "", "", "сент", "", "", "", "окт"], true);
+  }
+  function secs(s) { var p = s.split(":"); return +p[0] * 60 + +p[1]; }
+  function mmss(n) { n = Math.round(n); return Math.floor(n / 60) + ":" + ("0" + n % 60).slice(-2); }
+  function retSvg(c) {
+    var n = c.ret.length, X = function (i) { return 30 + i * (280 / (n - 1)); }, Y = function (v) { return 12 + (100 - v) * 0.95; };
+    var grid = [100, 75, 50, 25].map(function (v) { return '<line x1="30" y1="' + Y(v).toFixed(1) + '" x2="310" y2="' + Y(v).toFixed(1) + '" stroke="var(--line)" stroke-dasharray="2 3"/><text x="24" y="' + (Y(v) + 3).toFixed(1) + '" text-anchor="end">' + v + "%</text>"; }).join("");
+    var pts = c.ret.map(function (v, i) { return X(i).toFixed(1) + "," + Y(v).toFixed(1); }).join(" ");
+    var dots = c.moments.map(function (m) { return '<circle cx="' + X(m[0]).toFixed(1) + '" cy="' + Y(c.ret[m[0]]).toFixed(1) + '" r="4.5" fill="var(--' + m[1] + ')"/>'; }).join("");
+    var L = secs(c.len);
+    return '<svg viewBox="0 0 320 132" role="img" aria-label="Удержание зрителей по моментам ролика">' + grid +
+      '<polyline points="' + pts + '" fill="none" stroke="var(--acc)" stroke-width="2.2" stroke-linejoin="round"/>' + dots +
+      '<text x="30" y="128">0:00</text><text x="170" y="128" text-anchor="middle">' + mmss(L / 2) + '</text><text x="310" y="128" text-anchor="end">' + c.len + "</text></svg>" +
+      '<div class="legend">' + c.moments.map(function (m) { return '<span style="--c:var(--' + m[1] + ')">' + esc(m[2]) + "</span>"; }).join("") + "</div>";
+  }
+  function hoursSvg(c) {
+    var n = c.hours.length, mx = c.hours[n - 1], X = function (i) { return 30 + i * (280 / (n - 1)); }, Y = function (v) { return 108 - v / mx * 92; };
+    var pts = c.hours.map(function (v, i) { return X(i).toFixed(1) + "," + Y(v).toFixed(1); }).join(" ");
+    return '<svg viewBox="0 0 320 132" role="img" aria-label="Просмотры поста за первые 48 часов"><line x1="30" y1="108" x2="310" y2="108" stroke="var(--line)"/>' +
+      '<polyline points="' + pts + '" fill="none" stroke="var(--acc)" stroke-width="2.2" stroke-linejoin="round"/>' +
+      '<text x="30" y="124">0 ч</text><text x="' + X(3).toFixed(1) + '" y="124" text-anchor="middle">12 ч</text><text x="' + X(6).toFixed(1) + '" y="124" text-anchor="middle">24 ч</text><text x="310" y="124" text-anchor="end">48 ч</text>' +
+      '<text x="306" y="' + (Y(mx) - 5).toFixed(1) + '" text-anchor="end">' + fmtN(mx) + "</text></svg>";
+  }
+  function contentRows(list) {
+    return list.map(function (c) {
+      return '<button class="row" data-item="' + c.id + '">' + chIcon(c.ch) + '<span style="min-width:0"><b class="ctitle">' + esc(c.title) + "</b>" +
+        '<span class="meta"><span class="tag">' + c.type + (c.len ? " · " + c.len : "") + '</span><span class="tag">' + fmtN(c.views) + ' просм.</span><span class="tag">' + c.comments + " комм.</span></span></span>" +
+        '<span class="time">' + c.date + "</span></button>";
+    }).join("");
+  }
+  function perSeg() { return '<div class="chips" role="group" aria-label="Период">' + Object.keys(PER).map(function (p) { return '<button class="chip" data-per="' + p + '" aria-pressed="' + (state.per === p) + '">' + PER[p][1] + "</button>"; }).join("") + "</div>"; }
+
+  function stats() {
+    if (state.item) return item(state.item);
+    if (state.chan) return chanPage(state.chan);
+    var seg = [["inbox", "Входящие"], ["channels", "Каналы"], ["content", "Контент"], ["aud", "Аудитория"], ["funnel", "Воронка"]].map(function (s) { return '<button data-stat="' + s[0] + '" aria-pressed="' + (state.stat === s[0]) + '">' + s[1] + "</button>"; }).join("");
+    var body = "";
+    if (state.stat === "inbox") {
+      body = '<p class="sub" style="margin:0">Сообщения от пользователей и аудитории — из всех каналов вместе</p>' +
+        '<div class="kpis"><div class="kpi"><span>Сообщений ' + PER[state.per][2] + '</span><b>' + fmtN(118 * factor()) + '</b><em class="up">+34 %</em></div><div class="kpi"><span>Ждут ответа</span><b>5</b><em class="down">2 дольше суток</em></div>' +
+        '<div class="kpi"><span>Среднее время ответа</span><b>3 ч 40 мин</b><em class="up">быстрее на 1 ч</em></div><div class="kpi"><span>Негатив</span><b>14 %</b><em class="down">+5 п.п.</em></div></div>' +
+        '<div class="card chart"><b>Сообщений по ' + grainName() + "</b>" + periodBars(118 * factor(), 0.9) + "</div>" +
+        '<div class="card"><b>Всплеск</b><div class="note">19.10, 10:00–11:00 — 5 сообщений об ошибке ленты в Терминале (4 от бета-тестеров). Тема «Лента сделок замирает…»</div></div>';
+    } else if (state.stat === "channels") {
+      var f = factor();
+      body = '<p class="sub" style="margin:0">Общая картина по каждому каналу продвижения. Нажмите канал — внутри его ролики и посты</p>' + perSeg() +
+        '<div class="list">' + ["yt", "tg", "vk", "tt", "site"].map(function (k) {
+          var s = CHSTAT[k];
+          var line = s.leads ? "заявки на бету" : "подписчики · просмотры " + PER[state.per][2];
+          var val = s.leads ? fmtN(23 * f) : fmtN(s.subs) + " · " + fmtN(s.views * f);
+          var d = s.leads ? "" : '<small class="up">+' + fmtN(s.gain * f) + " подписчиков</small>";
+          return '<button class="chrow conn" data-chan="' + k + '">' + chIcon(k) + "<span>" + s.name + "<small>" + line + '</small></span><span style="text-align:right"><b>' + val + "</b>" + d + "</span></button>";
+        }).join("") + "</div>" +
+        '<div class="card"><b>Самое сильное ' + PER[state.per][2] + '</b><div class="list" style="border:0;box-shadow:none">' + contentRows([CONTENT[1], CONTENT[3]]) + "</div></div>";
+    } else if (state.stat === "aud") {
+      body = '<p class="sub" style="margin:0">Откуда подписчики и кто они — по каждому каналу и вместе</p>' + audience();
+    } else if (state.stat === "content") {
+      var chs = [["all", "Все"], ["yt", "YouTube"], ["tg", "Telegram"], ["vk", "ВК"], ["tt", "TikTok"]];
+      var list = CONTENT.filter(function (c) { return state.cf === "all" || c.ch === state.cf; }).sort(function (a, b) {
+        if (state.cs === "views") return b.views - a.views; if (state.cs === "comments") return b.comments - a.comments;
+        return b.date.split(".").reverse().join("").localeCompare(a.date.split(".").reverse().join(""));
+      });
+      body = '<p class="sub" style="margin:0">Все ролики и посты из всех каналов. Нажмите — откроется статистика именно этого ролика или поста</p>' +
+        '<div class="chips" role="group" aria-label="Канал">' + chs.map(function (c) { return '<button class="chip" data-cf="' + c[0] + '" aria-pressed="' + (state.cf === c[0]) + '">' + c[1] + "</button>"; }).join("") + "</div>" +
+        '<div style="display:flex;gap:8px;align-items:center;justify-content:space-between"><label class="note" for="csSel">Сортировать</label><select id="csSel"><option value="date">сначала новые</option><option value="views">по просмотрам</option><option value="comments">по комментариям</option></select></div>' +
+        '<div class="list">' + contentRows(list) + "</div>";
+    } else {
+      var steps = [["Узнали", 699], ["Оставили заявку", 50], ["Установили", 31], ["Пользуются", 17], ["Платят", 6], ["Остаются", "—"]];
+      body = '<div class="card"><b>Воронка запуска MAMAY</b><span class="note">Цели к 14.11 из дорожной карты: 300 подписчиков → 50 заявок → 30 установок → 15 активных → 10–20 платящих</span><div class="funnel">' +
+        steps.map(function (s) { var w = typeof s[1] === "number" ? Math.max(4, Math.sqrt(s[1] / 699) * 100) : 0; return '<div class="fstep"><span>' + s[0] + '</span><span class="fb" style="width:' + w.toFixed(0) + '%"></span><b>' + s[1] + "</b></div>"; }).join("") +
+        '</div><div class="note">«Узнали» — подписчики всех каналов; «установили / пользуются» — анонимный «пульс» MAMAY с согласия; «платят» — выданные ключи Pro; «остаются» посчитаем в декабре.</div></div>' +
+        linksBlock() + '<div class="card report"><b>Отчёт недели · 13–19 октября</b><p>Сообщений больше на треть, в основном от бета-тестеров. Главная тема — горячие клавиши (16 голосов, 4 из них — в день поста «Обновление 5.8»). Тревожно: ошибка ленты в Терминале, 9 голосов за сутки.</p>' +
+        "<ul><li>Ответить двум людям, которые ждут больше суток (почта, ключ Pro).</li><li>Проверить ошибку ленты по техсправке M-48213.</li><li>Снять короткий ролик про проскальзывание — в ролике «Считаем чистую прибыль связки» на 1:52 его пересматривают.</li></ul></div>";
+    }
+    main.innerHTML = '<section class="screen"><h1>Статистика</h1><div class="seg five" role="group" aria-label="Вид статистики">' + seg + "</div>" + body + "</section>";
+    if (state.stat === "content") document.getElementById("csSel").value = state.cs;
+  }
+
+  /* ───── Аудитория ─────
+     Площадки отдают только сводные проценты, не людей: YouTube — страны, часть городов, пол и возраст, устройства;
+     ВК — страны, города, пол и возраст; TikTok — то же со снимков статистики; Telegram — только язык и часы;
+     сайт — свой счётчик (страна и город по адресу, адрес не храним); MAMAY — с согласия: рынки, биржи, опыт из заявки. */
+  var AGES = ["18–24", "25–34", "35–44", "45–54", "55+"];
+  var AUD = {
+    all: { name: "все каналы", base: 1389, baseLabel: "подписчиков во всех каналах (YouTube, ВК, Telegram, TikTok)", countries: [["Россия", 58], ["Казахстан", 11], ["Беларусь", 7], ["Узбекистан", 5], ["Германия", 4], ["Другие", 15]],
+      movers: [["Казахстан", "6 % → 11 %", "up"], ["Узбекистан", "2 % → 5 %", "up"], ["Россия", "64 % → 58 %", "down"]],
+      cities: [["Москва", 21], ["Санкт-Петербург", 9], ["Алматы", 6], ["Минск", 4], ["Новосибирск", 4], ["Екатеринбург", 4]],
+      m: [14, 31, 24, 11, 4], f: [2, 5, 5, 3, 1], dev: [["Телефон", 71], ["Компьютер", 27], ["Планшет", 2]],
+      hours: [2, 1, 1, 0, 0, 0, 1, 3, 5, 6, 6, 5, 6, 6, 5, 5, 6, 7, 9, 12, 14, 13, 10, 5],
+      ai: "Типичный подписчик — мужчина 25–44 лет из России или Казахстана, смотрит с телефона вечером, 19–23 по Москве. Быстрее всего растёт Казахстан: 6 % → 11 % за месяц.",
+      tips: ["Публиковать в 19–21 по Москве — пик активности.", "Казахстан растёт: стоит отдельный пост о работе MAMAY оттуда (какие биржи доступны). Цены в тенге на сайте — решение за вами.", "TikTok — самая молодая аудитория, а платят 35–44: TikTok для охвата, продажи — ВК и YouTube."],
+      payers: [["Возраст 35–44", "24 %", "41 %"], ["Компьютер", "27 %", "83 %"], ["Казахстан", "11 %", "17 %"]] },
+    yt: { name: "YouTube", base: 412, baseLabel: "подписчиков", countries: [["Россия", 49], ["Казахстан", 13], ["Германия", 6], ["Беларусь", 6], ["Узбекистан", 5], ["Другие", 21]],
+      cities: [["Москва", 17], ["Алматы", 7], ["Санкт-Петербург", 7], ["Минск", 3]], citiesNote: "YouTube отдаёт города не для всех просмотров",
+      m: [14, 31, 24, 11, 4], f: [2, 5, 5, 3, 1], dev: [["Телефон", 64], ["Компьютер", 31], ["Телевизор и планшет", 5]],
+      ai: "На YouTube больше всего зрителей из-за рубежа (51 %) и больше всего смотрят с компьютера (31 %) — это ближе к тем, кто платит." },
+    vk: { name: "ВКонтакте", base: 534, baseLabel: "подписчика", countries: [["Россия", 81], ["Беларусь", 6], ["Казахстан", 5], ["Другие", 8]],
+      cities: [["Москва", 24], ["Санкт-Петербург", 11], ["Новосибирск", 6], ["Екатеринбург", 6], ["Краснодар", 4]],
+      m: [10, 27, 27, 15, 6], f: [2, 5, 4, 3, 1], dev: [["Телефон", 78], ["Компьютер", 22]],
+      ai: "ВК — самая «российская» и самая взрослая аудитория: 35–54 лет — 49 %. Совпадает с теми, кто платит." },
+    tg: { name: "Telegram", base: 287, baseLabel: "подписчиков", lang: [["Русский", 88], ["Английский", 6], ["Казахский", 3], ["Другие", 3]],
+      hours: [3, 2, 1, 1, 0, 1, 2, 5, 9, 8, 6, 5, 6, 5, 5, 5, 6, 7, 8, 10, 11, 10, 8, 5],
+      ai: "Telegram не показывает страны и возраст подписчиков — только язык и часы. Пик чтения — 8–9 утра и 19–21 вечера." },
+    tt: { name: "TikTok", base: 156, baseLabel: "подписчиков", countries: [["Россия", 44], ["Казахстан", 17], ["Узбекистан", 9], ["Кыргызстан", 6], ["Другие", 24]],
+      m: [28, 30, 14, 5, 1], f: [8, 8, 4, 1, 1], dev: [["Телефон", 99], ["Другое", 1]], src: "со снимков статистики TikTok 18.10",
+      ai: "TikTok — самая молодая аудитория: до 25 лет — 36 %. Средняя Азия — 32 %." },
+    site: { name: "сайт", base: 1240, baseLabel: "посетителей за 30 дней", countries: [["Россия", 52], ["Казахстан", 12], ["Беларусь", 7], ["Германия", 5], ["Другие", 24]],
+      cities: [["Москва", 19], ["Санкт-Петербург", 8], ["Алматы", 7], ["Минск", 5]], dev: [["Компьютер", 54], ["Телефон", 44], ["Планшет", 2]],
+      src: "свой счётчик: страна и город — по адресу, сам адрес не храним",
+      ai: "На сайт приходят чаще с компьютера (54 %) — так и надо: MAMAY ставится на компьютер." },
+    mamay: { name: "пользователи MAMAY", base: 31, baseLabel: "пользователь, давший согласие", countries: [["Россия", 61], ["Казахстан", 14], ["Беларусь", 8], ["Другие", 17]], src: "с согласия: пульс программы и заявка на бету",
+      markets: [["Крипта", 74], ["Мосбиржа", 18], ["Акции США", 8]], exch: [["Bybit", 41], ["OKX", 19], ["Gate", 14], ["Binance", 12], ["MEXC", 8], ["Bitget", 6]],
+      exp: [["до 1 года", 22], ["1–3 года", 46], ["больше 3 лет", 32]],
+      ai: "Пользуются в основном криптотрейдеры с опытом 1–3 года, главная биржа — Bybit. Мосбиржа — 18 %: заметная доля для будущих продаж модуля акций РФ." }
+  };
+  var AUDF = [["all", "Все каналы"], ["yt", "YouTube"], ["vk", "ВК"], ["tg", "Telegram"], ["tt", "TikTok"], ["site", "Сайт"], ["mamay", "Пользователи MAMAY"]];
+  function ppl(p, base) { return Math.round(p * base / 100); }
+  function pctBars(list, color) { var mx = Math.max.apply(null, list.map(function (x) { return x[1]; })), base = AUD[state.audf].base; return list.map(function (x) { return '<div class="fstep num"><span>' + x[0] + '</span><span class="fb" style="width:' + (x[1] / mx * 100).toFixed(0) + "%" + (color ? ";background:" + color : "") + '"></span><b>' + x[1] + " %<small>" + fmtN(ppl(x[1], base)) + "</small></b></div>"; }).join(""); }
+  function noData(what, why) { return '<div class="card"><b>' + what + '</b><div class="note">' + why + "</div></div>"; }
+  function audience() {
+    var k = state.audf, a = AUD[k], base = AUD.all;
+    var chips = '<div class="chips" role="group" aria-label="Чья аудитория">' + AUDF.map(function (x) { return '<button class="chip" data-audf="' + x[0] + '" aria-pressed="' + (k === x[0]) + '">' + x[1] + "</button>"; }).join("") + "</div>";
+    var h = chips + '<div class="note">Всего: <b>' + fmtN(a.base) + "</b> " + a.baseLabel + ". Рядом с процентом — сколько это человек: площадки дают проценты, число посчитано и округлено.</div>" + (a.src ? '<div class="note">Откуда цифры: ' + a.src + ".</div>" : "");
+    h += a.countries ? '<div class="card"><b>Страны</b>' + pctBars(a.countries) + (a.movers ? '<div class="note" style="margin-top:4px">За месяц:</div><div class="rxrow">' + a.movers.map(function (mv) { return '<span class="rxc">' + mv[0] + ' <b class="' + mv[2] + '">' + mv[1] + "</b></span>"; }).join("") + "</div>" : "") + "</div>"
+      : noData("Страны", "Telegram не показывает, из каких стран подписчики. Видно только язык приложения — ниже.");
+    if (a.lang) h += '<div class="card"><b>Язык Telegram у подписчиков</b>' + pctBars(a.lang) + "</div>";
+    if (a.cities) h += '<div class="card"><b>Города</b>' + pctBars(a.cities) + (a.citiesNote ? '<div class="note">' + a.citiesNote + ".</div>" : "") + "</div>";
+    else if (k !== "tg" && k !== "mamay") h += noData("Города", CH[k] ? CH[k] + " не показывает города подписчиков." : "Города не видны.");
+    if (a.m) {
+      var mx = Math.max.apply(null, a.m.map(function (v, i) { return v + a.f[i]; }));
+      h += '<div class="card"><b>Пол и возраст</b><div class="legend"><span style="--c:var(--acc)">мужчины ' + sum(a.m) + " % · " + fmtN(ppl(sum(a.m), a.base)) + ' чел.</span><span style="--c:var(--rose)">женщины ' + sum(a.f) + " % · " + fmtN(ppl(sum(a.f), a.base)) + " чел.</span></div>" +
+        AGES.map(function (g, i) { return '<div class="fstep num"><span>' + g + '</span><span class="sbar"><i style="width:' + (a.m[i] / mx * 100).toFixed(0) + '%"></i><i class="fem" style="width:' + (a.f[i] / mx * 100).toFixed(0) + '%"></i></span><b>' + (a.m[i] + a.f[i]) + " %<small>" + fmtN(ppl(a.m[i] + a.f[i], a.base)) + '</small></b></div><div class="agenum"><span class="am">мужчин ' + fmtN(ppl(a.m[i], a.base)) + '</span><span class="af">женщин ' + fmtN(ppl(a.f[i], a.base)) + "</span></div>"; }).join("") + "</div>";
+    } else if (k !== "mamay") h += noData("Пол и возраст", k === "tg" ? "Telegram возраст и пол подписчиков не показывает." : "Сайт пол и возраст не знает — и не должен: счётчик без персональных данных.");
+    if (a.dev) h += '<div class="card"><b>Устройства</b>' + pctBars(a.dev) + "</div>";
+    var hrs = a.hours || (k === "all" ? base.hours : null);
+    if (hrs) { var hm = Math.max.apply(null, hrs); h += '<div class="card"><b>Когда активны</b><div class="note">Время московское</div><div class="hours">' + hrs.map(function (v, i) { return '<i title="' + i + ':00" style="opacity:' + (0.12 + v / hm * 0.88).toFixed(2) + '"></i>'; }).join("") + '</div><div class="hlab"><span>0</span><span>6</span><span>12</span><span>18</span><span>23</span></div></div>'; }
+    if (a.markets) h += '<div class="card"><b>Что торгуют</b>' + pctBars(a.markets) + '</div><div class="card"><b>Биржи</b>' + pctBars(a.exch) + '</div><div class="card"><b>Опыт торговли</b>' + pctBars(a.exp) + "</div>";
+    h += '<div class="card"><b>Портрет</b><div class="ai"><b>ИИ:</b> ' + esc(a.ai) + "</div>" +
+      (a.payers ? '<div class="note">Кто платит — по сравнению со всеми подписчиками:</div><div class="mrow" style="border-top:0;font-size:11px;color:var(--dim)"><span></span><b>все</b><b>платят</b></div>' + a.payers.map(function (p) { return '<div class="mrow"><span>' + p[0] + "</span><b>" + p[1] + '</b><b class="up">' + p[2] + "</b></div>"; }).join("") : "") +
+      (a.tips ? '<div class="note" style="margin-top:4px">Что из этого следует:</div><ul class="tips">' + a.tips.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>" : "") +
+      '<div class="note">Площадки дают только проценты по группам — портрет общий, не по конкретным людям.</div></div>';
+    return h;
+  }
+
+  function chanPage(k) {
+    var s = CHSTAT[k], f = factor(), body;
+    if (s.leads) {
+      body = perSeg() + '<div class="kpis"><div class="kpi"><span>Заявок на бету</span><b>' + fmtN(23 * f) + '</b></div><div class="kpi"><span>Из них установили</span><b>' + fmtN(14 * f) + "</b></div></div>" +
+        '<div class="card chart"><b>Заявки по ' + grainName() + "</b>" + periodBars(23 * f, 1.3) + "</div>" +
+        '<div class="card"><b>Откуда пришли заявки</b>' + [["YouTube", 39, "yt"], ["Telegram", 35, "tg"], ["Прямо на сайт", 17, "site"], ["TikTok", 9, "tt"]].map(function (r) { return '<div class="fstep"><span>' + r[0] + '</span><span class="fb" style="width:' + r[1] * 2 + '%;background:' + CHC[r[2]] + '"></span><b>' + r[1] + " %</b></div>"; }).join("") +
+        '<div class="note">Канал заявки определяется по адресной ссылке, с которой человек пришёл на сайт. Подробно — «Воронка».</div></div>';
+    } else {
+      var own = CONTENT.filter(function (c) { return c.ch === k; });
+      body = perSeg() + (s.note ? '<div class="note">' + s.note + "</div>" : "") +
+        '<div class="kpis"><div class="kpi"><span>Подписчики</span><b>' + fmtN(s.subs) + '</b><em class="up">+' + fmtN(s.gain * f) + " " + PER[state.per][2] + "</em></div>" +
+        '<div class="kpi"><span>Просмотры</span><b>' + fmtN(s.views * f) + "</b></div>" +
+        s.extra.map(function (e) { return '<div class="kpi"><span>' + e[0] + "</span><b>" + fmtN(e[0].indexOf("Средний") === 0 ? e[1] : e[1] * f) + e[2] + "</b></div>"; }).join("") + "</div>" +
+        '<div class="card chart"><b>Просмотры по ' + grainName() + "</b>" + periodBars(s.views * f, k === "yt" ? 1.7 : 2.3) + "</div>" +
+        (s.sources ? '<div class="card"><b>Откуда приходят зрители</b>' + s.sources.map(function (r) { return '<div class="fstep"><span>' + r[0] + '</span><span class="fb" style="width:' + r[1] * 1.6 + '%"></span><b>' + r[1] + " %</b></div>"; }).join("") + "</div>" : "") +
+        "<h2>" + (k === "tg" ? "Посты канала" : "Ролики канала") + '</h2><div class="list">' + contentRows(own) + '</div><div class="note">Нажмите ' + (k === "tg" ? "пост" : "ролик") + " — откроется его собственная статистика.</div>";
+    }
+    main.innerHTML = '<section class="screen"><button class="back" data-back-stat>‹ Каналы</button><div class="head">' + chIcon(k) + '<h1 style="margin:0">' + s.name + "</h1></div>" + body + '<button class="btn sec" data-audch="' + k + '">Аудитория: откуда и кто</button></section>';
+    window.scrollTo(0, 0);
+  }
+
+  function item(id) {
+    var c = CONTENT.find(function (x) { return x.id === id; });
+    var kp = [["Просмотры", fmtN(c.views)]];
+    if (c.avg) kp.push(["Средний просмотр", c.avg.split(" · ")[0], c.avg.split(" · ")[1] + " ролика"]);
+    if (c.forwards != null) kp.push(["Пересылки", c.forwards]);
+    kp.push([c.ch === "tg" ? "Реакции" : "Лайки", fmtN(c.likes)], ["Комментарии", c.comments], ["Отклик", resp(c), "реакций на 1000 просм."]);
+    var chart = c.ret ? '<div class="card chart"><b>Удержание зрителей</b><span class="note">Сколько зрителей ещё смотрят в каждый момент ролика: где уходят и где пересматривают</span>' + retSvg(c) + "</div>"
+      : c.hours ? '<div class="card chart"><b>Как набирал просмотры</b><span class="note">Первые 48 часов после публикации</span>' + hoursSvg(c) + "</div>"
+      : '<div class="card"><b>Удержание недоступно</b><div class="note">' + (c.ch === "vk" ? "Отдаёт ли ВК удержание по моментам сторонним приложениям — проверим при разработке." : "TikTok не отдаёт удержание по моментам; цифры " + c.src + ".") + "</div></div>";
+    var back = "‹ " + (state.chan ? CHSTAT[state.chan].name : state.stat === "content" ? "Контент" : "Каналы");
+    main.innerHTML = '<section class="screen"><button class="back" data-back-item>' + back + "</button>" +
+      '<div class="card"><div class="head">' + chIcon(c.ch) + '<span class="note">' + CH[c.ch] + " · " + c.type + (c.len ? " · " + c.len : "") + " · опубликован " + c.date + "</span></div>" +
+      '<h1 style="font-size:24px">' + esc(c.title) + '</h1></div><div class="kpis">' + kp.map(function (x) { return '<div class="kpi"><span>' + x[0] + "</span><b>" + x[1] + "</b>" + (x[2] ? '<em style="color:var(--muted)">' + x[2] + "</em>" : "") + "</div>"; }).join("") + "</div>" +
+      chart + revCard(c) + reactCard(c) + linkCard(c) + '<div class="card"><div class="ai"><b>ИИ:</b> ' + esc(c.ai) + "</div></div>" + authorCard(c) +
+      '<button class="btn sec" data-itemcomments="' + c.id + '">Комментарии к этому ' + (c.ch === "tg" ? "посту" : "ролику") + " во входящих (" + c.comments + ")</button></section>";
+    window.scrollTo(0, 0);
+  }
+
+  /* ───── Доход ─────
+     Всё, что приносит проект: подписки MAMAY (ключи), реклама в наших каналах (сделки) и выплаты самих площадок —
+     YouTube (реклама в роликах), ВК (монетизация видео и клипов, VK Donut), Telegram (доля от рекламы, «звёзды»).
+     Доход площадок — по каждому ролику/посту и на 1000 просмотров. Источник цифр у каждой площадки свой:
+     YouTube — по API владельца; ВК — по API, если отдаёт, иначе отчёт из кабинета автора; Telegram — вход аккаунтом
+     владельца (по каналу целиком, «звёзды» — по постам). Выплаты ВК в рублях — пересчёт в $ по курсу дня. */
+  var TARIFFS = [["Pro · ранняя цена", 29, 4], ["Pro", 49, 2], ["Разработчик", 99, 0]];
+  var INCOME7 = [["Подписки MAMAY", 107, "mamay"], ["Реклама в наших каналах", 120, "site"], ["YouTube: реклама в роликах", 6.2, "yt"], ["ВК: видео, клипы, Donut", 9.4, "vk"], ["Telegram: доля от рекламы", 6.2, "tg"], ["TikTok", 0, "tt"]];
+  /* Доход площадки с контента: [$ за всё время, источник]. Пост сам по себе площадкой не оплачивается. */
+  var REV = { yt1: [4.1, "API YouTube"], yt2: [1.2, "API YouTube"], yt3: [0.9, "API YouTube"], vk2: [3.4, "отчёт ВК"], vk1: [0, "посты ВК не монетизируются"], tg1: [0, "доля Telegram — по каналу целиком"], tg2: [0, "доля Telegram — по каналу целиком"], tg3: [0, "доля Telegram — по каналу целиком"], tt1: [0, "TikTok для России не платит"] };
+  function rpm(c) { return REV[c.id] && REV[c.id][0] ? (REV[c.id][0] / c.views * 1000).toFixed(2) : null; }
+  function viaLink(c) { var l = LINKS.find(function (x) { return x.item === c.id; }); return l ? l.f[5] * 49 : 0; }
+  var DSTEPS = ["договорились", "оплачено", "маркировка erid", "вышло", "отчёт"];
+  var DEALS = [
+    { who: "Криптообменник «Пример»", ch: "tg", date: "22.10", price: 120, st: 2 },
+    { who: "Курс по трейдингу «Пример»", ch: "vk", date: "28.10", price: 90, st: 1 }
+  ];
+  var PLATF = [
+    { ch: "yt", name: "YouTube: партнёрская программа", got: "$6,20 за 7 дней · $1,80 на 1000 просмотров", prog: [["подписчики", 412, 1000], ["часы просмотра за год", 212, 4000]],
+      note: "Выплаты YouTube для аккаунтов из России отключены с 2022 года — проверим, на кого оформлен канал. Данные — по API владельца." },
+    { ch: "vk", name: "ВК: видео, клипы и VK Donut", got: "$9,40 за 7 дней: клипы $3,40 · Donut 12 подписчиков $6,00", prog: [],
+      note: "Условия монетизации видео ВК меняются — уточним при разработке. Если ВК не отдаёт доход по API — загружаем отчёт из кабинета автора." },
+    { ch: "tg", name: "Telegram: доля от рекламы и «звёзды»", got: "$6,20 за 7 дней — по каналу целиком", prog: [["подписчики", 287, 1000]],
+      note: "Долю от официальной рекламы Telegram платит каналам от 1 000 подписчиков, в криптовалюте TON — вопрос бухгалтеру. «Звёзды» за платные посты видны по каждому посту." },
+    { ch: "tt", name: "TikTok", got: "недоступно", prog: [], note: "Монетизация TikTok для России недоступна." }
+  ];
+  function money() {
+    var f = factor(), inc = INCOME7.map(function (x) { return [x[0], x[1] * f, x[2]]; }), total = sum(inc.map(function (x) { return x[1]; }));
+    var mrr = sum(TARIFFS.map(function (t) { return t[1] * t[2]; })), payers = sum(TARIFFS.map(function (t) { return t[2]; }));
+    var plat = sum(inc.filter(function (x) { return ["yt", "vk", "tg", "tt"].indexOf(x[2]) > -1; }).map(function (x) { return x[1]; }));
+    var mx = Math.max.apply(null, inc.map(function (x) { return x[1]; })) || 1;
+    var paid = {}; LINKS.forEach(function (l) { paid[l.ch] = (paid[l.ch] || 0) + l.f[5]; }); paid.none = NOTAG[5];
+    var usd = function (v) { return "$" + (v >= 100 ? fmtN(v) : v.toFixed(2).replace(".", ",")); };
+    var byRev = CONTENT.filter(function (c) { return REV[c.id]; }).sort(function (a, b) { return (REV[b.id][0] + viaLink(b)) - (REV[a.id][0] + viaLink(a)); });
+    main.innerHTML = '<section class="screen"><h1>Доход</h1><p class="sub">Пример: так раздел будет выглядеть, когда начнутся продажи и монетизация каналов</p>' + perSeg() +
+      '<div class="kpis"><div class="kpi"><span>Доход ' + PER[state.per][2] + "</span><b>" + usd(total) + '</b></div><div class="kpi"><span>Из них площадки</span><b>' + usd(plat) + "</b><em style=\"color:var(--muted)\">YouTube, ВК, Telegram</em></div>" +
+      '<div class="kpi"><span>Подписки в месяц</span><b>$' + mrr + '</b><em style="color:var(--muted)">' + payers + " платят</em></div>" + '<div class="kpi"><span>Ушли ' + PER[state.per][2] + "</span><b>0</b></div></div>" +
+      '<div class="card"><b>Из чего доход</b>' + inc.map(function (x) { return '<div class="fstep wide"><span>' + x[0] + '</span><span class="fb" style="width:' + Math.max(2, x[1] / mx * 100).toFixed(0) + "%;background:" + CHC[x[2]] + '"></span><b>' + (x[2] === "tt" ? "—" : usd(x[1])) + "</b></div>"; }).join("") + "</div>" +
+      '<div class="card"><b>Доход с роликов и постов</b><div class="note">Справа — всего: выплата площадки (YouTube, ВК) плюс оплаты подписок от людей, пришедших по ссылке из этого ролика или поста. Нажмите — откроется ролик.</div>' +
+      byRev.map(function (c) { var r = REV[c.id], p = rpm(c), v = viaLink(c); return '<button class="mrow4" data-gotoitem="' + c.id + '"><span class="head">' + chIcon(c.ch) + '<b class="ctitle">' + esc(c.title) + '</b><b class="mtot">' + (r[0] + v ? usd(r[0] + v) : "—") + '</b></span><span class="mnums"><span>площадка <b>' + (r[0] ? usd(r[0]) : "—") + "</b></span><span>на 1000 просм. <b>" + (p ? "$" + p.replace(".", ",") : "—") + "</b></span><span>подписки по ссылке <b>" + (v ? "$" + v : "—") + "</b></span></span></button>"; }).join("") + "</div>" +
+      '<div class="card"><b>Площадки: сколько платят и что нужно</b>' + PLATF.map(function (p) {
+        return '<div class="lrow"><div class="head">' + chIcon(p.ch) + "<b>" + p.name + '</b></div><div class="ai" style="padding:7px 10px">' + p.got + "</div>" +
+          p.prog.map(function (g) { return '<div class="note">' + g[0] + ": " + fmtN(g[1]) + " из " + fmtN(g[2]) + '</div><div class="prog"><i style="width:' + Math.min(100, g[1] / g[2] * 100).toFixed(0) + '%"></i></div>'; }).join("") +
+          '<div class="note">' + p.note + "</div></div>";
+      }).join("") + "</div>" +
+      '<div class="card"><b>Подписки MAMAY</b>' + TARIFFS.map(function (t) { return '<div class="mrow"><span>' + t[0] + '<small>$' + t[1] + " в месяц</small></span><b>" + t[2] + "</b><b>$" + t[1] * t[2] + "</b></div>"; }).join("") +
+      '<div class="note">За 7 дней: новых 3, продлили 1, ушли 0.</div>' +
+      '<div class="note" style="margin-top:4px">Откуда пришли платящие (по адресным ссылкам):</div><div class="rxrow">' +
+      ["tg", "vk", "yt", "tt"].map(function (k) { return '<span class="rxc">' + CH[k] + " <b>" + (paid[k] || 0) + "</b></span>"; }).join("") + '<span class="rxc">без метки <b>' + paid.none + "</b></span></div>" +
+      '<div class="note">Платёжный сервис ещё не выбран. До него оплата отмечается при выдаче ключа — ключи выдаются на вашем компьютере, секретный ключ подписи остаётся там.</div>' +
+      '<button class="btn sec" data-howkey>Как выдать ключ после оплаты</button></div>' +
+      '<div class="card"><b>Рекламные сделки</b><div class="note">Реклама других в наших каналах. Нажмите сделку, чтобы отметить следующий шаг</div>' +
+      DEALS.map(function (d, i) {
+        return '<button class="deal" data-deal="' + i + '"><span class="head">' + chIcon(d.ch) + '<span style="min-width:0"><b class="ctitle">' + esc(d.who) + '</b><span class="note">' + CH[d.ch] + " · выход " + d.date + " · $" + d.price + "</span></span></span>" +
+          '<span class="dsteps">' + DSTEPS.map(function (s, k) { return '<span class="' + (k < d.st ? "done" : "") + '">' + (k < d.st ? "✓ " : "") + s + "</span>"; }).join("") + "</span></button>";
+      }).join("") +
+      '<button class="btn sec" data-newdeal>+ Новая сделка</button>' +
+      '<div class="note">Реклама в России: нужна маркировка (erid) и отчёт оператору рекламных данных; блогерам от 10 000 подписчиков — регистрация в Роскомнадзоре. Приложение напомнит о шагах, решения — с юристом.</div></div></section>';
+  }
+  /* В карточке ролика: сколько он принёс всего — выплата площадки + подписки по его ссылке. */
+  function revCard(c) {
+    var r = REV[c.id]; if (!r) return "";
+    var p = rpm(c), v = viaLink(c);
+    return '<div class="card"><b>Сколько принёс</b><div class="kpis"><div class="kpi"><span>Выплата площадки</span><b>' + (r[0] ? "$" + r[0].toFixed(2).replace(".", ",") : "—") + "</b>" +
+      (p ? '<em style="color:var(--muted)">$' + p.replace(".", ",") + " на 1000 просм.</em>" : "") + '</div><div class="kpi"><span>Подписки по ссылке</span><b>' + (v ? "$" + v : "—") + "</b></div></div>" +
+      '<div class="note">Источник: ' + r[1] + ".</div></div>";
+  }
+
+  /* Каналы: владелец сам подключает, приостанавливает и отключает. Пароли и коды — только на экране самого сервиса. */
+  var CONN = {
+    mamay: { name: "Отзывы из MAMAY", sub: "Голос трейдера и Бета", st: "on", gives: ["входящие", "ответы по номеру", "пульс установок"],
+      steps: ["Подключено с сервером: MAMAY отправляет отзывы на api.mamaytrading.com с согласия пользователя.", "Если сервер недоступен, пользователь сохраняет файл — его можно загрузить сюда."] },
+    mail: { name: "Почта проекта", sub: "info@ · support@", st: "on", gives: ["входящие", "ответы от имени ящика"],
+      steps: ["Выберите ящик (info@, support@, billing@).", "Введите адрес и пароль ящика IONOS — вы вводите сами, на сервере он хранится зашифрованным.", "«Проверить связь»: приложение прочитает последнее письмо и отправит пробное себе."] },
+    tg: { name: "Telegram-канал", sub: "канал и группа обсуждения", st: "on", gives: ["комментарии", "ответы", "подписчики"],
+      steps: ["«Открыть бота» — откроется Telegram.", "Добавьте бота администратором в канал и в группу обсуждения (право: читать и отвечать).", "Бот пришлёт код, приложение подтвердит канал.", "Подробная статистика постов — отдельно, входом вашего аккаунта (код вводите вы)."] },
+    vk: { name: "Сообщество ВКонтакте", sub: "стена, сообщения, клипы и видео", st: "on", gives: ["комментарии", "сообщения сообщества", "ответы от имени сообщества", "статистика", "доход"],
+      steps: ["«Войти через VK ID» — вход владельца сообщества, вводите вы.", "Разрешите ключ сообщества: сообщения, комментарии, стена — ответы пойдут от имени сообщества.", "Статистику и доход ВК показывает только администратору — для них нужен вход вашим аккаунтом.", "Клипы и VK Видео: что именно ВК отдаёт сторонним приложениям, проверим при разработке."] },
+    yt: { name: "YouTube-канал", sub: "вход Google владельца", st: "on", gives: ["комментарии", "ответы", "просмотры", "удержание по моментам"],
+      steps: ["«Войти через Google» — откроется страница Google, вход делаете вы.", "Разрешите: комментарии и ответы, статистика канала.", "Выберите канал MAMAY, если их несколько."] },
+    tt: { name: "TikTok", sub: "выгрузки и снимки", st: "man", gives: ["комментарии из выгрузки", "цифры со снимков"],
+      steps: ["Официального доступа к комментариям для автора почти нет — подключаем вручную.", "Загрузите выгрузку данных TikTok (архив) или снимки статистики.", "ИИ распознает комментарии и цифры, они попадут во входящие и статистику."] },
+    site: { name: "Сайт mamaytrading.com", sub: "форма заявок на бету", st: "off", gives: ["заявки на бету", "воронка"],
+      steps: ["Сейчас форма на сайте никуда не отправляет — её нужно связать с сервером.", "Это правка сайта: делаю я, публикуете вы.", "После публикации нажмите «Проверить связь» — придёт пробная заявка."] }
+  };
+  var CST = { on: ["подключено", "p-on"], off: ["не подключено", "p-off"], man: ["вручную", "p-man"], pause: ["на паузе", "p-pause"] };
+  function more() {
+    var rows = Object.keys(CONN).filter(function (k) { return k !== "mail"; }).map(function (k) { var c = CONN[k]; return '<button class="chrow conn" data-conn="' + k + '">' + chIcon(k) + "<span>" + c.name + "<small>" + c.sub + '</small></span><span class="pill ' + CST[c.st][1] + '">' + CST[c.st][0] + "</span></button>"; }).join("");
+    var th = document.documentElement.dataset.theme || "auto";
+    var ths = [["light", "Светлая"], ["dark", "Тёмная"], ["auto", "Как в телефоне"]].map(function (p) { return '<button data-themeset="' + p[0] + '" aria-pressed="' + (th === p[0]) + '">' + p[1] + "</button>"; }).join("");
+    main.innerHTML = '<section class="screen"><h1>Ещё</h1>' +
+      '<h2>Каналы</h2><div class="list">' + rows + "</div>" + mailGroup() +
+      '<button class="btn sec" data-addconn>+ Добавить канал</button>' +
+      '<h2>Оформление</h2><div class="seg" role="group" aria-label="Тема">' + ths + "</div>" +
+      '<h2>Уведомления на телефон</h2><div class="card"><div class="labels"><button class="on">ошибка от бета-тестера</button><button class="on">всплеск негатива</button><button class="on">без ответа больше суток</button><button class="on">заявка на бету</button><button>каждое сообщение</button></div></div>' +
+      '<h2>Скоро</h2><div class="card"><b>Студия контента</b><div class="note">Агент на Claude готовит посты и сценарии роликов, вы согласуете, публикация в Telegram — следующей версией.</div></div></section>';
+  }
+  /* Почта проекта: каждый ящик отдельно — своё назначение, подключение, фильтр во входящих; ответ уходит с того ящика,
+     на который пришло письмо. Подключаются только существующие ящики (у MAMAY — IONOS); пароль вводит владелец. */
+  var BOXES = [
+    { box: "info", addr: "info@mamaytrading.com", purpose: "Общие вопросы и партнёрство", st: "on" },
+    { box: "support", addr: "support@mamaytrading.com", purpose: "Поддержка пользователей", st: "on" },
+    { box: "billing", addr: "billing@mamaytrading.com", purpose: "Оплаты и ключи", st: "off" }
+  ];
+  function boxNew(b) { return MSGS.filter(function (m) { return m.ch === "mail" && m.box === b && m.unread; }).length; }
+  function mailGroup() {
+    return '<h2>Почта проекта</h2><div class="list">' + BOXES.map(function (b, i) {
+      var n = boxNew(b.box);
+      return '<button class="chrow conn boxrow" data-box="' + i + '">' + chIcon("mail") + '<span style="min-width:0"><span class="ctitle addr">' + b.addr + "</span><small>" + b.purpose + (n ? " · новых " + n : "") + '</small><span class="pill ' + CST[b.st][1] + '">' + CST[b.st][0] + "</span></span></button>";
+    }).join("") + '</div><button class="btn sec" data-addbox>+ Добавить ящик</button>' +
+      '<div class="note">Каждый ящик — отдельно: своё назначение и свой фильтр во входящих. Ответ уходит с того ящика, на который пришло письмо. Ящик может быть на любом сервисе: IONOS, Яндекс, Gmail.</div>';
+  }
+  function boxSheet(i) {
+    var b = BOXES[i]; state.boxi = i;
+    var act = b.st === "on" ? '<button class="btn sec" data-boxset="pause">Приостановить</button><button class="btn badb" data-boxset="off">Отключить</button>'
+      : b.st === "pause" ? '<button class="btn pri" data-boxset="on">Возобновить</button><button class="btn badb" data-boxset="off">Отключить</button>'
+      : '<button class="btn pri" data-boxset="on">Подключить</button>';
+    openSheet('<div class="head">' + chIcon("mail") + '<span style="min-width:0"><h3 style="overflow-wrap:anywhere">' + b.addr + '</h3><span class="pill ' + CST[b.st][1] + '">' + CST[b.st][0] + "</span></span></div>" +
+      '<div class="note">Для чего: <b>' + b.purpose + '</b></div><div class="note">Как подключается:</div><ol class="steps">' +
+      ["Пароль ящика вводите вы — на экране подключения; на сервере он хранится зашифрованным.", "Сервер почты для IONOS подставится сам; для другого сервиса — выберите его из списка.", "«Проверить связь»: приложение прочитает последнее письмо и отправит пробное себе."].map(function (s) { return "<li>" + s + "</li>"; }).join("") +
+      '</ol><div class="actions">' + act + "</div>" + (b.st === "on" ? '<button class="btn sec" data-conntest>Проверить связь</button>' : "") +
+      '<button class="btn sec" data-boxpurpose>Изменить назначение</button><div class="note">Отключение останавливает сбор новых писем; старые письма и ответы остаются.</div>');
+  }
+  function addBoxSheet() {
+    openSheet("<h3>Добавить почтовый ящик</h3>" +
+      '<label class="note" for="nbAddr">Адрес ящика</label><input id="nbAddr" type="email" autocomplete="off" placeholder="partner@mamaytrading.com">' +
+      '<label class="note" for="nbPurpose">Для чего он</label><select id="nbPurpose"><option>Общие вопросы</option><option>Поддержка</option><option>Оплаты и ключи</option><option selected>Партнёрство и реклама</option><option>Другое</option></select>' +
+      '<div class="note">Подключается только существующий ящик: новый адрес сначала создаётся у почтового сервиса (у MAMAY — IONOS). Пароль вы введёте на следующем шаге.</div>' +
+      '<button class="btn pri" data-addboxgo>Дальше</button>');
+  }
+
+  function connSheet(k) {
+    var c = CONN[k];
+    var act = c.st === "on" ? '<button class="btn sec" data-connset="pause">Приостановить</button><button class="btn badb" data-connset="off">Отключить</button>'
+      : c.st === "pause" ? '<button class="btn pri" data-connset="on">Возобновить</button><button class="btn badb" data-connset="off">Отключить</button>'
+      : c.st === "man" ? '<button class="btn pri" data-upload>Загрузить выгрузку или снимки</button>'
+      : '<button class="btn pri" data-connset="on">Подключить</button>';
+    state.conn = k;
+    openSheet('<div class="head">' + chIcon(k) + '<span style="min-width:0"><h3>' + c.name + '</h3><span class="pill ' + CST[c.st][1] + '">' + CST[c.st][0] + "</span></span></div>" +
+      '<div class="note">Что даёт:</div><div class="gives">' + c.gives.map(function (g) { return '<span class="tag">' + g + "</span>"; }).join("") + "</div>" +
+      '<div class="note">Как подключается:</div><ol class="steps">' + c.steps.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ol>" +
+      '<div class="actions">' + act + "</div>" + (c.st === "on" ? '<button class="btn sec" data-conntest>Проверить связь</button>' : "") +
+      '<div class="note">Отключение останавливает сбор новых сообщений; история и статистика остаются.</div>');
+  }
+
+  function render() {
+    if (state.tab === "inbox") inbox(); else if (state.tab === "themes") themes(); else if (state.tab === "stats") stats(); else if (state.tab === "money") money(); else more();
+  }
+  function badge() { var n = MSGS.filter(function (m) { return m.unread; }).length; var b = document.getElementById("inboxBadge"); b.textContent = n; b.hidden = !n; }
+
+  /* Тема: светлая / тёмная / как в телефоне; выбор помнится на этом устройстве. */
+  function sysDark() { return window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches; }
+  function applyTheme(v) {
+    if (v === "light" || v === "dark") document.documentElement.dataset.theme = v; else delete document.documentElement.dataset.theme;
+    try { localStorage.setItem("pult-theme", v); } catch (e) {}
+  }
+  try { var saved = localStorage.getItem("pult-theme"); if (saved) applyTheme(saved); } catch (e) {}
+  document.getElementById("themeBtn").addEventListener("click", function () {
+    var cur = document.documentElement.dataset.theme || (sysDark() ? "dark" : "light");
+    applyTheme(cur === "dark" ? "light" : "dark"); if (state.tab === "more") more();
+  });
+  function openSheet(html) {
+    closeSheet(); var bg = document.createElement("div"); bg.className = "sheet-bg"; bg.innerHTML = '<div class="sheet" role="dialog" aria-modal="true"><span class="grab"></span>' + html + "</div>";
+    bg.addEventListener("click", function (e) { if (e.target === bg) closeSheet(); }); document.body.appendChild(bg);
+    var f = bg.querySelector("button"); if (f) f.focus();
+  }
+  function closeSheet() { var s = document.querySelector(".sheet-bg"); if (s) s.remove(); }
+
+  document.getElementById("bellBtn").addEventListener("click", function () {
+    openSheet('<b style="font-size:16px">Уведомления</b>' +
+      '<button class="prow" data-msg="1">' + chIcon("beta") + '<span>Ошибка от бета-тестера<small>M-48213 · лента сделок · 10:42</small></span></button>' +
+      '<button class="prow" data-stats-inbox>' + chIcon("mamay") + '<span>Всплеск: 5 сообщений об ошибке за час<small>Терминал · 10:00–11:00</small></span></button>' +
+      '<button class="prow" data-msg="4">' + chIcon("mail") + '<span>Без ответа больше суток<small>support@ · ключ Pro</small></span></button>');
+  });
+
+  document.addEventListener("click", function (e) {
+    var day = e.target.closest("[data-day]"); if (day) return theme(state.themeId, +day.dataset.day);
+    var t = e.target.closest("button"); if (!t) return;
+    if (t.dataset.tab) return setTab(t.dataset.tab);
+    if (t.dataset.f) { state.filter = t.dataset.f; return inbox(); }
+    if (t.dataset.msg) { closeSheet(); setTab("inbox"); return message(+t.dataset.msg); }
+    if (t.dataset.period) { state.period = t.dataset.period; return themes(); }
+    if (t.dataset.grain) { state.grain = t.dataset.grain; return theme(state.themeId, state.dsel); }
+    if (t.dataset.conn) return connSheet(t.dataset.conn);
+    if (t.dataset.connset) { var cn = CONN[state.conn]; cn.st = t.dataset.connset; toast(cn.name + ": " + CST[cn.st][0] + (t.dataset.connset === "on" && state.conn !== "mamay" ? ". В приложении здесь откроется вход в сервис." : "")); more(); return connSheet(state.conn); }
+    if (t.hasAttribute("data-conntest")) return toast("Связь есть: последнее сообщение получено 2 мин назад.");
+    if (t.hasAttribute("data-upload")) return toast("Здесь выбирается архив выгрузки или снимки экрана.");
+    if (t.hasAttribute("data-addconn")) {
+      return openSheet('<h3>Добавить канал</h3><div class="note">Подключаются только существующие каналы и ящики — новые аккаунты приложение не создаёт.</div>' +
+        ["mail", "tg", "vk", "yt", "tt"].map(function (k) { return '<button class="prow" data-addkind="' + k + '">' + chIcon(k) + "<span>" + ({ mail: "Ещё один почтовый ящик", tg: "Ещё один Telegram-канал или чат", vk: "Ещё одно сообщество ВК", yt: "Ещё один YouTube-канал", tt: "Ещё одна выгрузка TikTok" })[k] + "</span></button>"; }).join(""));
+    }
+    if (t.dataset.box) return boxSheet(+t.dataset.box);
+    if (t.dataset.boxset) { var bx = BOXES[state.boxi]; bx.st = t.dataset.boxset; toast(bx.addr + ": " + CST[bx.st][0] + (bx.st === "on" ? ". В приложении здесь откроется ввод пароля — вводите вы." : "")); more(); return boxSheet(state.boxi); }
+    if (t.hasAttribute("data-boxpurpose")) return toast("Назначение ящика меняется здесь: от него зависит фильтр и подсказки ИИ к письмам.");
+    if (t.hasAttribute("data-addbox")) return addBoxSheet();
+    if (t.hasAttribute("data-addboxgo")) {
+      var ad = (document.getElementById("nbAddr").value || "partner@mamaytrading.com").trim(), pu = document.getElementById("nbPurpose").value;
+      BOXES.push({ box: ad.split("@")[0], addr: ad, purpose: pu, st: "off" }); closeSheet(); more();
+      return toast("Ящик " + ad + " добавлен. Дальше — вход: пароль вводите вы.");
+    }
+    if (t.dataset.addkind === "mail") { closeSheet(); return addBoxSheet(); }
+    if (t.dataset.addkind) { closeSheet(); return toast("Дальше — те же шаги, что у подключённого канала: вход в сервис делаете вы."); }
+    if (t.dataset.themeset) { applyTheme(t.dataset.themeset); return more(); }
+    if (t.hasAttribute("data-back")) return inbox();
+    if (t.hasAttribute("data-back-themes")) return themes();
+    if (t.dataset.theme) { if (state.tab !== "themes") { state.tab = "themes"; document.querySelectorAll("nav.tabs button").forEach(function (b) { if (b.dataset.tab === "themes") b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); }); } theme(+t.dataset.theme); return window.scrollTo(0, 0); }
+    if (t.dataset.decide) return decide(state.themeId, t.dataset.decide);
+    if (t.hasAttribute("data-mklink")) return linkSheet(null);
+    if (t.dataset.deal) { var dl = DEALS[+t.dataset.deal]; dl.st = dl.st >= DSTEPS.length ? 0 : dl.st + 1; money(); return toast(dl.st ? "Отмечено: " + DSTEPS[dl.st - 1] : "Шаги сброшены"); }
+    if (t.hasAttribute("data-newdeal")) return toast("Новая сделка: рекламодатель, канал, дата, цена, ссылка для отчёта. Приложение напомнит про маркировку.");
+    if (t.hasAttribute("data-howkey")) return toast("После оплаты: в MAMAY на вашем компьютере «Выдать ключ» → ключ уходит покупателю письмом, оплата попадает сюда.");
+    if (t.dataset.mklinkfor) return linkSheet(t.dataset.mklinkfor);
+    if (t.dataset.copy) return toast("Скопировано: go.mamaytrading.com/" + t.dataset.copy);
+    if (t.hasAttribute("data-voice")) { document.getElementById("reply").value = state.tab === "stats" ? DICT_A : DICT; return toast("Распознано из голоса. «Поправить ИИ» уберёт лишнее — смысл и ваш стиль останутся."); }
+    if (t.hasAttribute("data-polish")) { var rp = document.getElementById("reply"); rp.value = rp.value === DICT ? POLISH : rp.value === DICT_A ? POLISH_A : rp.value.trim(); return toast("ИИ поправил: ошибки, лишние слова, длина. Проверьте перед отправкой."); }
+    if (t.hasAttribute("data-pin")) { var on = t.getAttribute("aria-pressed") !== "true"; t.setAttribute("aria-pressed", on); return toast(on ? (state.item && CONTENT.find(function (x) { return x.id === state.item; }).ch === "yt" ? "YouTube не даёт закреплять из приложений — после публикации откроем ролик, закрепите одним нажатием." : "Комментарий будет закреплён.") : "Без закрепления."); }
+    if (t.hasAttribute("data-publish")) return toast("В макете ничего не публикуется. В приложении комментарий появится от имени канала по вашей кнопке.");
+    if (t.dataset.sendall) { t.disabled = true; t.textContent = "Готово к отправке"; return toast("В макете ничего не отправляется. В приложении ответы уйдут всем авторам темы."); }
+    if (t.dataset.stat) { state.stat = t.dataset.stat; state.chan = state.item = null; return stats(); }
+    if (t.dataset.per) { state.per = t.dataset.per; return state.tab === "money" ? money() : stats(); }
+    if (t.dataset.chan) { state.chan = t.dataset.chan; state.item = null; return stats(); }
+    if (t.dataset.item) { state.item = t.dataset.item; return stats(); }
+    if (t.hasAttribute("data-back-stat")) { state.chan = null; return stats(); }
+    if (t.hasAttribute("data-back-item")) { state.item = null; return stats(); }
+    if (t.dataset.cf) { state.cf = t.dataset.cf; return stats(); }
+    if (t.dataset.audf) { state.audf = t.dataset.audf; return stats(); }
+    if (t.dataset.audch) { state.audf = t.dataset.audch; state.stat = "aud"; state.chan = null; stats(); return window.scrollTo(0, 0); }
+    if (t.dataset.gotoitem) { setTab("stats"); state.stat = "content"; state.item = t.dataset.gotoitem; return stats(); }
+    if (t.dataset.itemcomments) { state.filter = "c:" + t.dataset.itemcomments; return setTab("inbox"); }
+    if (t.hasAttribute("data-stats-inbox")) { closeSheet(); state.stat = "inbox"; return setTab("stats"); }
+    if (t.dataset.lab) { t.parentNode.querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", b === t); }); return toast("Вид исправлен: «" + KIND[t.dataset.lab][0] + "». ИИ учтёт поправку."); }
+    if (t.dataset.tpl) {
+      var r = document.getElementById("reply");
+      r.value = t.dataset.tpl === "1" ? "Спасибо, что написали! Передали разработчику." : t.dataset.tpl === "2" ? "Спасибо! Приняли в работу — реализуем в ближайших версиях и сообщим." : "Спасибо! Уточните, пожалуйста: на каком экране и что вы делали перед этим?";
+      return;
+    }
+    if (t.hasAttribute("data-send")) return toast("В макете ничего не отправляется. В приложении ответ уйдёт автору по вашей кнопке.");
+    if (t.hasAttribute("data-newtheme")) return toast("Тема создана из сообщения — похожие сообщения ИИ предложит добавить.");
+    if (t.hasAttribute("data-play")) return toast("Здесь проигрывается запись голоса.");
+  });
+  document.addEventListener("change", function (e) {
+    if (e.target.id === "sortSel") { state.sort = e.target.value; themes(); }
+    if (e.target.id === "csSel") { state.cs = e.target.value; stats(); }
+    if (e.target.id === "lkSel") linkSheet(e.target.value || null);
+  });
+  badge(); render();
+})();
+</script>
