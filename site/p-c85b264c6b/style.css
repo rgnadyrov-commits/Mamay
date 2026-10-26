@@ -152,3 +152,10 @@ sup a{text-decoration:none;font-size:11px}
   #product .shot{height:auto}
 }
 .ch-pane svg{width:100%;height:auto;display:block}.ch-pane .gr{stroke:rgba(255,255,255,.07);stroke-width:.6}.ch-pane .ax{font:7.5px 'JetBrains Mono',ui-monospace,monospace;fill:#6b7484}
+
+/* фирменная подпись: MAMAY над Trading Terminal — как в логотипе */
+.brand-t{display:flex;flex-direction:column;line-height:1}
+.brand-t b{font:700 18px var(--serif);letter-spacing:.12em;color:var(--gold)}
+.brand-t i{font:600 8.5px var(--sans);font-style:normal;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.ba-h .brand-t b{font-size:22px}.ba-h .brand-t i{font-size:9.5px}
+.ba-col.was .ba-h .brand-t b{color:var(--muted)}
