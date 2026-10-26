@@ -81,13 +81,9 @@
     { src: "transfers.webp", t: "MAMAY · Переводы", h: "Перегон средств между биржами в один клик", p: "Вывод монет и USDT/USDC с биржи на биржу, чек-лист белых списков и диагностика сетей. Терминал подбирает самую выгодную и быструю сеть." }
   ];
   var sImg = $("#shot-img");
-  var sVid = $("#shot-vid");
-  if (sVid) sVid.addEventListener("canplay", function () { sVid.play().catch(function () {}); });
   if (sImg) {
     var show = function (i) {
-      var d = SHOTS[i], vid = $("#shot-vid"); sImg.classList.add("swap");
-      if (d.video) { vid.poster = "assets/shots/" + d.src; vid.src = "assets/shots/" + d.video; vid.hidden = false; vid.load(); vid.play().catch(function () {}); sImg.parentNode.hidden = true; }
-      else { vid.pause && vid.pause(); vid.hidden = true; sImg.parentNode.hidden = false; }
+      var d = SHOTS[i]; sImg.classList.add("swap");
       setTimeout(function () { sImg.src = "assets/shots/" + d.src; sImg.alt = d.h; sImg.onload = function () { sImg.classList.remove("swap"); }; }, 180);
       $("#shot-title").textContent = d.t;
       $("#shot-cap").innerHTML = "<b></b><p></p>"; $("#shot-cap b").textContent = d.h; $("#shot-cap p").textContent = d.p;
