@@ -591,3 +591,46 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 .cmp-wrap.more{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent)}
 @media (prefers-reduced-motion:reduce){.scroll-hint span{animation:none}}
 @media (max-width:720px){.cmp-tbl th:first-child,.cmp-tbl td:first-child{width:150px;min-width:150px}.cmp-tbl{min-width:620px}}
+
+/* ---------- Тарифы всегда под рукой: плавающая кнопка и шпаргалка ---------- */
+.pfab{position:fixed;right:22px;bottom:22px;z-index:60;display:flex;align-items:center;gap:10px;padding:8px 18px 8px 8px;border-radius:999px;
+  background:linear-gradient(135deg,rgba(20,16,8,.92),rgba(8,10,15,.94));border:1px solid rgba(232,194,106,.55);color:var(--text);
+  box-shadow:0 12px 40px -10px rgba(0,0,0,.8),0 0 0 1px rgba(232,194,106,.15) inset;backdrop-filter:blur(8px);transition:transform .25s,opacity .25s}
+.pfab[hidden]{display:flex;opacity:0;transform:translateY(20px);pointer-events:none}
+.pfab:hover{transform:translateY(-2px)}
+.pfab-m{position:relative;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,rgba(232,194,106,.25),rgba(232,194,106,.06))}
+.pfab-m::before,.pfab-m::after{content:"";position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--gold);opacity:0;animation:pfab-pulse 2.4s ease-out infinite}
+.pfab-m::after{animation-delay:1.2s}
+@keyframes pfab-pulse{0%{transform:scale(.85);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+.pfab-t{display:flex;flex-direction:column;line-height:1.15;text-align:left}
+.pfab-t b{font-size:14px;color:var(--gold);letter-spacing:.02em}
+.pfab-t i{font-style:normal;font-size:11.5px;color:var(--muted)}
+.psheet{position:fixed;inset:0;z-index:70;background:rgba(3,5,8,.62);backdrop-filter:blur(3px);display:flex;align-items:flex-end;justify-content:flex-end;padding:22px}
+.psheet[hidden]{display:none}
+.psheet-in{width:min(440px,100%);max-height:calc(100vh - 44px);overflow:auto;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,#121722,#0a0e15);
+  padding:18px;box-shadow:0 30px 90px -20px #000;animation:psheet-in .28s ease-out}
+@keyframes psheet-in{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+.psheet-top{display:flex;align-items:center;margin-bottom:10px}
+.psheet-top h3{flex:1;font-size:18px;font-weight:800}
+.psheet-x{width:34px;height:34px;border-radius:10px;border:1px solid var(--line2);font-size:20px;color:var(--muted)}
+.prow{border:1px solid var(--line2);border-radius:14px;padding:12px 14px;margin-top:10px;background:rgba(255,255,255,.02)}
+.prow-pro{border-color:rgba(232,194,106,.55);background:linear-gradient(180deg,rgba(232,194,106,.08),rgba(255,255,255,.01))}
+.prow-h{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.prow-h b{flex:1;font-size:15px}
+.prow-p{font-size:20px;font-weight:800;color:var(--gold)}
+.prow-p small{font-size:12px;font-weight:500;color:var(--muted)}
+.prow p{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:10px}
+.prow-early{display:block;color:var(--teal);font-weight:600;margin-top:4px}
+.prow .btn{width:100%}
+.psheet-note{font-size:12px;color:var(--dim);margin-top:12px;line-height:1.5}
+.psheet-note a{color:var(--gold);white-space:nowrap}
+.plan-more{display:block;text-align:center;margin-top:10px;font-size:13px;color:var(--muted)}
+.plan-more:hover{color:var(--text)}
+@media (max-width:720px){
+  .pfab{left:50%;right:auto;bottom:14px;transform:translateX(-50%);padding:7px 20px 7px 7px}
+  .pfab[hidden]{transform:translate(-50%,20px)}
+  .pfab:hover{transform:translateX(-50%)}
+  .psheet{padding:0;align-items:flex-end;justify-content:center}
+  .psheet-in{width:100%;border-radius:20px 20px 0 0;max-height:88vh}
+}
+@media (prefers-reduced-motion:reduce){.pfab-m::before,.pfab-m::after{animation:none;opacity:0}.psheet-in{animation:none}}

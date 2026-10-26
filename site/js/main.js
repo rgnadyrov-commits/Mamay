@@ -101,7 +101,7 @@
   var form = $("#form"), msg = $("#form-msg");
   if (form) form.addEventListener("submit", function (e) {
     e.preventDefault();
-    var f = new FormData(form), data = { name: (f.get("name") || "").trim(), contact: (f.get("contact") || "").trim(), role: f.get("role"), msg: (f.get("msg") || "").trim(), page: location.href, ts: new Date().toISOString() };
+    var f = new FormData(form), data = { name: (f.get("name") || "").trim(), contact: (f.get("contact") || "").trim(), plan: f.get("plan"), role: f.get("role"), msg: (f.get("msg") || "").trim(), page: location.href, ts: new Date().toISOString() };
     var bad = false;
     ["name", "contact"].forEach(function (n) { var el = form.elements[n], ok = !!data[n]; el.classList.toggle("err", !ok); if (!ok) bad = true; });
     msg.className = "form-msg";
@@ -116,7 +116,7 @@
       fetch(cfg.formEndpoint, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(data) })
         .then(function (res) { res.ok ? ok() : fail(); }).catch(fail);
     } else if (cfg.contactEmail) {
-      var body = "Имя: " + data.name + "\nКонтакт: " + data.contact + "\nЯ: " + data.role + "\nИнтересует: " + data.msg;
+      var body = "Имя: " + data.name + "\nКонтакт: " + data.contact + "\nТариф: " + (PLAN_NAME[data.plan] || data.plan) + "\nЯ: " + data.role + "\nИнтересует: " + data.msg;
       location.href = "mailto:" + cfg.contactEmail + "?subject=" + encodeURIComponent("MAMAY: заявка на ранний доступ") + "&body=" + encodeURIComponent(body);
       ok();
     } else {
@@ -132,15 +132,61 @@
   var q = function (sel) { return document.querySelector(sel); };
   if (cfg.pricePro) {
     var b = q('[data-price="pro"]'), n = q('[data-price-note="pro"]');
-    if (b) b.textContent = cfg.pricePro;
+    document.querySelectorAll('[data-price="pro"]').forEach(function (el) { el.textContent = cfg.pricePro; });
     if (n) n.textContent = cfg.priceProNote || "в месяц";
     var f = q("[data-price-faq]");
     if (f) f.textContent = "Pro стоит " + cfg.pricePro + " " + (cfg.priceProNote || "в месяц") + (cfg.priceEarly ? "; участникам раннего доступа — " + cfg.priceEarly + ", пока подписка не прерывается" : "") + "." + (cfg.priceDev ? " Тариф «Разработчик» со своим ИИ-агентом — " + cfg.priceDev + " в месяц, откроется вместе с первой версией агента." : "") + " Участники раннего доступа получают Pro на 14 дней бесплатно. Годовая подписка — два месяца в подарок: Pro $490, «Разработчик» $990 в год.";
-    var d = q('[data-price="dev"]'); if (d && cfg.priceDev) d.textContent = cfg.priceDev;
+    if (cfg.priceDev) document.querySelectorAll('[data-price="dev"]').forEach(function (el) { el.textContent = cfg.priceDev; });
   }
-  if (cfg.priceEarly) { var e = q("[data-price-early]"); if (e) e.textContent = "Ранняя цена " + cfg.priceEarly + ", пока подписка не прерывается"; }
+  if (cfg.priceEarly) document.querySelectorAll("[data-price-early]").forEach(function (e) { e.textContent = "Ранняя цена " + cfg.priceEarly + (e.closest(".psheet") ? "" : ", пока подписка не прерывается"); });
   if (cfg.telegram) {
     var nav = q(".foot-nav");
     if (nav) { var a = document.createElement("a"); a.href = cfg.telegram; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Канал в Telegram"; nav.appendChild(a); }
   }
+})();
+
+/* Тарифы всегда под рукой: плавающая кнопка «Тарифы · от $0» (на телефоне — снизу экрана), шпаргалка с тремя тарифами
+   и кнопки «Оформить» — ведут в заявку с выбранным тарифом (оплату подключим к запуску). Кнопка появляется, когда
+   пролистали первый экран, и прячется, пока на экране сами тарифы или форма заявки. */
+var PLAN_NAME = { free: "Бесплатно", pro: "Pro", dev: "«Разработчик»", beta: "Бета: 14 дней Pro" };
+(function () {
+  var fab = document.getElementById("pfab"), sheet = document.getElementById("psheet");
+  if (!fab || !sheet) return;
+  var cfg = window.MAMAY_CONFIG || {};
+  var opt = document.querySelector('select[name="plan"] option[value="pro"]');
+  if (opt && cfg.pricePro) opt.textContent = "Pro — " + cfg.pricePro + " " + (cfg.priceProNote || "в месяц");
+  var optDev = document.querySelector('select[name="plan"] option[value="dev"]');
+  if (optDev && cfg.priceDev) optDev.textContent = "«Разработчик» — " + cfg.priceDev + " в месяц";
+
+  var open = function (on) {
+    sheet.hidden = !on; fab.setAttribute("aria-expanded", on ? "true" : "false");
+    document.body.classList.toggle("psheet-open", on);
+    if (on) { var b = sheet.querySelector(".btn-gold"); if (b) b.focus({ preventScroll: true }); }
+  };
+  fab.addEventListener("click", function () { open(sheet.hidden); });
+  sheet.addEventListener("click", function (e) { if (e.target === sheet || e.target.closest(".psheet-x") || e.target.closest(".psheet-more")) open(false); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !sheet.hidden) open(false); });
+
+  // «Оформить …» — в заявку с выбранным тарифом
+  document.querySelectorAll("[data-plan]").forEach(function (a) {
+    a.addEventListener("click", function () {
+      var sel = document.querySelector('select[name="plan"]');
+      if (sel) sel.value = a.getAttribute("data-plan");
+      var btn = document.querySelector('#form button[type="submit"]');
+      if (btn) btn.firstChild.textContent = a.getAttribute("data-plan") === "free" ? "Получить бесплатную версию " : "Оформить " + (PLAN_NAME[a.getAttribute("data-plan")] || "") + " ";
+      open(false);
+      setTimeout(function () { var n = document.querySelector('#form input[name="name"]'); if (n) n.focus({ preventScroll: true }); }, 600);
+    });
+  });
+
+  // показывать после первого экрана и прятать, пока видны тарифы или заявка
+  var hidden = { pricing: false, contact: false };
+  var past = false;
+  var upd = function () { fab.hidden = !past || hidden.pricing || hidden.contact; };
+  window.addEventListener("scroll", function () { var p = window.scrollY > window.innerHeight * 0.6; if (p !== past) { past = p; upd(); } }, { passive: true });
+  if ("IntersectionObserver" in window) ["pricing", "contact"].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) new IntersectionObserver(function (es) { hidden[id] = es[0].isIntersecting; upd(); }, { threshold: 0.15 }).observe(el);
+  });
+  upd();
 })();
