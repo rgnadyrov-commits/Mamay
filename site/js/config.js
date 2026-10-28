@@ -5,8 +5,8 @@
    2) иначе, если указан contactEmail — открывается письмо с заполненными данными;
    3) иначе заявка не отправляется и посетитель видит сообщение о том, что форма не подключена. */
 window.MAMAY_CONFIG = {
-  formEndpoint: "",   // например: "https://formspree.io/f/xxxxxxx"
-  contactEmail: "",   // например: "hello@вашдомен.com"
+  formEndpoint: "https://api.mamaytrading.com/v1/lead",   // сервер «Пульта»: заявка во «Входящие» и письмом на info@
+  contactEmail: "info@mamaytrading.com",   // запасной путь (письмо) и адрес в подвале
   telegram: "",       // например: "https://t.me/mamay_terminal" — появится ссылкой «Канал в Telegram» в подвале
 
   // Цены в блоке «Тарифы». Пустая строка — на странице останется «цена на запуске».

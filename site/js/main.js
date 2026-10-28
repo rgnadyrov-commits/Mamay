@@ -101,7 +101,7 @@
   var form = $("#form"), msg = $("#form-msg");
   if (form) form.addEventListener("submit", function (e) {
     e.preventDefault();
-    var f = new FormData(form), data = { name: (f.get("name") || "").trim(), contact: (f.get("contact") || "").trim(), plan: f.get("plan"), role: f.get("role"), msg: (f.get("msg") || "").trim(), page: location.href, ts: new Date().toISOString() };
+    var f = new FormData(form), data = { name: (f.get("name") || "").trim(), contact: (f.get("contact") || "").trim(), plan: f.get("plan"), role: f.get("role"), msg: (f.get("msg") || "").trim(), page: location.href, ts: new Date().toISOString(), website: (f.get("website") || "").trim() };
     var bad = false;
     ["name", "contact"].forEach(function (n) { var el = form.elements[n], ok = !!data[n]; el.classList.toggle("err", !ok); if (!ok) bad = true; });
     msg.className = "form-msg";
@@ -139,6 +139,10 @@
     if (cfg.priceDev) document.querySelectorAll('[data-price="dev"]').forEach(function (el) { el.textContent = cfg.priceDev; });
   }
   if (cfg.priceEarly) document.querySelectorAll("[data-price-early]").forEach(function (e) { e.textContent = "Ранняя цена " + cfg.priceEarly + (e.closest(".psheet") ? "" : ", пока подписка не прерывается"); });
+  if (cfg.contactEmail) {                       // почта для писем — в подвале рядом с меню
+    var fnav = document.querySelector(".foot-nav");
+    if (fnav) { var m = document.createElement("a"); m.href = "mailto:" + cfg.contactEmail; m.textContent = cfg.contactEmail; fnav.appendChild(m); }
+  }
   if (cfg.telegram) {
     var nav = q(".foot-nav");
     if (nav) { var a = document.createElement("a"); a.href = cfg.telegram; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Канал в Telegram"; nav.appendChild(a); }
