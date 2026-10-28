@@ -102,6 +102,7 @@
   if (form) form.addEventListener("submit", function (e) {
     e.preventDefault();
     var f = new FormData(form), data = { name: (f.get("name") || "").trim(), contact: (f.get("contact") || "").trim(), plan: f.get("plan"), role: f.get("role"), msg: (f.get("msg") || "").trim(), page: location.href, ts: new Date().toISOString(), website: (f.get("website") || "").trim() };
+    try { data.sid = sessionStorage.getItem("mm_s") || ""; } catch (x) {}   // визит счётчика — сервер отметит в нём заявку
     var bad = false;
     ["name", "contact"].forEach(function (n) { var el = form.elements[n], ok = !!data[n]; el.classList.toggle("err", !ok); if (!ok) bad = true; });
     msg.className = "form-msg";

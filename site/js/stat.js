@@ -9,6 +9,10 @@
   var ua = navigator.userAgent || "";
   if (!/(^|\.)mamaytrading\.com$/.test(location.hostname)) return;   // локальные просмотры не считаем
   if (navigator.webdriver || /bot|crawl|spider|headless|lighthouse/i.test(ua)) return;
+  // Chrome может загрузить страницу заранее, пока человек набирает адрес; считаем, только когда её действительно открыли
+  if (document.prerendering) document.addEventListener("prerenderingchange", start, { once: true }); else start();
+
+  function start() {
 
   var ss = null, ls = null;
   try { ss = window.sessionStorage; ls = window.localStorage; } catch (e) {}
@@ -40,11 +44,17 @@
 
   /* ---------- время на экране и прокрутка ---------- */
   var engaged = 0, since = null, maxScroll = 0, queue = [], vitals = {}, started = Date.now();
-  var active = function () { return document.visibilityState === "visible" && document.hasFocus(); };
+  // «на экране»: вкладка видна и (окно в фокусе или человек что-то делал последние 30 секунд)
+  var lastAct = Date.now(), lastSc = -1;
+  var active = function () { return document.visibilityState === "visible" && (document.hasFocus() || Date.now() - lastAct < 30000); };
   var tick = function () { var n = Date.now(); if (since !== null) engaged += n - since; since = active() ? n : null; };
+  ["pointerdown", "keydown", "touchstart", "wheel", "mousemove", "scroll"].forEach(function (e) {
+    window.addEventListener(e, function () { lastAct = Date.now(); if (since === null) tick(); }, { passive: true, capture: true });
+  });
   var scroll = function () {
-    var h = document.documentElement, max = h.scrollHeight - h.clientHeight;
-    var p = max > 0 ? Math.round((h.scrollTop || document.body.scrollTop) / max * 100) : 100;
+    var h = document.documentElement, max = h.scrollHeight - window.innerHeight;
+    var y = window.scrollY || window.pageYOffset || h.scrollTop || document.body.scrollTop || 0;
+    var p = max > 0 ? Math.round(y / max * 100) : 100;
     if (p > maxScroll) maxScroll = Math.min(100, p);
   };
   window.addEventListener("scroll", scroll, { passive: true });
@@ -58,12 +68,16 @@
 
   var flush = function (beacon) {
     tick(); scroll();
-    var body = { t: "p", sid: sid, e: engaged, sc: maxScroll, ev: queue.splice(0, 40) };
-    for (var k in vitals) body[k] = vitals[k];
+    var body = { t: "p", sid: sid, e: engaged, sc: maxScroll, ev: queue.splice(0, 40) }, vs = "";
+    for (var k in vitals) { body[k] = vitals[k]; vs += k + vitals[k]; }
     engaged = 0;
-    if (!body.e && !body.ev.length && !beacon) return;
+    // нечего нового — не шлём (при закрытии страницы — шлём всегда)
+    if (!body.e && !body.ev.length && body.sc === lastSc && vs === lastVs && !beacon) return;
+    lastSc = body.sc; lastVs = vs;
     send(body, beacon);
   };
+  var lastVs = "";
+  setTimeout(function () { if (document.visibilityState === "visible") flush(false); }, 5000);   // короткие визиты тоже видны
   // пульс раз в 15 секунд, пока страница на экране (первые 30 минут визита)
   var beat = setInterval(function () {
     if (Date.now() - started > 30 * 60 * 1000) { clearInterval(beat); return; }
@@ -121,4 +135,5 @@
       l.getEntries().forEach(function (x) { if (x.interactionId && (!vitals.inp || x.duration > vitals.inp)) vitals.inp = Math.round(x.duration); });
     }).observe({ type: "event", buffered: true, durationThreshold: 40 });
   } catch (e) {}
+  }
 })();
