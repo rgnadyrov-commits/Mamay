@@ -108,8 +108,8 @@
     if (bad) { msg.className = "form-msg bad"; msg.textContent = "Заполните имя и контакт, чтобы мы могли ответить."; return; }
 
     var cfg = window.MAMAY_CONFIG || {};
-    var ok = function () { msg.textContent = "Спасибо! Заявка принята — мы свяжемся с вами в ближайшее время."; form.reset(); };
-    var fail = function () { msg.className = "form-msg bad"; msg.textContent = "Не удалось отправить заявку. Попробуйте ещё раз чуть позже."; };
+    var ok = function () { msg.textContent = "Спасибо! Заявка принята — мы свяжемся с вами в ближайшее время."; form.reset(); window.mmStat && window.mmStat("lead", data.plan); };
+    var fail = function () { window.mmStat && window.mmStat("lead_fail"); msg.className = "form-msg bad"; msg.textContent = "Не удалось отправить заявку. Попробуйте ещё раз чуть позже."; };
 
     if (cfg.formEndpoint) {
       msg.textContent = "Отправляем…";
